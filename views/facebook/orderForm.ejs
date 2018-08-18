@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>first html practice</title>
+    <link rel="stylesheet" href="../css/orderForm.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <!-- <script src="./payment.js"></script> -->
+    <!-- <script src="https://js.instamojo.com/v1/checkout.js"></script> -->
+
+    <style>
+    </style>
+</head>
+
+<body class="bg-white">
+    <div class="container-fluid py-3">
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4 mx-auto">
+                <div id="pay-invoice" class="card">
+
+                    <!-- <img class="profile-img" id="avatar" src="https://platform-lookaside.fbsbx.com/platform/profilepic/?psid=1879276758759273&height=50&width=50&ext=1536064533&hash=AeROk3zgpnIgmtbi"alt=""> -->
+
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3 class="text-center m-10"> Order </h3>
+                        </div>
+                        
+                        <hr class="bg-info">
+                        <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                    <h6 data-toggle="collapse" href="#collapseOne">Product detail</h6>
+                                </li>
+
+                        </ul>
+                        
+                        <hr class="bg-info">
+
+                        <div id="collapseOne" class="collapse hide">
+
+                        <h6 class="text-center">
+                            <%= title %>
+                        </h6>
+
+                        <div class="row">
+
+                            <section id="left" class="col-6">
+                                <img src="<%= image %>" alt="product" class="img-fluid">
+                            </section>
+
+                            <section id="right" class="col-6">
+                                <div class="row">
+                                    <div class="form-group  col-sm-10">
+                                        <label for="cc-exp" class="control-label mb-1">Brand</label>
+                                        <select class="selectpicker bg-white form-control" data-live-search="true"  disabled>
+                                            <option data-tokens="<%= brandTitle %>"><%= brandTitle %></option>
+                                            <!-- <option data-tokens="B">google</option>
+                                            <option data-tokens="C">oneplusone</option> -->
+                                        </select>
+                                        <!-- <span class="invalid-feedback">Enter the expiration date</span> -->
+                                    </div>
+
+                                    <div class="form-group col-sm-10">
+                                        <label for="cc-exp" class="control-label mb-1">Phone</label>
+                                        <select class="selectpicker bg-white form-control" data-live-search="true"  disabled>
+                                            <option data-tokens="<%= phoneTitle%>"><%= phoneTitle%></option>
+                                            <!-- <option data-tokens="B">B</option>
+                                            <option data-tokens="C">C</option> -->
+                                        </select>
+                                        <!-- <span class="invalid-feedback">Enter the expiration date</span> -->
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </section>
+                            
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Price
+                                <span class="text-dark">
+                                    <%= price%>
+                                </span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Shipping count
+                                <span class="text-dark">
+                                    <%= shippingCost%>
+                                </span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Discount
+                                <span class="text-dark">
+                                    <%= discount%>
+                                </span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>
+                                    <h5>Total</h5>
+                                </span>
+                                <span class="text-primary">
+                                    <%= total%>
+                                </span>
+                            </li>
+
+                        </ul>
+                        <!-- <hr class="bg-dark"> -->
+
+
+                    </div>
+
+
+
+                        <hr class="bg-info">
+
+                        <h6>Address Detail</h6>
+                        <hr class="bg-info">
+
+                        <form action="/order/payment" method="post" novalidate="novalidate" class="needs-validation">
+                            <div class="form-group text-center">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                <i class="text-muted fa fa-cc-visa fa-2x"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                <i class="fa fa-cc-mastercard fa-2x"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                <i class="fa fa-cc-amex fa-2x"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                <i class="fa fa-cc-discover fa-2x"></i>
+                                </li>
+                            </ul>
+                            </div>
+                                <input type="hidden" name="status" value="<%= status %>">
+                                <input type="hidden" name="userId" value="<%= userId %>">
+                                <input type="hidden" name="name" value="<%= name %>">
+                                <input type="hidden" name="profilePictureUrl" value="<%= profilePictureUrl %>">
+                                <input type="hidden" name="productId" value="<%= prId %>">
+                                <input type="hidden" name="price" value="<%= price %>">
+                                <input type="hidden" name="discount" value="<%= discount %>">
+                                <input type="hidden" name="shippingCost" value="<%= shippingCost %>">
+                                <input type="hidden" name="total" value="<%= total %>">
+                                <input type="hidden" name="image" value="<%= image %>">
+                                <input type="hidden" name="brandTitle" value="<%= brandTitle %>">
+                                <input type="hidden" name="phoneTitle" value="<%= phoneTitle %>">
+                                <input type="hidden" name="priceTitle" value="<%= priceTitle %>">
+                                <input type="hidden" name="categoryTitle" value="<%= categoryTitle %>">
+                             
+
+                                <div class="form-group">
+                                    <label for="cc-payment" class="control-label mb-1">Email</label>
+                                    <input id="cc-payment" name="email" type="email" class="form-control" aria-required="true" aria-invalid="false" required>
+                                    <span class="invalid-feedback">Enter the valid email address</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cc-payment" class="control-label mb-1">Contact</label>
+                                    <input id="cc-payment" name="tel" type="contact" class="form-control" aria-required="true" aria-invalid="false" pattern="[0-9]{10}" min=10 max=10 required>
+                                    <span class="invalid-feedback">Enter the valid 10 digit number</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea2">address</label>
+                                    <textarea class="form-control rounded-0" name="address" id="exampleFormControlTextarea2" rows="3" required></textarea>
+                                    <span class="invalid-feedback">Enter the valid address</span>
+                                </div>
+
+                                
+                                <div class="row">
+                                        
+                                    <div class="col-6">
+                                        <div class="form-group">                                                
+                                            <label for="cc-payment" class="control-label mb-1">City</label>
+                                            <input id="cc-payment" name="city" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                            <span class="invalid-feedback">Enter the valid email address</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="cc-exp" class="control-label mb-1">State</label>
+                                            <!-- <input id="cc-exp" name="cc-exp" type="tel" class="form-control cc-exp" required placeholder="MM / YY" autocomplete="cc-exp"> -->
+                                            <select name="state" class="selectpicker form-control" data-live-search="true" required>
+                                                <option data-tokens="assam">Assam</option>
+                                                <option data-tokens="Andhra Pradesh">Andhra Pradesh</option>
+                                                <option data-tokens="Odisha">Odisha</option>
+                                                <option data-tokens="punjab">Punjab</option>
+                                                <option data-tokens="Delhi">Delhi</option>
+                                                <option data-tokens="Maharashtra">Maharashtra</option>
+                                            </select>
+
+                                            <span class="invalid-feedback">Select the state </span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="x_zip" class="control-label mb-1">Postal code</label>
+                                    <input id="x_zip" name="zip" type="text" class="form-control" value="" data-val="true" data-val-required="Please enter the ZIP/Postal code" pattern="[0-9]{6}"
+                                        autocomplete="postal-code" min='6' max=6 required>
+                                    <!-- <span class="help-block" data-valmsg-for="x_zip" data-valmsg-replace="true"></span> -->
+                                    <span class="invalid-feedback">Enter the valid 6 digil post code</span>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea2">Descriptio about product</label>
+                                    <textarea name="description" class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"></textarea>
+                                </div>
+
+
+
+                                <div>
+
+                                    <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                        <i class="fa fa-lock fa-lg"></i>&nbsp;
+                                        <span id="payment-button-amount">Pay $<%= total%></span>
+                                        <span id="payment-button-sending" style="display:none;">Sending…</span>
+                                    </button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+
+
+        $("#payment-button").click(function (e) {
+
+            // Fetch form to apply Bootstrap validation
+            var form = $(this).parents('form');
+
+            if (form[0].checkValidity() === false) {
+                e.preventDefault();
+                e.stopPropagation();
+            } else {
+                // Perform ajax submit here
+                // onButtonClick();
+                form.submit();
+            }
+
+            form.addClass('was-validated');
+        });
+
+
+
+    </script>
+
+<script>
+    window.extAsyncInit = function () {
+        console.log("*********************************");  
+        // the Messenger Extensions JS SDK is done loading 
+        };
+        
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'Messenger'));
+</script>
+
+</body>
+
+</html>
