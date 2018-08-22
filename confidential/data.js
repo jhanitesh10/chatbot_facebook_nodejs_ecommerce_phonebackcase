@@ -1,6 +1,6 @@
-const port = '1234',
-      accessToken = '',
-      verifyToken = '';
+const port = "1234",
+  accessToken = "",
+  verifyToken = "nitesh";
 
 const DB_HOST = 'localhost',
       DB_USER = 'root',

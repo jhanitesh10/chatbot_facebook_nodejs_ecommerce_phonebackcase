@@ -462,16 +462,236 @@ let initialTextReply = ({
 
 }
 
+
+
+let contact = ({ senderId }) => {
+  
+  response = {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "button",
+        text: "Need further assistance? Talk to a representative or send us an emsil.",
+        buttons: [
+          {
+            type: "phone_number",
+            title: "Call Representative",
+            payload: "+9190042250810"
+          },
+          {
+            "type":"web_url",
+            "url":"https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin",
+            "title":"Send and email"
+          },
+          {
+            "type":"postback",
+            "title":"Buy",
+            "payload":"mainMenu"
+          }
+        ]
+      }
+    }
+  }
+
+  return arq_sendMessage({
+    senderId: senderId,
+    response: response
+  });
+
+};
+
+
+
+let feedback = ({ senderId }) => {
+
+
+
+
+  let text1 = {
+    "text": "Thanks for giving  you valuable time. you can click on the button and provide a feedback click on link https://giphy.com/gifs/FeedbackPanda-5zqF8kPPhvqasteBZF/links",
+    "quick_replies": [{
+      "content_type": "text",
+      "title": "Buy",
+      "payload": "mainMenu"
+    }
+  ]
+  }
+
+  let image = {
+
+        "attachment": {
+          "type": "image",
+          "payload": {
+            "url": "https://media.giphy.com/media/5zqF8kPPhvqasteBZF/giphy.gif",
+            "is_reusable": true
+          }
+        }
+
+  }
+  
+  let textArray = [image, text1];
+
+    return Promise.each(textArray, (text) => {
+
+      return arq_sendMessage({
+        senderId: senderId,
+        response: text
+      });
+
+   });
+
+
+}
+
+
+let frequentlyAskQuestion = ({ senderId }) => {
+
+
+
+
+  let text1 = {
+    "text": "Thanks for giving  you valuable time. you can click on the button and provide a feedback click on link https://giphy.com/gifs/FeedbackPanda-5zqF8kPPhvqasteBZF/links",
+    "quick_replies": [{
+      "content_type": "text",
+      "title": "Buy",
+      "payload": "mainMenu"
+    }
+  ]
+  }
+
+  let image = {
+
+        "attachment": {
+          "type": "image",
+          "payload": {
+            "url": "https://media.giphy.com/media/YkCgHUorYfITm/giphy.gif",
+            "is_reusable": true
+          }
+        }
+
+  }
+  
+  let textArray = [image, text1];
+
+    return Promise.each(textArray, (text) => {
+
+      return arq_sendMessage({
+        senderId: senderId,
+        response: text
+      });
+   });
+
+
+}
+
+
+let about = ({ senderId }) => {
+
+
+
+  let image = {
+
+        "attachment": {
+          "type": "image",
+          "payload": {
+            "url": "https://media.giphy.com/media/CaiVJuZGvR8HK/giphy.gif",
+            "is_reusable": true
+          }
+        }
+
+  }
+
+  let text1 = {
+    "text": "Thanks for giving  you valuable time. you can click on the button and provide a feedback"
+  }
+
+    let text2 = {
+    "text": "Thanks for giving  you valuable time. you can click on the button and provide a feedback click on link https://giphy.com/gifs/FeedbackPanda-5zqF8kPPhvqasteBZF/links",
+    "quick_replies": [{
+      "content_type": "text",
+      "title": "Buy",
+      "payload": "mainMenu"
+    }
+  ]
+  }
+
+  let textArray = [image, text1, text2];
+
+    return Promise.each(textArray, (text) => {
+
+      return arq_sendMessage({
+        senderId: senderId,
+        response: text
+      });
+
+   });
+
+
+}
+
+
+
+
+let howToBuy = ({ senderId }) => {
+
+
+
+  let video = {
+
+    "attachment":{
+       "type":"video",
+       "payload":{
+         "url":"https://www.rmp-streaming.com/media/bbb-360p.mp4",
+         "is_reusable": true
+        }
+
+    }
+
+  }
+
+  let text1 = {
+    "text": "Thanks for giving  you valuable time. you can click on the button and provide a feedback"
+  }
+
+    let text2 = {
+    "text": "Thanks for giving  you valuable time. you can click on the button and provide a feedback click on link https://giphy.com/gifs/FeedbackPanda-5zqF8kPPhvqasteBZF/links",
+    "quick_replies": [{
+      "content_type": "text",
+      "title": "Buy",
+      "payload": "mainMenu"
+    }
+    ]
+  }
+
+  let textArray = [video, text1, text2];
+
+    return Promise.each(textArray, (text) => {
+
+      return arq_sendMessage({
+        senderId: senderId,
+        response: text
+      });
+
+   });
+
+
+}
+
 module.exports = {
-  whom : whom,
-  brand : brand,
-  phone : phone,
-  price : price,
-  category : category,
-  more : more,
-  help : help,
+  whom: whom,
+  brand: brand,
+  phone: phone,
+  price: price,
+  category: category,
+  more: more,
+  help: help,
   topProductPrice: topProductPrice,
   attachmentText: attachmentText,
   afterAttachmentPrice: afterAttachmentPrice,
-  initialTextReply: initialTextReply
-}
+  initialTextReply: initialTextReply,
+  contact: contact,
+  feedback: feedback,
+  frequentlyAskQuestion: frequentlyAskQuestion,
+  about: about,
+  howToBuy : howToBuy
+};

@@ -6,13 +6,18 @@ let api = require('../../../api/facebookRequest.js'),
     arq_sendMessage = api.arq_sendMessage,
     arq_getUserDetail = api.arq_getUserDetail;
 
-let responseFunction = require('./responseFunction.js'),
-    whom = responseFunction.whom,
-    brand = responseFunction.brand,
-    more = responseFunction.more,
-    help = responseFunction.help,
-    topProductPrice = responseFunction.topProductPrice,
-    initialTextReply = responseFunction.initialTextReply;
+let responseFunction = require("./responseFunction.js"),
+  whom = responseFunction.whom,
+  brand = responseFunction.brand,
+  more = responseFunction.more,
+  help = responseFunction.help,
+  topProductPrice = responseFunction.topProductPrice,
+  initialTextReply = responseFunction.initialTextReply,
+  contact = responseFunction.contact,
+  feedback = responseFunction.feedback,
+  frequentlyAskQuestion = responseFunction.frequentlyAskQuestion,
+  about = responseFunction.about,
+  howToBuy = responseFunction.howToBuy;
 
 let errorResponse = require('./errorText.js'),
     errorMessage = errorResponse.errorMessage;
@@ -34,9 +39,7 @@ let processingTextMessage = ({senderId, messageText}) => {
   let response;
 
   if (string.match(/(hey)|(hello)|(hi)|(what's up?)/i)) {
-    return initialTextReply({
-      senderId: senderId
-    });
+    return initialTextReply({ senderId: senderId });
   }
   else if (string.match(/(What)/i) && string.match(/(your name?)/i)) {
           message1 = "My name is The Freak😜";

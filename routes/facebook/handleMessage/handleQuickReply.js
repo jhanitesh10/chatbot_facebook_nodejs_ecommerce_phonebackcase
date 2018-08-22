@@ -10,7 +10,7 @@ let query = require('../../../database/facebook/botQuery'),
   qr_getCategory = query.qr_getCategory,
   qr_topProductPrice = query.qr_topProductPrice;
 
-let responseFunction = require('./responseFunction.js'),
+let responseFunction = require("./responseFunction.js"),
   whom = responseFunction.whom,
   brand = responseFunction.brand,
   phone = responseFunction.phone,
@@ -20,7 +20,12 @@ let responseFunction = require('./responseFunction.js'),
   help = responseFunction.help,
   topProductPrice = responseFunction.topProductPrice,
   attachmentText = responseFunction.attachmentText,
-  afterAttachmentPrice = responseFunction.afterAttachmentPrice;
+  afterAttachmentPrice = responseFunction.afterAttachmentPrice,
+  contact = responseFunction.contact,
+  feedback = responseFunction.feedback,
+  frequentlyAskQuestion = responseFunction.frequentlyAskQuestion,
+  about = responseFunction.about,
+  howToBuy = responseFunction.howToBuy;
 
 let handleProduct = require('../handleProduct/handleProductIndex.js'),
   processProduct = handleProduct.processProduct;
@@ -362,8 +367,48 @@ let processingQuickReply = ({
         });
 
       });
+    }else
+    if(payloadKey === "helpHowBuy"){
 
-    }else{
+      return howToBuy({
+        senderId : senderId
+      });
+
+    }else
+    if(payloadKey === "helpAbout"){
+
+      return about({
+        senderId: senderId
+      });
+
+    }else
+    if(payloadKey === "helpContact"){
+
+      return contact({
+        senderId: senderId
+      });
+
+    }else
+    if(payloadKey === "helpFaq"){
+
+      return frequentlyAskQuestion({
+        senderId: senderId
+      });
+
+    }else
+    if(payloadKey === "helpFeedback"){
+
+      return feedback({
+        senderId: senderId
+      });
+
+    }else 
+    if(payloadKey === "helpPrevious"){
+      return help({
+        senderId : senderId
+      });
+    }
+    else{
       console.log("*************error with quick reply payload handling*************");
       return help({senderId : senderId});
     }

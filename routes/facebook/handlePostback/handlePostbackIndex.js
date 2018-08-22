@@ -8,8 +8,9 @@ let handlePostback = ({messagingType}) => {
 
   let payload = messagingType.postback.payload,
       title = messagingType.postback.title;
-      
+      console.log("***************************");
       console.log("the payload is", payload);
+      return 0;
 
 }
 
