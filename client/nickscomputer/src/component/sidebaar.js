@@ -16,6 +16,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Usertable from "./Usertable.js";
 import Pagination from './Pagination.js';
 import Product from "./Product.js";
+import Productattribute from './ProductAttribute.js';
+
 
 class Sidebaar extends Component{
     constructor(){
@@ -40,7 +42,9 @@ class Sidebaar extends Component{
 
                             </li>
                             <li>
-                                <a href="#">Overview</a>
+
+                            <li className="nav-item"><Link className="nav-link" to={'/productAttribute'}>Product Attribute</Link></li>
+                           
                             </li>
                             <li>
                                 <a href="#">Events</a>
@@ -75,6 +79,7 @@ class Sidebaar extends Component{
                                                         <Switch>
                                                             <Route exact path='/' component={Usertable}></Route>
                                                             <Route  path='/product' component={Product}></Route>
+                                                            <Route path='/productAttribute' component={Productattribute}></Route>
                                                         </Switch>
                                                 </div>
 

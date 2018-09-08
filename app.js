@@ -36,7 +36,10 @@ let user = require('./routes/dashboard/user.js'),
 
 let product = require('./routes/dashboard/product.js'),
     getProductCount = product.getProductCount,
-    productDetail = product.productDetail;
+    productDetail = product.productDetail,
+    getProductAttributeCount = product.getProductAttributeCount,
+    getProductAttribute = product.getProductAttribute;
+
 
 app.set("view engine", 'ejs');
 app.set("views", './views');
@@ -73,6 +76,9 @@ app.get("/dashboard/facebookUser/Count", getFacebookUserCount);
 
 app.get("/dashboard/productCount", getProductCount);
 app.get("/dashboard/productDetail", productDetail);
+
+app.get("/dashboard/productAttribute", getProductAttribute);
+app.get("/dashboard/productAttributeCount", getProductAttributeCount);
 
 
 let statusForServer = 0;
