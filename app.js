@@ -5,7 +5,8 @@ const Promise = require('bluebird'),
       ejs = require('ejs'),
       bodyParser  = require('body-parser'),
       cookieParser = require('cookie-parser'),
-      session = require('express-session');
+      session = require('express-session'),
+      cors = require('cors');
 
 const request = Promise.promisify(require('request')),
       req = Promise.promisifyAll(request);
@@ -29,10 +30,19 @@ let order = require('./routes/order/orderIndex.js'),
     paymentSuccessRedirect = order.paymentSuccessRedirect,
     buyProductAttache = order.buyProductAttache;
 
+let user = require('./routes/dashboard/user.js'),
+    facebookUser = user.facebookUser,
+    getFacebookUserCount = user.getFacebookUserCount;
+
+let product = require('./routes/dashboard/product.js'),
+    getProductCount = product.getProductCount,
+    productDetail = product.productDetail;
 
 app.set("view engine", 'ejs');
 app.set("views", './views');
 app.use(express.static(__dirname + '/views'));
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({
   limit : '50mb',
@@ -55,6 +65,15 @@ app.post('/paymentSuccess', paymentSuccess);
 app.get('/redirect', paymentSuccessRedirect);
 
 app.get('/order/attach', buyProductAttache);
+
+/* Dashboard endpoint */
+
+app.get("/dashboard/facebookUser", facebookUser);
+app.get("/dashboard/facebookUser/Count", getFacebookUserCount);
+
+app.get("/dashboard/productCount", getProductCount);
+app.get("/dashboard/productDetail", productDetail);
+
 
 let statusForServer = 0;
 

@@ -368,13 +368,6 @@ let processingQuickReply = ({
 
       });
     }else
-    if(payloadKey === "helpHowBuy"){
-
-      return howToBuy({
-        senderId : senderId
-      });
-
-    }else
     if(payloadKey === "helpAbout"){
 
       return about({
