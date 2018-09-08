@@ -45,7 +45,6 @@ let qr_getProduct = ({offset, limit }) => {
 
     let sqlQuery = `SELECT pr_id, product_type, product_id, title, subtitle, image, price, discount, shipping_cost, isAvailable, product_count, status, top_status, created_on, updated_on FROM product ORDER BY pr_id LIMIT ?, ?`;
     let paramr = [offset, limit];
-
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
 
         if (row.length) {
