@@ -38,7 +38,11 @@ let product = require('./routes/dashboard/product.js'),
     getProductCount = product.getProductCount,
     productDetail = product.productDetail,
     getProductAttributeCount = product.getProductAttributeCount,
-    getProductAttribute = product.getProductAttribute;
+    getProductAttribute = product.getProductAttribute,
+    getBrand = product.getBrand,
+    getPhone = product.getPhone,
+    getPrice = product.getPrice,
+    getCategory = product.getCategory;
 
 
 app.set("view engine", 'ejs');
@@ -69,6 +73,8 @@ app.get('/redirect', paymentSuccessRedirect);
 
 app.get('/order/attach', buyProductAttache);
 
+
+
 /* Dashboard endpoint */
 
 app.get("/dashboard/facebookUser", facebookUser);
@@ -79,6 +85,11 @@ app.get("/dashboard/productDetail", productDetail);
 
 app.get("/dashboard/productAttribute", getProductAttribute);
 app.get("/dashboard/productAttributeCount", getProductAttributeCount);
+
+app.get('/dashboard/brand', getBrand);
+app.get('/dashboard/phone', getPhone);
+app.get('/dashboard/price', getPrice);
+app.get('/dashboard/category', getCategory);
 
 
 let statusForServer = 0;

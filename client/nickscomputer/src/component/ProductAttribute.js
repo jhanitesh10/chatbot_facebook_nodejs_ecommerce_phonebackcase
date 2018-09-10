@@ -17,6 +17,7 @@ import {
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Pagination from './Pagination.js';
+import Sortproductattribute from "./sortProductAttribute.js";
 
 class Productattribute extends Component{
 
@@ -26,24 +27,31 @@ class Productattribute extends Component{
             productDetail : [],
             totalDataCount: 0,
             offset : 0,
-            limit : 100
+            limit : 10,
+            brandId: 1,
+            phoneId: 1,
+            priceId: 1,
+            categoryId: 1
         }
     }
 
     componentDidMount(){
         
         let offset = this.state.offset,
-            limit = this.state.limit;
+            limit = this.state.limit,
+            brandId = this.state.brandId,
+            phoneId = this.state.phoneId,
+            priceId = this.state.priceId,
+            categoryId= this.state.categoryId;
 
-        axios.get(`http://localhost:1234/dashboard/productAttributeCount`)
+        axios.get(`http://localhost:1234/dashboard/productAttributeCount?brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
         .then( (userCountResponse) => {
             let productAttributeCount = userCountResponse.data;
 
-            axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}`)
+            axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}&brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
                 .then((response) => {
                     let productDetail = response.data;
                     let totalDataCount = productAttributeCount.length;
-                    
         
                     this.setState({ productDetail: productDetail, totalDataCount: totalDataCount });
                 })
@@ -60,25 +68,53 @@ class Productattribute extends Component{
     }
 
     hanldePagination(key){
-        console.log(key, "@@@@@@@@@@@@@@@@@@@@@@@@@");
+
         let totalDataCount = this.state.totalDataCount;
         let limit = this.state.limit;
         let totalPage = Math.ceil(totalDataCount / limit);
         let offset = (limit)*(key-1);
+        let brandId = this.state.brandId,
+            phoneId = this.state.phoneId,
+            priceId = this.state.priceId,
+            category = this.state.categoryId;
 
-        console.log(totalDataCount, limit, totalPage, offset, "*******************");
-        axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}`)
+        axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}&brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${category}`)
           .then(response => {
               let productDetail = response.data;
-              console.log(productDetail, "*********************");
-            this.setState({ productDetail: productDetail });
+              this.setState({ productDetail: productDetail });
           })
           .catch(e => {
             console.log("error while sending data to node platform", e);
           });
 
 
-        // alert(key);
+    }
+
+    handleProductAttributeCount( brandId, phoneId, priceId, categoryId){
+        console.log(brandId, phoneId, priceId, categoryId);
+        let offset = this.state.offset,
+            limit = this.state.limit;
+        this.setState({ brandId: brandId, phoneId : phoneId, priceId : priceId, categoryId: categoryId});
+
+        axios.get(`http://localhost:1234/dashboard/productAttributeCount?brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
+            .then((userCountResponse) => {
+                let productAttributeCount = userCountResponse.data;
+
+                axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}&brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
+                    .then((response) => {
+                        let productDetail = response.data;
+                        let totalDataCount = productAttributeCount.length;
+                        console.log(productDetail, totalDataCount, "***************");
+                        this.setState({ productDetail: productDetail, totalDataCount: totalDataCount });
+                    })
+                    .catch((e) => {
+                        console.log("error while sending data to node platform", e);
+                    });
+
+            })
+            .catch((e) => {
+                console.log("error while getting user count", e);
+            });
     }
 
     render(){
@@ -90,9 +126,11 @@ class Productattribute extends Component{
             <div>
             <div className="card-header">
                 <i className="fas fa-table"></i>
-                Data Table Example
+                    Total product count: {this.state.totalDataCount}
             </div>
             <div className="card-body">
+                <Sortproductattribute handleProductAttributeCount={this.handleProductAttributeCount.bind(this)} />
+
                 <div className="table-responsive">
 
                     <table className="table table-bordered" id="dataTable" width="100%" cellspacing="0">
