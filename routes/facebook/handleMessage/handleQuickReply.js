@@ -141,7 +141,7 @@ let processingQuickReply = ({
 
         if (index < brandRow.length) {
           brandPayloadKey.push(value.payload);
-          payloadKeyValue.set(value.payload, value.br_id);
+          payloadKeyValue.set(value.payload, value.id);
 
         }
 
@@ -170,7 +170,7 @@ let processingQuickReply = ({
 
               if (index < phoneRow.length - 2) {
                 phonePayloadKey.push(value.payload);
-                payloadKeyValue.set(value.payload, value.pn_id);
+                payloadKeyValue.set(value.payload, value.id);
               }
 
               if (index === phoneRow.length - 2) {
@@ -212,7 +212,7 @@ let processingQuickReply = ({
 
             if (index < priceRow.length - 2) {
               pricePayloadKey.push(value.payload);
-              payloadKeyValue.set(value.payload, value.pr_id);
+              payloadKeyValue.set(value.payload, value.id);
             }
 
             if (index === priceRow.length - 2) {
@@ -247,7 +247,7 @@ let processingQuickReply = ({
 
             if (index < categoryPrice.length - 2) {
               categoryPayloadKey.push(value.payload);
-              payloadKeyValue.set(value.payload, value.ct_id);
+              payloadKeyValue.set(value.payload, value.id);
             }
 
             if (index === categoryPrice.length - 2) {
@@ -275,7 +275,7 @@ let processingQuickReply = ({
     if (checkPayload.get('categoryMap')  && checkPayload.get('categoryMap').includes(payloadKey)) {
       productDetail.get(senderId)[3] = payloadKeyValue.get(payloadKey);
 
-      return processProduct({ senderId: senderId, productArray: productDetail .get(senderId), topStatus: 0});
+      return processProduct({ senderId: senderId, productArray: productDetail .get(senderId), basicStatus: 1, trendingStatus: 0});
     }else
     if (payloadKey==="mainMenu") {
 
@@ -326,7 +326,8 @@ let processingQuickReply = ({
       return processProduct({
         senderId: senderId,
         productArray: productDetail.get(senderId),
-        topStatus: 1
+        trendingStatus: 1,
+        basicStatus: 0
       });
 
     }else
@@ -352,11 +353,11 @@ let processingQuickReply = ({
     if (payloadKey === "morePrice-1" || payloadKey === "morePrice-2" || payloadKey === "morePrice-3") {
       return qr_topProductPrice({status:1}).then( (productPriceKey) => {
 
-        return Promise.each(productPriceKey, (productKey) => {
+        return Promise.each(productPriceKey, (priceId) => {
 
-          if (productKey.payload == payloadKey) {
+          if (priceId.payload == payloadKey) {
             
-            attachmentProductStatus.get("attachProduct")[2] = productKey.tpr_id;
+            attachmentProductStatus.get("attachProduct")[2] = priceId.id;
   
           }else{
             console.log("error in the attache product price!!!!!!");

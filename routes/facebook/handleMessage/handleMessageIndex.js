@@ -133,6 +133,8 @@ let handleMessage = ({messagingType}) => {
           }else
           if(messageText){
             return processingTextMessage({senderId : senderId, messageText : messageText});
+          }else{
+            console.log("Type of message is unknown");
           }
 
 

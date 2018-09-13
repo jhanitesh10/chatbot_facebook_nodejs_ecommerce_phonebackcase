@@ -42,7 +42,9 @@ let product = require('./routes/dashboard/product.js'),
     getBrand = product.getBrand,
     getPhone = product.getPhone,
     getPrice = product.getPrice,
-    getCategory = product.getCategory;
+    getCategory = product.getCategory,
+    addProduct = product.addProduct,
+    editProduct = product.editProduct;
 
 
 app.set("view engine", 'ejs');
@@ -75,6 +77,9 @@ app.get('/order/attach', buyProductAttache);
 
 
 
+
+
+
 /* Dashboard endpoint */
 
 app.get("/dashboard/facebookUser", facebookUser);
@@ -91,7 +96,9 @@ app.get('/dashboard/phone', getPhone);
 app.get('/dashboard/price', getPrice);
 app.get('/dashboard/category', getCategory);
 
+app.post('/dashboard/product/add', addProduct);
 
+app.get('/dashboard/product/edit', editProduct);
 let statusForServer = 0;
 
 if (statusForServer) {

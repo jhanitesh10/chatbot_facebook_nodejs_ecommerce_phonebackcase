@@ -116,7 +116,7 @@ class Sortproductattribute extends Component {
                         )}
                     </select>
 
-                    <select  onChange={(e) => { this.handlePhone(e)}} class="custom-select" id="inputGroupSelect01">
+                    <select  onChange={(e) => { this.handlePhone(e)}} class="custom-select" id="inputGroupSelect02">
                         {
                             phone.map((data, index, arr) =>
                                 <option  value={data.pn_id}>{data.title}</option>
@@ -124,7 +124,7 @@ class Sortproductattribute extends Component {
                             )}
                     </select>
 
-                    <select onChange={(e) => { this.handlePrice(e)}} class="custom-select" id="inputGroupSelect01">
+                    <select onChange={(e) => { this.handlePrice(e)}} class="custom-select" id="inputGroupSelect03">
                         {
                             price.map((data, index, arr) =>
                                 <option value={data.pr_id}>{data.title}</option>
@@ -132,7 +132,7 @@ class Sortproductattribute extends Component {
                             )}
                     </select>
 
-                    <select onChange={(e) => { this.handleCategory(e)}}class="custom-select" id="inputGroupSelect01">
+                    <select onChange={(e) => { this.handleCategory(e)}}class="custom-select" id="inputGroupSelect04">
                         {
                             category.map((data, index, arr) =>
                                 

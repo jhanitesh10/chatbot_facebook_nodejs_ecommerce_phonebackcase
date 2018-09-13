@@ -18,6 +18,8 @@ import {
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Pagination from './Pagination.js';
 import Sortproductattribute from "./sortProductAttribute.js";
+import Addproduct from './productAttribute/addProduct.js';
+import Editproductattribute from './productAttribute/editProductAttribute.js';
 
 class Productattribute extends Component{
 
@@ -31,7 +33,8 @@ class Productattribute extends Component{
             brandId: 1,
             phoneId: 1,
             priceId: 1,
-            categoryId: 1
+            categoryId: 1,
+            data : {}
         }
     }
 
@@ -117,20 +120,34 @@ class Productattribute extends Component{
             });
     }
 
+    handleModal(e, data){
+        e.preventDefault();
+        console.log(data);
+        this.setState({data: data});
+    }
+
     render(){
         let productDetail = this.state.productDetail;
         let currentDateTime = Moment().unix();
-
+        let productAttributeDetail = this.state;
         let paginationDetail = this.state.paginationDetail;
+        let data = this.state.data;
         return (
+            <Router>
             <div>
             <div className="card-header">
                 <i className="fas fa-table"></i>
+                    
                     Total product count: {this.state.totalDataCount}
+                    <div className="float-right">
+                            <Addproduct />
+                            <Editproductattribute data={data} />
+                            
+                    </div>                    
             </div>
             <div className="card-body">
                 <Sortproductattribute handleProductAttributeCount={this.handleProductAttributeCount.bind(this)} />
-
+                
                 <div className="table-responsive">
 
                     <table className="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -198,19 +215,26 @@ class Productattribute extends Component{
                                     <td>{(data.status)?"Yes":"No"}</td>
                                     <td>{(data.top_status)?"Yes":"No"}</td>
                                     <td>{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))}Days Ago</td>
+                                    <td>
+                                        <button onClick={(e) => {this.handleModal(e, data)}} type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong1">
+                                            Edit product
+                                     </button>
+
+                                    </td>
                                 </tr>
 
                             </tbody>
 
                         )}
                     </table>
-
+                            
                 </div>
             </div>
             <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)} />
             <div className="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 
             </div>
+            </Router>
             
                  
     

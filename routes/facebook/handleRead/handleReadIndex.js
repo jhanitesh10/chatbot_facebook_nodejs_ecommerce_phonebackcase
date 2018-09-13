@@ -9,7 +9,7 @@ let handleRead = ({messagingType}) => {
   let watermark = messageRead.watermark,
       seq = messageRead.seq;
 
-      console.log(`The recipient with ID ${recipientId} read the message @ ${timeOfMessage}!!!`);
+      console.log(`The recipient with recipient_ID ${recipientId} read the message @ ${timeOfMessage}!!!`);
 }
 
 module.exports = {

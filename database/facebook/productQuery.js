@@ -4,28 +4,29 @@ const configuration = require('../../database/configuration'),
 
 
 
-let qr_getProduct = ({productArray, topStatus}) => {
+let qr_getProduct = ({productArray, trendingStatus, basicStatus}) => {
   let [brandId, phoneId, priceId, categoryId] = productArray;
 
   let sqlQuery = `SELECT 
-p.pr_id, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.isAvailable, p.product_count, p.status, p.top_status,
+p.id, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.available, p.product_count, p.basic_status, p.trending_status,
 br.title as brandTitle, br.payload as brandPayload, 
 pn.title as phoneTitle, pn.payload as phonePayload,
 pr.title as priceTitle, pr.payload as pricePayload
 FROM
 product p 
 INNER JOIN
-product_attribute  pa on p.pr_id = pa.product_fk 
+product_attribute  pa on p.id = pa.product_id 
 INNER JOIN 
-brand br on br.br_id = pa.brand_fk 
+brand br on br.id = pa.brand_id 
 INNER JOIN 
-phone pn ON pn.pn_id = pa.phone_fk 
+phone pn ON pn.id = pa.phone_id 
 INNER JOIN 
-price pr ON pr.pr_id = pa.price_fk
+price pr ON pr.id = pa.price_id
 WHERE
-pa.brand_fk = ? AND pa.phone_fk = ? AND pa.price_fk = ? AND pa.category_fk = ? AND p.top_status = ? AND p.isAvailable = 1 ORDER BY RAND() LIMIT 2 `;
-  let paramr = [brandId, phoneId, priceId, categoryId, topStatus];
-  // console.log(sqlQuery, paramr);
+pa.brand_id = ? AND pa.phone_id = ? AND pa.price_id = ? AND pa.category_id = ?  AND p.available = 1 AND p.active_status = 1 AND p.basic_status =?  AND p.trending_status =?`;
+
+  let paramr = [brandId, phoneId, priceId, categoryId, basicStatus, trendingStatus];
+
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
 
     if(row.length){

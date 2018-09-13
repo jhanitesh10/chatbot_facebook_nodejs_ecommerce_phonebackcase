@@ -6,12 +6,13 @@ let product = require('./productResponse.js'),
     afterProductListing = product.afterProductListing,
     afterProductListingTop = product.afterProductListingTop;
 
-let processProduct = ({senderId, productArray, topStatus}) => {
+let processProduct = ({senderId, productArray, trendingStatus, basicStatus}) => {
 let [ brandId, phoneId, priceId, categoryId] = productArray;
 
   return qr_getProduct({
       productArray: productArray,
-      topStatus: topStatus
+      basicStatus: basicStatus,
+      trendingStatus: trendingStatus
     }).then((productRow) => {
 
       
@@ -25,7 +26,7 @@ let [ brandId, phoneId, priceId, categoryId] = productArray;
 
   }).then(() => {
 
-    if (topStatus) {
+    if (trendingStatus) {
 
       return afterProductListingTop({
         senderId: senderId

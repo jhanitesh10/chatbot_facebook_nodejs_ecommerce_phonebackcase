@@ -49,7 +49,7 @@ let processingTextMessage = ({senderId, messageText}) => {
         return arq_sendMessage( {senderId : senderId, response : response});
   }
   else if (string.match(/(how are you?)/i)) {
-          message1 = "I'm handsome😇, What about YOu?😃 Iam here to halp you with customized case. Say, buy  :)";
+          message1 = "I'm handsome😇, How about YOu?😃 Iam here to help you with customized case. Say, buy  :)";
           response = {
               text : message1
           }
@@ -91,7 +91,7 @@ let processingTextMessage = ({senderId, messageText}) => {
           return arq_sendMessage( {senderId : senderId, response : response});
   }
   else if (string.match(/(Who am i)/i)) {
-          message1 = "Your name is " + name + " :)";
+          message1 = "Your name is " + "name" + " :)";
           reponse = {
             text : message1
           }

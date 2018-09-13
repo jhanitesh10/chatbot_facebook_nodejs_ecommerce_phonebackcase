@@ -43,7 +43,7 @@ let qr_getFacebookUserCount = ({}) => {
 
 let qr_getProduct = ({offset, limit }) => {
 
-    let sqlQuery = `SELECT pr_id, product_type, product_id, title, subtitle, image, price, discount, shipping_cost, isAvailable, product_count, status, top_status, created_on, updated_on FROM product ORDER BY pr_id LIMIT ?, ?`;
+    let sqlQuery = `SELECT pr_id, product_type, title, subtitle, image, price, discount, shipping_cost, isAvailable, product_count, status, top_status, created_on, updated_on FROM product ORDER BY pr_id LIMIT ?, ?`;
     let paramr = [offset, limit];
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
 
@@ -79,7 +79,7 @@ let qr_getProductCount = ({}) => {
 
 let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, categoryId}) => {
     let sqlQuery = `SELECT pa_id,
-        br.br_id, br.title as brandTitle, pn.pn_id, pn.title as phoneTitle, pr.pr_id, pr.title as priceTitle, ct.ct_id, ct.title as categoryTitle, p.pr_id, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.isAvailable,  p.product_count, p.status, p.top_status, p.created_on, p.updated_on 
+        br.br_id, br.title as brandTitle, pn.pn_id, pn.title as phoneTitle, pr.pr_id, pr.title as priceTitle, ct.ct_id, ct.title as categoryTitle, p.pr_id as priceId,p.pr_id as productId, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.isAvailable,  p.product_count, p.status, p.top_status, p.created_on, p.updated_on 
         FROM product_attribute pa 
         INNER JOIN 
         brand br 
@@ -224,6 +224,89 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
         });
     }
 
+    let qr_insertProduct = ({productDetailObj}) => {
+        let sqlQuery = `INSERT INTO product 
+        (product_type, title, subtitle, image, price, discount, shipping_cost, isAvailable, product_count, status, top_status, created_on, updated_on) 
+        VALUES
+        (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        let paramr = [
+            productDetailObj.productType,
+            productDetailObj.title,
+            productDetailObj.subTitle,
+            productDetailObj.image,
+            productDetailObj.priceValue,
+            productDetailObj.discount,
+            productDetailObj.shippingCost,
+            productDetailObj.available,
+            productDetailObj.stock,
+            productDetailObj.status,
+            productDetailObj.trendingOrBasic,
+            productDetailObj.createdOn,
+            productDetailObj.updatedOn
+        ];
+
+        return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+          .then((row) => {
+
+            if (row.insertId) {
+               return row;
+            } else {
+              return 0;
+            }
+
+          })
+          .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+          });
+
+    }
+
+    let qr_insertProductAttribute = ({productAttributeObj}) => {
+
+        let sqlQuery = `INSERT INTO product_attribute 
+        (brand_fk, phone_fk, price_fk, category_fk, product_fk, status, created_on, updated_on) 
+        VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)`;
+        let paramr = [
+            productAttributeObj.brandId,
+            productAttributeObj.phoneId,
+            productAttributeObj.priceId,
+            productAttributeObj.categoryId,
+            productAttributeObj.productId,
+            productAttributeObj.status,
+            productAttributeObj.createOn,
+            productAttributeObj.updatedOn
+        ];
+
+        return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+            .then((row) => {
+                if (row.insertId) {
+                    return row;
+                } else {
+                    return 0;
+                }
+            })
+            .catch(err => {
+                console.log("error, while making query for qr_getWhome query function!!!", err);
+            });
+    }
+    let qr_editProductData = ({productId, productAttributeId}) => {
+
+        let sqlQuery = `SELECT * FROM product p INNER JOIN product_attribute pa ON p.pr_id = pa.product_fk WHERE p.pr_id=? AND pa.product_fk = ?  LIMIT 0, 1`;
+        let paramr = [productId, productAttributeId];
+
+        return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+            .then((row) => {
+                if (row.insertId) {
+                    return row;
+                } else {
+                    return 0;
+                }
+            })
+            .catch(err => {
+                console.log("error, while making query for qr_getWhome query function!!!", err);
+            });
+    }
 
 module.exports = {
   qr_getFacebookUser: qr_getFacebookUser,
@@ -235,5 +318,8 @@ module.exports = {
   qr_getBrand : qr_getBrand,
   qr_getPhone : qr_getPhone,
   qr_getPrice : qr_getPrice,
-  qr_getCategory : qr_getCategory
+  qr_getCategory : qr_getCategory,
+  qr_insertProduct :  qr_insertProduct,
+  qr_insertProductAttribute : qr_insertProductAttribute,
+  qr_editProductData :qr_editProductData
 };

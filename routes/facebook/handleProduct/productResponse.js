@@ -21,7 +21,7 @@ let productListing = ({
   let [d1, d2, d3, d4] = productArray;
 
   return Promise.each(productRow, (productData) => {
-
+    
     productListingArray.push({
       "title":`${productData.title}`,
       "image_url":`${productData.image}`,
@@ -29,7 +29,7 @@ let productListing = ({
       "buttons": [
         {
           "type": "web_url",
-          "url": `https://726d73ee.ngrok.io/order?userId=${senderId}&productId=${productData.pr_id}&d1=${d1}&d2=${d2}&d3=${d3}&d4=${d4}`,
+          "url": `https://90957e92.ngrok.io/order?userId=${senderId}&productId=${productData.pr_id}&d1=${d1}&d2=${d2}&d3=${d3}&d4=${d4}`,
           "title": "BUY"
           // ,
           // "webview_height_ratio": "full",
@@ -123,7 +123,7 @@ let orderReceipt = ({
         "order_number": `${orderDetailObj.order_id}`,
         "currency": `${paymentDetailObj.currency}`,
         "payment_method": "Online",
-        "order_url": "https://afae4033.ngrok.io/",
+        "order_url": "https://90957e92.ngrok.io/",
         "timestamp": `${paymentDetailObj.createdAt}`,
         "address": {
           "street_1": `${orderDetailObj.address}`,

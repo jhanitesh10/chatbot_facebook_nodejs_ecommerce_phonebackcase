@@ -12,14 +12,18 @@ let handleDelivery = ({messagingType}) => {
       seq = deliveryMessage.seq;
 
   if(messageId){
+
     return Promise.each(messageId, (id) => {
-      console.log(`Delivery for the messageId ${id}, delivered to user ${senderId} time of message ${timeOfMessage}`);
+      console.log(`Delivery for the messageId ${id}, delivered to user ${senderId} time of the message ${timeOfMessage}`);
     }).catch((error) => {
       console.log("Error, error while handling messageId @ handleDeliveryIndex.js", error);
     });
+
   }
   else{
+
     console.log("error, not found message id @ handleDeliveryIndex.js inside handleDelivery folder");
+
   }
 
 }

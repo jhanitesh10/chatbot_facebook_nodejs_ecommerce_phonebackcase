@@ -16,9 +16,9 @@ let arq_paymentRequest = ({orderDetail}) => {
         amount: `${orderDetail.amount}`,
         phone: `${orderDetail.phone}`,
         buyer_name: `${orderDetail.name}`,
-        redirect_url: 'https://726d73ee.ngrok.io/redirect',
+        redirect_url: 'https://90957e92.ngrok.io/redirect',
         send_email: true,
-        webhook: 'https://726d73ee.ngrok.io/paymentSuccess',
+        webhook: 'https://90957e92.ngrok.io/paymentSuccess',
         send_sms: true,
         email: `${orderDetail.email}`,
         allow_repeated_payments: false
