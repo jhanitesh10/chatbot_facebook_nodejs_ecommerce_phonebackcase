@@ -124,8 +124,9 @@ let arq_getUserDetail = ({senderId}) => {
     "method": "GET"
   }
   return rq(option).then( (response) => {
-    var userDetail = JSON.parse((response.body));
-    return userDetail;
+    var userDetail = JSON.parse(JSON.stringify(response));
+    // console.log(userDetail);
+    return { statusCode: userDetail.statusCode, body: userDetail.body };
 
   }).catch( (err) => {
     return { statusCode: err.statusCode, body: err.body, headers: err.headers };

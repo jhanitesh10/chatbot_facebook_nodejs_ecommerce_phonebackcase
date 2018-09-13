@@ -252,6 +252,7 @@ let qr_UpdateFacebookUser = ({
     gender = ?,
     locale = ?,
     timezone = ?,
+    profile_picture = ?,
     photos = ?,
     picture = ?,
     updated_on = ? 
@@ -265,6 +266,7 @@ let qr_UpdateFacebookUser = ({
     userDetailObj.gender,
     userDetailObj.locale,
     userDetailObj.timezone,
+    userDetailObj.profilePic,
     userDetailObj.photos,
     userDetailObj.picture,
     userDetailObj.updatedOn,

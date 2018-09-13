@@ -54,10 +54,13 @@ let handleMessage = ({messagingType}) => {
 
       if(userData === 0){
 
-        return arq_getUserDetail({senderId : senderId}).then( (userDetail) => {
-
+        return arq_getUserDetail({senderId : senderId}).then( (userDetailData) => {
+          let userDetail = JSON.parse(userDetailData.body);
+          let statusCode = userDetailData.statusCode;
+ 
+          
           let userDetailObj = {
-                profilePic  : userDetail.profile_pic,
+                profilePic  : (userDetail.profile_pic),
                 facebookId : userDetail.id,
                 name  : userDetail.name,
                 firstName  : userDetail.first_name,
@@ -86,10 +89,12 @@ let handleMessage = ({messagingType}) => {
 
         return arq_getUserDetail({
           senderId: senderId
-        }).then((userDetail) => {
-
+        }).then((userDetailData) => {
+          let userDetail = JSON.parse(userDetailData.body);
+          let statusCode = userDetailData.statusCode;
+          
           let userDetailObj = {
-            profilePic: userDetail.profile_pic,
+            profilePic: (userDetail.profile_pic),
             facebookId: userDetail.id,
             name: userDetail.name,
             firstName: userDetail.first_name,
@@ -102,6 +107,7 @@ let handleMessage = ({messagingType}) => {
             createdOn: currentDateTimeUnix(),
             updatedOn: currentDateTimeUnix()
           }
+          console.log(userDetailObj);
 
           return qr_UpdateFacebookUser({
             userDetailObj: userDetailObj
