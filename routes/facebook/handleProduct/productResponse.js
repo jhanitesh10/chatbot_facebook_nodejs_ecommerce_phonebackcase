@@ -29,7 +29,7 @@ let productListing = ({
       "buttons": [
         {
           "type": "web_url",
-          "url": `https://90957e92.ngrok.io/order?userId=${senderId}&productId=${productData.pr_id}&d1=${d1}&d2=${d2}&d3=${d3}&d4=${d4}`,
+          "url": `https://b92c5ca3.ngrok.io/order/${senderId}/${productData.id}?d1=${d1}&d2=${d2}&d3=${d3}&d4=${d4}`,
           "title": "BUY"
           // ,
           // "webview_height_ratio": "full",
@@ -110,20 +110,19 @@ let orderReceipt = ({
     paymentDetailObj,
     discount
   }) => {
-  // console.log(orderDetailObj);
-  // console.log(paymentDetailObj);
-  let senderId = orderDetailObj.fk_user_id;
 
-  response = {
+    let senderId = orderDetailObj.facebook_user_id;
+
+  let receiptTemplate = {
     "attachment": {
       "type": "template",
       "payload": {
         "template_type": "receipt",
         "recipient_name": `${paymentDetailObj.buyerName}`,
-        "order_number": `${orderDetailObj.order_id}`,
+        "order_number": `${orderDetailObj.id}`,
         "currency": `${paymentDetailObj.currency}`,
         "payment_method": "Online",
-        "order_url": "https://90957e92.ngrok.io/",
+        "order_url": "https://b92c5ca3.ngrok.io",
         "timestamp": `${paymentDetailObj.createdAt}`,
         "address": {
           "street_1": `${orderDetailObj.address}`,
@@ -156,9 +155,11 @@ let orderReceipt = ({
     }
 
   }
+
   let text1 = {
     "text" : `Thanks 🙂, ${paymentDetailObj.buyerName} for buying with us. Hope you enjoyed the process with me⚡`
   }
+
   let text2 = {
     "text": `Want help? just say help i will solve your problem.`,
     "quick_replies": [{
@@ -171,9 +172,9 @@ let orderReceipt = ({
       "title": "MainMenu",
       "payload": "mainMenu"
     }]
-  };
+  }
 
-  let arr = [response, text1, text2];
+  let arr = [receiptTemplate, text1, text2];
   Promise.each(arr, (arrData) => {
     
     return arq_sendMessage({
@@ -186,6 +187,7 @@ let orderReceipt = ({
   });
 
 }
+
 
 module.exports = {
   productListing : productListing,

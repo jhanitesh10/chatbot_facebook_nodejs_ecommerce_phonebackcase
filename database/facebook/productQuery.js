@@ -4,7 +4,7 @@ const configuration = require('../../database/configuration'),
 
 
 
-let qr_getProduct = ({productArray, trendingStatus, basicStatus}) => {
+let qr_getProduct = ({productArray, trendingStatus}) => {
   let [brandId, phoneId, priceId, categoryId] = productArray;
 
   let sqlQuery = `SELECT 
@@ -23,9 +23,9 @@ phone pn ON pn.id = pa.phone_id
 INNER JOIN 
 price pr ON pr.id = pa.price_id
 WHERE
-pa.brand_id = ? AND pa.phone_id = ? AND pa.price_id = ? AND pa.category_id = ?  AND p.available = 1 AND p.active_status = 1 AND p.basic_status =?  AND p.trending_status =?`;
+pa.brand_id = ? AND pa.phone_id = ? AND pa.price_id = ? AND pa.category_id = ?  AND p.available = 1 AND p.active_status = 1  AND p.trending_status =? ORDER BY RAND() LIMIT 2`;
 
-  let paramr = [brandId, phoneId, priceId, categoryId, basicStatus, trendingStatus];
+  let paramr = [brandId, phoneId, priceId, categoryId, trendingStatus];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
 
@@ -47,7 +47,7 @@ let qr_getProductDetailOnForm = ({
   let [brandId, phoneId, priceId, categoryId] = productArray;
 
   let sqlQuery = `SELECT 
-p.pr_id, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.isAvailable, p.product_count, p.status, p.top_status,
+p.id, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.available, p.product_count, p.active_status, p.trending_status,
 br.title as brandTitle, br.payload as brandPayload, 
 pn.title as phoneTitle, pn.payload as phonePayload,
 pr.title as priceTitle, pr.payload as pricePayload,
@@ -55,17 +55,17 @@ ct.title as categoryTitle, ct.payload as categoryPayload
 FROM
 product p 
 INNER JOIN
-product_attribute  pa on p.pr_id = pa.product_fk 
+product_attribute  pa on p.id = pa.product_id 
 INNER JOIN 
-brand br on br.br_id = pa.brand_fk 
+brand br on br.id = pa.brand_id 
 INNER JOIN 
-phone pn ON pn.pn_id = pa.phone_fk 
+phone pn ON pn.id = pa.phone_id 
 INNER JOIN 
-price pr ON pr.pr_id = pa.price_fk
+price pr ON pr.id = pa.price_id
 INNER JOIN 
-category ct ON ct.ct_id = pa.category_fk
+category ct ON ct.id = pa.category_id
 WHERE
-pa.brand_fk = ? AND pa.phone_fk = ? AND pa.price_fk = ? AND pa.category_fk = ? AND p.pr_id = ? AND p.isAvailable = 1`;
+pa.brand_id = ? AND pa.phone_id = ? AND pa.price_id = ? AND pa.category_id = ? AND p.id = ? AND p.available = 1 AND p.active_status=1 LIMIT 1`;
   let paramr = [brandId, phoneId, priceId, categoryId, productId];
   console.log(sqlQuery, paramr);
   return getQuery({
@@ -87,7 +87,7 @@ pa.brand_fk = ? AND pa.phone_fk = ? AND pa.price_fk = ? AND pa.category_fk = ? A
 
 let qr_insertUserAddress = ({address, state, city, zip}) => {
   
-  let sqlQuery = `INSERT INTO user_address (address, state, city, zip) VALUES (?, ?, ?, ?)`;
+  let sqlQuery = `INSERT INTO address (address, state, city, zip) VALUES (?, ?, ?, ?)`;
   let paramr = [address, state, city, zip];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
@@ -107,9 +107,9 @@ let qr_insertUserAddress = ({address, state, city, zip}) => {
 let qr_insertOrderDetail = ({ orderDetailObj, addressId, paymentRequestId, paymentCreatedAt, paymentModifiedAt }) => {
   
   let sqlQuery = `INSERT INTO user_order (
-        fk_user_id,
-        fk_product_id,
-        fk_add_id,
+        facebook_user_id,
+        product_id,
+        address_id,
         payment_request_id,
         payment_created_at,
         payment_modified_at,
@@ -127,8 +127,8 @@ let qr_insertOrderDetail = ({ orderDetailObj, addressId, paymentRequestId, payme
         description,
         payment_status,
         delivery_status,
-        createdat,
-        updatedat
+        created_on,
+        updated_on
       )
        VALUES 
       ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -252,7 +252,7 @@ let qr_updatePaymentStatus = ({ paymentRequestId, status }) => {
 let qr_orderReceipt = ({
   paymentRequestId
 }) => {
-  let sqlQuery = `SELECT * FROM user_order uo INNER JOIN user_address ua ON uo.fk_add_id = ua.ad_id  WHERE uo.payment_request_id = ?`;
+  let sqlQuery = `SELECT * FROM user_order uo INNER JOIN address ua ON uo.address_id = ua.id  WHERE uo.payment_request_id = ?`;
   let paramr = [paymentRequestId];
 
   return getQuery({
@@ -275,7 +275,7 @@ let qr_orderReceipt = ({
 let qr_productPriceDiscount = ({
   productId
 }) => {
-  let sqlQuery = `SELECT price, discount, shipping_cost FROM product WHERE pr_id = ?`;
+  let sqlQuery = `SELECT price, discount, shipping_cost FROM product WHERE id = ?`;
   let paramr = [productId];
   console.log(sqlQuery, paramr);
   return getQuery({
@@ -299,7 +299,7 @@ let qr_productPriceDiscount = ({
 
 let qr_attachProductDetail = ({ attachedProductDetail }) => {
   
-  let sqlQuery = `INSERT INTO attached_product_detail(facebookid,product_id, brand, phone, price, image, status, created_on, updated_on)
+  let sqlQuery = `INSERT INTO attached_product_detail(facebookid, product_id, brand_id, phone_id, attached_product_pirce_id, image, active_status, created_on, updated_on)
                     VALUES
                   (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -334,28 +334,26 @@ let qr_attachProductDetail = ({ attachedProductDetail }) => {
 
 
 let qr_selectAttacheProduct = ({
-  brandId, phoneId, priceId, id
+  brandId, phoneId, priceId, attachedProductId
 }) => {
   let sqlQuery = `SELECT 
-ap.ap_id, ap.brand_fk, ap.phone_fk, ap.price_fk,ap.price, ap.shipping_cost, ap.discount, ap.status, ap.status,
+apa.id, apa.brand_id, apa.phone_id, apa.price_id, apa.price, apa.shipping_cost, apa.discount, apa.active_status,
 apd.facebookid, apd.product_id, apd.image,
 br.title as brandTitle, br.payload as brandPayload, 
-pn.title as phoneTitle, pn.payload as phonePayload,
-pr.title as priceTitle, pr.payload as pricePayload
+pn.title as phoneTitle, pn.payload as phonePayload
 FROM
-attach_product_price ap 
+attach_product_attribute apa 
 INNER JOIN
-brand br on br.br_id = ap.brand_fk 
+brand br on br.id = apa.brand_id 
 INNER JOIN 
-phone pn ON pn.pn_id = ap.phone_fk 
+phone pn ON pn.id = apa.phone_id 
 INNER JOIN 
-topproduct_price pr ON pr.tpr_id = ap.price_fk
-INNER JOIN 
-attached_product_detail apd ON apd.price = ap.price_fk
+attached_product_detail apd ON apd.attached_product_pirce_id = apa.price_id
 WHERE
-ap.brand_fk = ? AND ap.phone_fk = ? AND ap.price_fk = ? AND apd.apd_id = ?`;
-  let paramr = [brandId, phoneId, priceId, id];
-  console.log(sqlQuery, paramr);
+apa.active_status=1 AND apa.brand_id = ? AND apa.phone_id = ? AND apa.price_id = ? AND apd.id = ?`;
+
+  let paramr = [brandId, phoneId, priceId, attachedProductId];
+
   return getQuery({
     sqlQuery: sqlQuery,
     paramr: paramr
@@ -382,23 +380,23 @@ productArray
   let [brandId, phoneId, priceId] = productArray;
 
   let sqlQuery = `SELECT 
-ap.ap_id, ap.brand_fk, ap.phone_fk, ap.price_fk,ap.price, ap.shipping_cost, ap.discount, ap.status, ap.status,
+apa.id, apa.brand_id, apa.phone_id, apa.price_id, apa.price, apa.shipping_cost, apa.discount, apa.active_status,
 apd.facebookid, apd.product_id, apd.image,
 br.title as brandTitle, br.payload as brandPayload, 
 pn.title as phoneTitle, pn.payload as phonePayload,
-pr.title as priceTitle, pr.payload as pricePayload
+app.title as priceTitle, app.payload as pricePayload
 FROM
-attach_product_price ap 
+attach_product_attribute apa 
 INNER JOIN
-brand br on br.br_id = ap.brand_fk 
+brand br on br.id = apa.brand_id 
 INNER JOIN 
-phone pn ON pn.pn_id = ap.phone_fk 
+phone pn ON pn.id = apa.phone_id 
 INNER JOIN 
-topproduct_price pr ON pr.tpr_id = ap.price_fk
+attached_product_price app  ON app.id = apa.price_id
 INNER JOIN 
-attached_product_detail apd ON apd.price = ap.price_fk
+attached_product_detail apd ON apd.attached_product_pirce_id = apa.price_id
 WHERE
-ap.brand_fk = ? AND ap.phone_fk = ? AND ap.price_fk = ? AND apd.product_id = ? AND apd.facebookid = ?;`;
+apa.brand_id = ? AND apa.phone_id = ? AND apa.price_id = ? AND apd.product_id = ? AND apd.facebookid = ?`;
   let paramr = [brandId, phoneId, priceId, productId, userId];
 
   console.log(sqlQuery, paramr);
@@ -424,12 +422,12 @@ let qr_productPriceDiscountAttach = ({
   productId, facebookId
 }) => {
   let sqlQuery = `SELECT 
-ap.ap_id,ap.price, ap.shipping_cost, ap.discount,
+apa.id,apa.price, apa.shipping_cost, apa.discount,
 apd.image
 FROM
-attach_product_price ap 
+attach_product_attribute apa
 INNER JOIN 
-attached_product_detail apd ON apd.price = ap.price_fk
+attached_product_detail apd ON apd.attached_product_pirce_id = apa.price_id
 WHERE
 apd.facebookid = ? AND apd.product_id = ?`;
   let paramr = [productId, facebookId];

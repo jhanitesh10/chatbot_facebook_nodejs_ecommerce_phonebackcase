@@ -55,30 +55,36 @@ let handleMessage = ({messagingType}) => {
       if(userData === 0){
 
         return arq_getUserDetail({senderId : senderId}).then( (userDetailData) => {
-          let userDetail = JSON.parse(userDetailData.body);
+          let userDetail = (userDetailData.body);
           let statusCode = userDetailData.statusCode;
  
-          
-          let userDetailObj = {
-                profilePic  : (userDetail.profile_pic),
-                facebookId : userDetail.id,
-                name  : userDetail.name,
-                firstName  : userDetail.first_name,
-                lastName  : userDetail.last_name,
-                gender  : userDetail.gender,
-                locale  : userDetail.locale,
-                timezone  : userDetail.timezone,
-                photos  : jsonString(userDetail.photos),
-                picture  : jsonString(userDetail.picture),
-                createdOn : currentDateTimeUnix(),
-                updatedOn : currentDateTimeUnix()
-          }
+          if(statusCode === 200){
+            let userDetail = JSON.parse(userDetailData.body);
 
-          return qr_insertFacebookUser({userDetailObj : userDetailObj}).then( (insertId) => {
-            console.log("User detail  insert into database with insertId", insertId);
-          }).catch( (error) => {
-            console.log("Error, error while making query qr_insertFacebookUser @handleMessageIndex.js inside facebook/handleMesssage", error);
-          });
+            let userDetailObj = {
+                  profilePic  : (userDetail.profile_pic),
+                  facebookId : userDetail.id,
+                  name  : userDetail.name,
+                  firstName  : userDetail.first_name,
+                  lastName  : userDetail.last_name,
+                  gender  : userDetail.gender,
+                  locale  : userDetail.locale,
+                  timezone  : userDetail.timezone,
+                  photos  : jsonString(userDetail.photos),
+                  picture  : jsonString(userDetail.picture),
+                  createdOn : currentDateTimeUnix(),
+                  updatedOn : currentDateTimeUnix()
+            }
+  
+            return qr_insertFacebookUser({userDetailObj : userDetailObj}).then( (insertId) => {
+              console.log("User detail  insert into database with insertId", insertId);
+            }).catch( (error) => {
+              console.log("Error, error while making query qr_insertFacebookUser @handleMessageIndex.js inside facebook/handleMesssage", error);
+            });
+
+          }else{
+
+          }
 
         }).catch( (error) => {
           console.log("Error, error while making api call to facebook for user detail arq_getUserDetail @ handleMessageIndex.js inside facebook/handleMessage", error);
@@ -90,32 +96,41 @@ let handleMessage = ({messagingType}) => {
         return arq_getUserDetail({
           senderId: senderId
         }).then((userDetailData) => {
-          let userDetail = JSON.parse(userDetailData.body);
-          let statusCode = userDetailData.statusCode;
-          
-          let userDetailObj = {
-            profilePic: (userDetail.profile_pic),
-            facebookId: userDetail.id,
-            name: userDetail.name,
-            firstName: userDetail.first_name,
-            lastName: userDetail.last_name,
-            gender: userDetail.gender,
-            locale: userDetail.locale,
-            timezone: userDetail.timezone,
-            photos: jsonString(userDetail.photos),
-            picture: jsonString(userDetail.picture),
-            createdOn: currentDateTimeUnix(),
-            updatedOn: currentDateTimeUnix()
-          }
-          console.log(userDetailObj);
 
-          return qr_UpdateFacebookUser({
-            userDetailObj: userDetailObj
-          }).then((updateId) => {
-            console.log("User detail  updated into database with insertId", updateId);
-          }).catch((error) => {
-            console.log("Error, error while making query qr_updatetFacebookUser @handleMessageIndex.js inside facebook/handleMesssage", error);
-          });
+          let userDetail = userDetailData.body;
+          let statusCode = userDetailData.statusCode;
+
+          if(statusCode === 200){
+
+            let userDetail = JSON.parse(userDetailData.body);
+            
+            let userDetailObj = {
+              profilePic: (userDetail.profile_pic),
+              facebookId: userDetail.id,
+              name: userDetail.name,
+              firstName: userDetail.first_name,
+              lastName: userDetail.last_name,
+              gender: userDetail.gender,
+              locale: userDetail.locale,
+              timezone: userDetail.timezone,
+              photos: jsonString(userDetail.photos),
+              picture: jsonString(userDetail.picture),
+              createdOn: currentDateTimeUnix(),
+              updatedOn: currentDateTimeUnix()
+            }
+  
+            return qr_UpdateFacebookUser({
+              userDetailObj: userDetailObj
+            }).then((updateId) => {
+              console.log("User detail  updated into database with insertId", updateId);
+            }).catch((error) => {
+              console.log("Error, error while making query qr_updatetFacebookUser @handleMessageIndex.js inside facebook/handleMesssage", error);
+            });
+
+          }else{
+            console.log("Error while making api call to getUserDetail!");
+          }
+          
 
         }).catch((error) => {
           console.log("Error, error while making api call to facebook for user detail arq_getUserDetail @ handleMessageIndex.js inside facebook/handleMessage", error);

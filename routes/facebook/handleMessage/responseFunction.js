@@ -75,12 +75,14 @@ let  brand = ( {senderId} ) => {
       if(brandRow.length <= 11){
 
         return Promise.each(brandRow, (rowData) => {
+          
           let quickReplyObj = {
             content_type : rowData.content_type,
             title : rowData.title,
             payload : rowData.payload
           };
           return quickReplyArray.push(quickReplyObj);
+        }).then( () => {
         });
 
       }else{
@@ -88,15 +90,17 @@ let  brand = ( {senderId} ) => {
       }
 
     }).then(() => {
-
+      
       response = {
         "text" : `${textRow[0].text}`,
         "quick_replies" : quickReplyArray
       }
 
-      return arq_sendMessage({senderId : senderId, response : response}).then( (messgeData) => {
-        console.log("sendMessage!");
-      });
+    }).then(() => {
+
+        return arq_sendMessage({senderId : senderId, response : response}).then( (messgeData) => {
+          console.log("sendMessage!");
+        });
     });
   });
 
@@ -131,6 +135,7 @@ let  phone = ( {senderId, brand} ) => {
         "quick_replies" : quickReplyArray
       }
 
+    }).then( () => {      
       return arq_sendMessage({senderId : senderId, response : response}).then( (messgeData) => {
         console.log("sendMessage!");
       });
@@ -168,9 +173,10 @@ let  price = ( {senderId, status} ) => {
         "quick_replies" : quickReplyArray
       }
 
-      return arq_sendMessage({senderId : senderId, response : response}).then( (messgeData) => {
-        console.log("sendMessage!");
-      });
+    }).then( () => {
+        return arq_sendMessage({senderId : senderId, response : response}).then( (messgeData) => {
+          console.log("sendMessage!");
+        });
     });
   });
 
@@ -205,9 +211,10 @@ let  category = ( {senderId, status} ) => {
         "quick_replies" : quickReplyArray
       }
 
-      return arq_sendMessage({senderId : senderId, response : response}).then( (messgeData) => {
-        console.log("sendMessage!");
-      });
+    }).then( () => {
+        return arq_sendMessage({senderId : senderId, response : response}).then( (messgeData) => {
+          console.log("sendMessage!");
+        });
     });
   });
 
@@ -248,6 +255,7 @@ let more = ({
         "quick_replies": quickReplyArray
       }
 
+    }).then( () => {
       return arq_sendMessage({
         senderId: senderId,
         response: response
@@ -357,10 +365,11 @@ let attachmentText = ({senderId}) => {
 
   let text1 = response = {
     "text": "first text"
-  };
+  }
+
  let text2 = response = {
    "text": "second text"
- };
+ }
  let textArray = [text1, text2];
 
   return Promise.each(textArray, (text) => {
@@ -382,7 +391,7 @@ let afterAttachmentPrice = ({ senderId }) => {
 
   let text1 = response = {
     "text": "Great!"
-  };
+  }
 
   let text2 = {
     "text": "Finally you are at your destiny🚶, Just attache the image you want to put on you phone📱",
@@ -392,6 +401,7 @@ let afterAttachmentPrice = ({ senderId }) => {
       "payload": "morePreviousMenu"
     }]
   }
+
   let image = {
 
         "attachment": {
@@ -404,7 +414,7 @@ let afterAttachmentPrice = ({ senderId }) => {
 
   }
   
-  let textArray = [text1, text2, image];
+  let textArray = [image, text1, text2];
 
     return Promise.each(textArray, (text) => {
 
@@ -454,7 +464,7 @@ let initialTextReply = ({
         return arq_sendMessage({
           senderId: senderId,
           response: textValue
-        });
+        })
 
       }).then( () => {
         brand({senderId : senderId});

@@ -275,7 +275,7 @@ let processingQuickReply = ({
     if (checkPayload.get('categoryMap')  && checkPayload.get('categoryMap').includes(payloadKey)) {
       productDetail.get(senderId)[3] = payloadKeyValue.get(payloadKey);
 
-      return processProduct({ senderId: senderId, productArray: productDetail .get(senderId), basicStatus: 1, trendingStatus: 0});
+      return processProduct({ senderId: senderId, productArray: productDetail .get(senderId), trendingStatus: 0});
     }else
     if (payloadKey==="mainMenu") {
 
@@ -326,8 +326,7 @@ let processingQuickReply = ({
       return processProduct({
         senderId: senderId,
         productArray: productDetail.get(senderId),
-        trendingStatus: 1,
-        basicStatus: 0
+        trendingStatus: 1
       });
 
     }else
@@ -352,7 +351,7 @@ let processingQuickReply = ({
     }else
     if (payloadKey === "morePrice-1" || payloadKey === "morePrice-2" || payloadKey === "morePrice-3") {
       return qr_topProductPrice({status:1}).then( (productPriceKey) => {
-
+        console.log(productPriceKey, "***********@@@@@@@@@@@@@", payloadKey);
         return Promise.each(productPriceKey, (priceId) => {
 
           if (priceId.payload == payloadKey) {
@@ -365,6 +364,8 @@ let processingQuickReply = ({
 
         }).then(() => {
           return afterAttachmentPrice({ senderId: senderId });
+        }).catch((error) => {
+          console.log("Error handle quick reply, while making qr_topProductPrice query!");
         });
 
       });

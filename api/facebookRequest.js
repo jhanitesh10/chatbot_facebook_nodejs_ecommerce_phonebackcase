@@ -27,7 +27,7 @@ let arq_typingOn = ( {senderId}) => {
     // console.log({ statusCode: typingOnData.statusCode, body: typingOnData.body, headers: typingOnData.headers });
     return { statusCode: typingOnData.statusCode, body: typingOnData.body, headers: typingOnData.headers };
 
-  }).catch( (ere) => {
+  }).catch( (err) => {
     return {statusCode: err.statusCode, body: err.body, headers: err.headers};
   });
 }
@@ -125,7 +125,6 @@ let arq_getUserDetail = ({senderId}) => {
   }
   return rq(option).then( (response) => {
     var userDetail = JSON.parse(JSON.stringify(response));
-    // console.log(userDetail);
     return { statusCode: userDetail.statusCode, body: userDetail.body };
 
   }).catch( (err) => {

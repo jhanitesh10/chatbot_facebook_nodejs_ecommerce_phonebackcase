@@ -27,8 +27,8 @@ let shortFunction = require('../shortFunction/function.js'),
 
 let buyProduct = (req, res) => {
 
-    let productId = req.query.productId,
-        userId = req.query.userId,
+    let productId = req.params.productId,
+        userId = req.params.userId,
         productArray = [];
 
         productArray[0] = req.query.d1;
@@ -47,17 +47,29 @@ let buyProduct = (req, res) => {
             discount({ price: productDataRow[0].price, discount: productDataRow[0].discount, shippingCost: productDataRow[0].shipping_cost }).then((totalAmount) => {
                 total = totalAmount;
             });
-            return arq_getUserDetail({senderId : userId}).then((userData) => {
-                name = userData.name;
-                profilePictureUrl = decodeURI(userData.profile_pic);
-                console.log(total, "**********8", name, profilePictureUrl);
 
+            return arq_getUserDetail({senderId : userId}).then((userData) => {
+                
+                let statusCode = userData.statusCode;
+                let body = userData.body;
+
+                let userDetail;
+
+                if (statusCode === 200) {
+                    userDetail = JSON.parse(body);
+                } else {
+                    console.log("Error while getting user detail!");
+                }
+
+                name = userDetail.name;
+                profilePictureUrl = decodeURI(userDetail.profile_pic);
+          
                 res.render('facebook/orderForm', {
                     userId : userId,
                     status : 0,
                     profilePictureUrl: profilePictureUrl,
                     name : name,
-                    prId : productDataRow[0].pr_id,
+                    prId : productDataRow[0].id,
                     title : productDataRow[0].title,
                     subtitle: productDataRow[0].subtitle,
                     image: productDataRow[0].image,
@@ -65,7 +77,7 @@ let buyProduct = (req, res) => {
                     discount: productDataRow[0].discount,
                     total : total,
                     shippingCost: productDataRow[0].shipping_cost,
-                    isAvailable: productDataRow[0].isAvailable,
+                    isAvailable: productDataRow[0].available,
                     brandTitle: productDataRow[0].brandTitle,
                     phoneTitle: productDataRow[0].phoneTitle,
                     priceTitle: productDataRow[0].priceTitle,
@@ -121,9 +133,9 @@ let orderPayment = (req, res) => {
 
 
     if (orderDetailObj.status === 0) {
-        console.log("*************0");
+
         qr_productPriceDiscount({productId : orderDetailObj.productId}).then( (productDetail) => {
-            // console.log(productDetail);
+
             discount({
                 price: productDetail[0].price,
                 discount: productDetail[0].discount,
@@ -135,7 +147,6 @@ let orderPayment = (req, res) => {
         });
 
     } else if (orderDetailObj.status === 1) {
-        console.log("*************1");
 
         qr_productPriceDiscountAttach({productId : orderDetailObj.productId, facebookId : orderDetailObj.userId}).then( (productDetail) => {
 
@@ -165,25 +176,24 @@ let orderPayment = (req, res) => {
      return arq_paymentRequest({ orderDetail: orderDetail }).then((paymentResponse) => {
         let paymentBody = JSON.parse(paymentResponse.body);
             statusCode = paymentResponse.statusCode;
-              
-           let longurl, paymentRequest, createdAt, modifiedAt;
 
+           let longurl, paymentRequest, createdAt, modifiedAt;
            if (statusCode === 201) {
-                   longUrl = paymentBody.payment_request.longurl,
-                   paymentRequestId = paymentBody.payment_request.id,
-                   createdAt = currentDateTimeUnix(paymentBody.payment_request.created_at),
-                   modifiedAt = currentDateTimeUnix(paymentBody.payment_request.modified_at);
-           } else {
-                   longUrl = 0,
-                   paymentRequestId = 0,
-                   createdAt = 0,
-                   modifiedAt = 0;
-           }
-           
+               longUrl = paymentBody.payment_request.longurl,
+               paymentRequestId = paymentBody.payment_request.id,
+               createdAt = currentDateTimeUnix(paymentBody.payment_request.created_at),
+               modifiedAt = currentDateTimeUnix(paymentBody.payment_request.modified_at);
+            } else {
+                longUrl = 0,
+                paymentRequestId = 0,
+                createdAt = 0,
+                modifiedAt = 0;
+            }
+            
             return qr_insertUserAddress({ address: address, state: state, city: city, zip: zip }).then((addressForeignKey) => {
 
-                return qr_insertOrderDetail({ orderDetailObj: orderDetailObj, addressId: addressForeignKey, paymentRequestId : paymentRequestId, paymentCreatedAt : createdAt, paymentModifiedAt :  modifiedAt}).then( () => {
-                   console.log("order  detail complete!!!"); 
+                return qr_insertOrderDetail({ orderDetailObj: orderDetailObj, addressId: addressForeignKey, paymentRequestId : paymentRequestId, paymentCreatedAt : createdAt, paymentModifiedAt :  modifiedAt}).then( (data) => {
+                   console.log("order  detail complete!!!", data); 
                    res.redirect(`${longUrl}`);
                 });
 
@@ -196,7 +206,8 @@ let orderPayment = (req, res) => {
 }
 
 let paymentSuccess = (req, res) => {
-    console.log(req.body, "**************************");
+
+    res.sendStatus(200);
     let paymentDetailObj = {
                             paymentId : req.body.payment_id,
                             status : req.body.status,
@@ -245,10 +256,11 @@ let paymentSuccessRedirect = (req, res) => {
 
 let buyProductAttache = (req, res) => {
 
-    let productId = req.query.productId,
-        userId = req.query.userId,
+    let productId = req.params.productId,
+        userId = req.params.userId,
         productArray = [];
 
+        
     productArray[0] = req.query.d1;
     productArray[1] = req.query.d2;
     productArray[2] = req.query.d3;
@@ -261,7 +273,6 @@ let buyProductAttache = (req, res) => {
         userId : userId
     }).then((productDataRow) => {
 
-            console.log(productDataRow, "*************************");
 
         discount({
             price: productDataRow[0].price,
@@ -271,13 +282,25 @@ let buyProductAttache = (req, res) => {
             total = totalAmount;
         });
 
+
         return arq_getUserDetail({
             senderId: userId
         }).then((userData) => {
-            name = userData.name;
-            profilePictureUrl = decodeURI(userData.profile_pic);
-            console.log(total, "**********8", name, profilePictureUrl);
+            let statusCode = userData.statusCode;
+            let body = userData.body;
+            
+            let userDetail;
 
+            if(statusCode === 200){
+                userDetail = JSON.parse(body);
+            }else{
+                console.log("Error while getting user detail!");
+            }
+     
+            name = userDetail.name;
+            profilePictureUrl = decodeURI(userDetail.profile_pic);
+
+      
             res.render('facebook/orderForm', {
                 userId: userId,
                 status: 1,
@@ -306,6 +329,7 @@ let buyProductAttache = (req, res) => {
 
     });
 }
+
 module.exports = {
     buyProduct: buyProduct,
     orderPayment : orderPayment,

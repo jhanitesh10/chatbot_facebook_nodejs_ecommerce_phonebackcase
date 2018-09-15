@@ -66,14 +66,16 @@ app.use(bodyParser.json({
 app.get('/webhook', verifyAccessToken);
 app.post('/webhook', processRequestEndpoint);
 
+
 /* orders endpoint */
-app.get('/order', buyProduct);
 app.post('/order/payment', orderPayment);
 
 app.post('/paymentSuccess', paymentSuccess);
 app.get('/redirect', paymentSuccessRedirect);
 
-app.get('/order/attach', buyProductAttache);
+/* Buy product url endpoint */
+app.get("/order/:userId/:productId", buyProduct);
+app.get("/order/attach/:userId/:productId", buyProductAttache);
 
 
 
@@ -99,6 +101,8 @@ app.get('/dashboard/category', getCategory);
 app.post('/dashboard/product/add', addProduct);
 
 app.get('/dashboard/product/edit', editProduct);
+
+
 let statusForServer = 0;
 
 if (statusForServer) {

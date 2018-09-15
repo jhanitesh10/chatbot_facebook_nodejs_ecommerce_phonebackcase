@@ -29,7 +29,7 @@ let processRequestEndpoint = (req, res) => {
   return Promise.resolve(processRequest({req : req})).then( () => {
     res.sendStatus(200);
   }).catch( (error) => {
-    console.log("Error, while sending 200 statusCode to server @ index.js inside facebook folder", error);
+    // console.log("Error, while sending 200 statusCode to server @ index.js inside facebook folder", error);
     res.sendStatus(400);
   });
 

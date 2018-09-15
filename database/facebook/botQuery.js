@@ -4,7 +4,7 @@ const configuration = require('../../database/configuration'),
 
 
 let qr_getWhom = ({status}) => {
-  let sqlQuery = `SELECT id, content_type, title, payload FROM whom WHERE status = ?`;
+  let sqlQuery = `SELECT id, content_type, title, payload FROM whom WHERE active_status = ?`;
   let paramr = [status];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
@@ -23,7 +23,7 @@ let qr_getWhom = ({status}) => {
 
 
 let qr_getText = ({textId}) => {
-  let sqlQuery = `SELECT text FROM text WHERE id = ?`;
+  let sqlQuery = `SELECT text FROM text WHERE id = ? AND active_status = 1`;
   let paramr = [textId];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
@@ -41,7 +41,7 @@ let qr_getText = ({textId}) => {
 
 
 let qr_getBrand = ({status}) => {
-  let sqlQuery = `SELECT id, content_type, title, payload FROM brand WHERE status = ?`;
+  let sqlQuery = `SELECT id, content_type, title, payload FROM brand WHERE active_status = ?`;
   let paramr = [status];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
@@ -58,7 +58,7 @@ let qr_getBrand = ({status}) => {
 }
 
 let qr_getPhone = ({status, brand}) => {
-  let sqlQuery = `SELECT b.content_type, p.title, p.payload, p.pn_id FROM brand as b INNER JOIN phone as p ON b.id = p.brand_id WHERE p.status = ? AND b.id = ?`;
+  let sqlQuery = `SELECT b.content_type, p.title, p.payload, p.id FROM brand as b INNER JOIN phone as p ON b.id = p.brand_id WHERE p.active_status = ? AND b.id = ?`;
   let paramr = [status, brand];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
@@ -76,7 +76,7 @@ let qr_getPhone = ({status, brand}) => {
 
 
 let qr_getPrice = ({status}) => {
-  let sqlQuery = `SELECT id, content_type, title, payload FROM price WHERE status = ${status}`;
+  let sqlQuery = `SELECT id, content_type, title, payload FROM price WHERE active_status = ${status}`;
   let paramr = [status];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
@@ -95,7 +95,7 @@ let qr_getPrice = ({status}) => {
 
 
 let qr_getCategory = ({status}) => {
-  let sqlQuery = `SELECT id, content_type, title, payload FROM category WHERE status = ${status};`;
+  let sqlQuery = `SELECT id, content_type, title, payload FROM category WHERE active_status = ?`;
   let paramr = [status];
 
   return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
@@ -115,7 +115,7 @@ let qr_getCategory = ({status}) => {
 let qr_more = ({
   status
 }) => {
-  let sqlQuery = `SELECT id, content_type, title, payload FROM more WHERE status = ?`;
+  let sqlQuery = `SELECT id, content_type, title, payload FROM more WHERE active_status = ?`;
   let paramr = [status];
 
   return getQuery({
@@ -137,7 +137,7 @@ let qr_more = ({
 let qr_help = ({
   status
 }) => {
-  let sqlQuery = `SELECT id, content_type, title, payload FROM help WHERE status = ?`;
+  let sqlQuery = `SELECT id, content_type, title, payload FROM help WHERE active_status = ?`;
   let paramr = [status];
 
   return getQuery({
@@ -158,7 +158,7 @@ let qr_help = ({
 
 
 let qr_topProductPrice = ({status}) => {
-  let sqlQuery = `SELECT id, content_type, title, payload FROM topProduct_price WHERE status = ?`;
+  let sqlQuery = `SELECT id, content_type, title, payload FROM attached_product_price WHERE active_status = ?`;
   let paramr = [status];
 
   return getQuery({
