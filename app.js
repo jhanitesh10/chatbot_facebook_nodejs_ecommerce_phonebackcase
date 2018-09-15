@@ -6,6 +6,8 @@ const Promise = require('bluebird'),
       bodyParser  = require('body-parser'),
       cookieParser = require('cookie-parser'),
       session = require('express-session'),
+      https = require('https'),
+      fs = require('fs'),
       cors = require('cors');
 
 const request = Promise.promisify(require('request')),
@@ -103,7 +105,7 @@ app.post('/dashboard/product/add', addProduct);
 app.get('/dashboard/product/edit', editProduct);
 
 
-let statusForServer = 0;
+let statusForServer = 1;
 
 if (statusForServer) {
 

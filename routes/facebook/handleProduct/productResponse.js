@@ -29,7 +29,7 @@ let productListing = ({
       "buttons": [
         {
           "type": "web_url",
-          "url": `https://b92c5ca3.ngrok.io/order/${senderId}/${productData.id}?d1=${d1}&d2=${d2}&d3=${d3}&d4=${d4}`,
+          "url": `https://shopify-webhook.convrg.io/order/${senderId}/${productData.id}?d1=${d1}&d2=${d2}&d3=${d3}&d4=${d4}`,
           "title": "BUY"
           // ,
           // "webview_height_ratio": "full",
@@ -122,7 +122,7 @@ let orderReceipt = ({
         "order_number": `${orderDetailObj.id}`,
         "currency": `${paymentDetailObj.currency}`,
         "payment_method": "Online",
-        "order_url": "https://b92c5ca3.ngrok.io",
+        "order_url": "https://shopify-webhook.convrg.io",
         "timestamp": `${paymentDetailObj.createdAt}`,
         "address": {
           "street_1": `${orderDetailObj.address}`,

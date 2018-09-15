@@ -30,7 +30,7 @@ if (attachmentProductStatus.get("attachStatus") === 1) {
 
     let attachedProductDetail = {
         facebookId : senderId,
-        productId: uuidv5('https://b92c5ca3.ngrok.io', uuidv5.URL),
+        productId: uuidv5('https://shopify-webhook.convrg.io', uuidv5.URL),
         brand : brand,
         phone : phone,
         price : price,
@@ -55,7 +55,7 @@ if (attachmentProductStatus.get("attachStatus") === 1) {
                     "subtitle": `Price: ${productData.price} Discount: ${productData.discount}% = Total: ${(productData.price) - (productData.discount)}`,
                     "buttons": [{
                             "type": "web_url",
-                            "url": `https://b92c5ca3.ngrok.io/order/attach/${productData.facebookid}/${productData.product_id}?d1=${productData.brand_id}&d2=${productData.phone_id}&d3=${productData.price_id}`,
+                            "url": `https://shopify-webhook.convrg.io/order/attach/${productData.facebookid}/${productData.product_id}?d1=${productData.brand_id}&d2=${productData.phone_id}&d3=${productData.price_id}`,
                             "title": "BUY"
                             // ,
                             // "webview_height_ratio": "full",

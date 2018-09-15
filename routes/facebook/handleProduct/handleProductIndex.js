@@ -15,8 +15,8 @@ let [ brandId, phoneId, priceId, categoryId] = productArray;
       trendingStatus: trendingStatus
     }).then((productRow) => {
 
-      console.log(productRow);
-    if(productRow){      
+
+      if(productRow){      
       return productListing({senderId : senderId, productRow : productRow, productArray : productArray}).then((data) => {
         console.log("froduct found");
       });
