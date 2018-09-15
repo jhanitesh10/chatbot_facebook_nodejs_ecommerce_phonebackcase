@@ -292,17 +292,47 @@ let qr_UpdateFacebookUser = ({
 
 
 
-module.exports = {
-  qr_getWhom : qr_getWhom,
-  qr_getText : qr_getText,
-  qr_getBrand : qr_getBrand,
-  qr_getPhone : qr_getPhone,
-  qr_getPrice : qr_getPrice,
-  qr_getCategory : qr_getCategory,
-  qr_more : qr_more,
-  qr_checkFacebookUser : qr_checkFacebookUser,
-  qr_insertFacebookUser : qr_insertFacebookUser,
-  qr_help : qr_help,
-  qr_topProductPrice: qr_topProductPrice,
-  qr_UpdateFacebookUser: qr_UpdateFacebookUser
+let qr_insertUserText = ({text, createdAt, updatedAt}) => {
+  let sqlQuery = `INSERT INTO user_text
+  (
+    text,
+    created_on,
+    updated_on
+  )
+  VALUES
+  (?, ?, ?)`;
+  let paramr = [
+    text,
+    createdAt,
+    updatedAt
+  ];
+
+  return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
+
+    if(row){
+      return row.insertId;
+    }else{
+      return 0;
+    }
+
+  }).catch((err) => {
+    console.log("error", err);
+  })
+
 }
+
+module.exports = {
+  qr_getWhom: qr_getWhom,
+  qr_getText: qr_getText,
+  qr_getBrand: qr_getBrand,
+  qr_getPhone: qr_getPhone,
+  qr_getPrice: qr_getPrice,
+  qr_getCategory: qr_getCategory,
+  qr_more: qr_more,
+  qr_checkFacebookUser: qr_checkFacebookUser,
+  qr_insertFacebookUser: qr_insertFacebookUser,
+  qr_help: qr_help,
+  qr_topProductPrice: qr_topProductPrice,
+  qr_UpdateFacebookUser: qr_UpdateFacebookUser,
+  qr_insertUserText: qr_insertUserText
+};
