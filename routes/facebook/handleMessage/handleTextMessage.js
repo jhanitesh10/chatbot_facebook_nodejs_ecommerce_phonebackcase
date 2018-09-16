@@ -41,7 +41,7 @@ let processingTextMessage = ({senderId, messageText}) => {
   let message1;
   let response;
 
-  return qr_insertUserText({ text: string, createdAt: currentDateTimeUnix, updatedAt: currentDateTimeUnix}).then( () => {
+  return qr_insertUserText({senderId : senderId, text: string, createdAt: currentDateTimeUnix, updatedAt: currentDateTimeUnix}).then( () => {
 
 
     if (string.match(/(hey)|(hello)|(hi)|(what's up?)/i)) {

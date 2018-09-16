@@ -292,9 +292,10 @@ let qr_UpdateFacebookUser = ({
 
 
 
-let qr_insertUserText = ({text, createdAt, updatedAt}) => {
+let qr_insertUserText = ({ senderId, text, createdAt, updatedAt }) => {
   let sqlQuery = `INSERT INTO user_text
   (
+    facebook_user_id
     text,
     created_on,
     updated_on
@@ -302,16 +303,17 @@ let qr_insertUserText = ({text, createdAt, updatedAt}) => {
   VALUES
   (?, ?, ?)`;
   let paramr = [
+    senderId,
     text,
     createdAt,
     updatedAt
   ];
+  console.log(sqlQuery, paramr, "****************************8");
+  return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
 
-  return getQuery({sqlQuery : sqlQuery, paramr : paramr}).then( (row) => {
-
-    if(row){
+    if (row) {
       return row.insertId;
-    }else{
+    } else {
       return 0;
     }
 
