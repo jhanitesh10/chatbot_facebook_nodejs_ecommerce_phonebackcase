@@ -105,7 +105,7 @@ app.post('/dashboard/product/add', addProduct);
 app.get('/dashboard/product/edit', editProduct);
 
 
-let statusForServer = 1;
+let statusForServer = 0;
 
 if (statusForServer) {
 

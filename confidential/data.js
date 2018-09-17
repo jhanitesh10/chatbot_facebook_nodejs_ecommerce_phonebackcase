@@ -2,22 +2,22 @@ accessToken = "EAAGa4ywgfZBcBAGZCVCPMiupKFiHJRdUQZCdlcp1L2vgdD0IJjJFMbpQZAU971UC
 verifyToken = "nitesh";
 
 // Local server
-// const PORT = "1234",
-// const DB_HOST = 'localhost',
-//       DB_USER = 'root',
-//       DB_PASS = '',
-//       DB_NAME = 'nickscomputer',
-//       DB_PORT = '3306';
+const PORT = "1234",
+      DB_HOST = 'localhost',
+      DB_USER = 'root',
+      DB_PASS = '',
+      DB_NAME = 'nickscomputer',
+      DB_PORT = '3306';
 
 // AWS server
-const PORT = '443',
-  SHOPIFY_CLIENT_ID = '4f711decd71a57314e4ab383b6211d4c',
-  SHOPIFY_SECRET_ID = 'b4738e36d18f3b87b287868804756044',
-  DB_HOST = 'kik.cluster-cleiy5pbuugi.us-east-1.rds.amazonaws.com',
-  DB_USER = 'gmdevUser',
-  DB_PASS = 'gmdeVpw1!',
-  DB_NAME = 'kikbotdb',
-  DB_PORT = '3306';
+// const PORT = '443',
+//   SHOPIFY_CLIENT_ID = '4f711decd71a57314e4ab383b6211d4c',
+//   SHOPIFY_SECRET_ID = 'b4738e36d18f3b87b287868804756044',
+//   DB_HOST = 'kik.cluster-cleiy5pbuugi.us-east-1.rds.amazonaws.com',
+//   DB_USER = 'gmdevUser',
+//   DB_PASS = 'gmdeVpw1!',
+//   DB_NAME = 'kikbotdb',
+//   DB_PORT = '3306';
 
 
 

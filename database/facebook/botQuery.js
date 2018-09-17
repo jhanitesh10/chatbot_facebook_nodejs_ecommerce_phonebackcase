@@ -295,7 +295,7 @@ let qr_UpdateFacebookUser = ({
 let qr_insertUserText = ({ senderId, text, createdAt, updatedAt }) => {
   let sqlQuery = `INSERT INTO user_text
   (
-    facebook_user_id
+    facebook_user_id,
     text,
     created_on,
     updated_on

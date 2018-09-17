@@ -187,9 +187,9 @@ class Productattribute extends Component{
                                 <th>Discount</th>
                                 <th>Shipping Cost</th>
                                 <th>Stock</th>
-                                <th>Numbser Of product</th>
-                                <th>Normal product</th>
-                                <th>Top product</th>
+                                <th>Product count</th>
+                                <th>Product Status</th>
+                                <th>Trending or Normal</th>
                                 <th>Last Updat</th>
                             </tr>
                         </tfoot>
@@ -198,22 +198,22 @@ class Productattribute extends Component{
                             <tbody>
 
                                 <tr>
-                                    <td>{data.pa_id}</td>
+                                    <td>{data.id}</td>
                                     <td>{data.brandTitle}</td>
                                     <td>{data.phoneTitle}</td>
                                     <td>{data.priceTitle}</td>
                                     <td>{data.categoryTitle}</td>
-                                    <td>{data.pr_id}</td>
+                                    <td>{data.id}</td>
                                     <td><img src ={data.image} /></td>
                                     <td>{data.title}</td>
                                     <td>{data.subtitle}</td>
                                     <td>{data.price}</td>
                                     <td>{data.discount}</td>
                                     <td>{data.shipping_cost}</td>
-                                    <td>{(data.isAvailable)?"Available":"Unavailable"}</td>
+                                    <td>{(data.available)?"In-Stock":"Out of Stock"}</td>
                                     <td>{data.product_count}</td>
-                                    <td>{(data.status)?"Yes":"No"}</td>
-                                    <td>{(data.top_status)?"Yes":"No"}</td>
+                                    <td>{(data.active_status)?"Yes":"No"}</td>
+                                    <td>{((data.trending_product)?"Trending Product" : "Basic Product")}</td>
                                     <td>{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))}Days Ago</td>
                                     <td>
                                         <button onClick={(e) => {this.handleModal(e, data)}} type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong1">

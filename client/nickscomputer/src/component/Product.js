@@ -121,7 +121,7 @@ class Product extends Component{
                                 <th>Shipping Cost</th>
                                 <th>Stock</th>
                                 <th>Number of Product</th>
-                                <th>Normal product</th>
+                                <th>Product Statu</th>
                                 <th>Top product</th>
                                 <th>Last updat</th>
                             </tr>
@@ -131,17 +131,17 @@ class Product extends Component{
                             <tbody>
 
                                 <tr>
-                                    <td>{data.pr_id}</td>
+                                    <td>{data.id}</td>
                                     <td><img src ={data.image} /></td>
                                     <td>{data.title}</td>
                                     <td>{data.subtitle}</td>
                                     <td>{data.price}</td>
                                     <td>{data.discount}</td>
                                     <td>{data.shipping_cost}</td>
-                                    <td>{(data.isAvailable)?"Available":"Unavailable"}</td>
+                                    <td>{(data.available)?"In Stock":"Out of Stock"}</td>
                                     <td>{data.product_count}</td>
-                                    <td>{(data.status)?"Yes":"No"}</td>
-                                    <td>{(data.top_status)?"Yes":"No"}</td>
+                                    <td>{(data.active_staus)?"Active":"Un-Active"}</td>
+                                    <td>{(data.trending_status)?"Trending Product":"Bsic Product"}</td>
                                     <td>{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))}Days Ago</td>
                                 </tr>
 

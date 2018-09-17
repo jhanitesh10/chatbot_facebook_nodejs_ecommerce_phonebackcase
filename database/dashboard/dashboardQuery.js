@@ -5,7 +5,7 @@ const configuration = require('../configuration'),
 
 let qr_getFacebookUser = ({offset, limit }) => {
 
-    let sqlQuery = `SELECT user_id, name, firstname, lastname, gender, locale, timezone, picture, updated_on, created_on FROM facebook_user ORDER BY user_id LIMIT ?, ?`;
+    let sqlQuery = `SELECT id, name, firstname, lastname, gender, locale, timezone, profile_picture, picture, updated_on, created_on FROM facebook_user ORDER BY id LIMIT ?, ?`;
     let paramr = [offset, limit];
 
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -25,7 +25,7 @@ let qr_getFacebookUser = ({offset, limit }) => {
 
 let qr_getFacebookUserCount = ({}) => {
 
-    let sqlQuery = `SELECT user_id FROM facebook_user ORDER BY user_id`;
+    let sqlQuery = `SELECT id FROM facebook_user ORDER BY id`;
     let paramr = [];
 
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -43,7 +43,7 @@ let qr_getFacebookUserCount = ({}) => {
 
 let qr_getProduct = ({offset, limit }) => {
 
-    let sqlQuery = `SELECT pr_id, product_type, title, subtitle, image, price, discount, shipping_cost, isAvailable, product_count, status, top_status, created_on, updated_on FROM product ORDER BY pr_id LIMIT ?, ?`;
+    let sqlQuery = `SELECT id, product_type, title, subtitle, image, price, discount, shipping_cost, available, product_count, active_status, trending_status, created_on, updated_on FROM product ORDER BY id LIMIT ?, ?`;
     let paramr = [offset, limit];
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
 
@@ -61,7 +61,7 @@ let qr_getProduct = ({offset, limit }) => {
 
 let qr_getProductCount = ({}) => {
 
-    let sqlQuery = `SELECT pr_id FROM product ORDER BY pr_id`;
+    let sqlQuery = `SELECT id FROM product ORDER BY id`;
     let paramr = [];
 
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -78,29 +78,29 @@ let qr_getProductCount = ({}) => {
 }
 
 let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, categoryId}) => {
-    let sqlQuery = `SELECT pa_id,
-        br.br_id, br.title as brandTitle, pn.pn_id, pn.title as phoneTitle, pr.pr_id, pr.title as priceTitle, ct.ct_id, ct.title as categoryTitle, p.pr_id as priceId,p.pr_id as productId, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.isAvailable,  p.product_count, p.status, p.top_status, p.created_on, p.updated_on 
+    let sqlQuery = `SELECT pa.id,
+        br.id, br.title as brandTitle, pn.id, pn.title as phoneTitle, pr.id, pr.title as priceTitle, ct.id, ct.title as categoryTitle, p.id as priceId,p.id as productId, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.available,  p.product_count, p.active_status, p.trending_status, p.created_on, p.updated_on 
         FROM product_attribute pa 
         INNER JOIN 
         brand br 
         ON 
-        pa.brand_fk = br.br_id
+        pa.brand_id = br.id
         INNER JOIN 
         phone pn
         ON
-        pa.phone_fk = pn.pn_id
+        pa.phone_id = pn.id
         INNER JOIN
         price pr
         ON
-        pa.price_fk = pr.pr_id
+        pa.price_id = pr.id
         INNER JOIN
         category ct
         ON
-        pa.category_fk = ct.ct_id
+        pa.category_id = ct.id
         INNER JOIN
         product p
         ON
-        pa.product_fk = p.pr_id WHERE br.br_id = ? AND pn.pn_id = ? AND pr.pr_id = ? AND ct.ct_id= ? ORDER BY pa_id LIMIT ?, ? `;
+        pa.product_id = p.id WHERE br.id = ? AND pn.id = ? AND pr.id = ? AND ct.id= ? ORDER BY pa.id LIMIT ?, ?`;
     let paramr = [brandId, phoneId, priceId, categoryId, offset, limit];
 
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -118,29 +118,28 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
 
 
     let qr_getProductAttributeCount = ({brandId, phoneId, priceId, categoryId}) => {
-        let sqlQuery = `SELECT pa_id,
-        br.br_id, br.title as brandTitle, pn.pn_id, pn.title as phoneTitle, pr.pr_id, pr.title as priceTitle, ct.ct_id, ct.title as categoryTitle, p.pr_id, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.isAvailable,  p.product_count, p.status, p.top_status, p.created_on, p.updated_on 
+        let sqlQuery = `SELECT pa.id
         FROM product_attribute pa 
         INNER JOIN 
         brand br 
         ON 
-        pa.brand_fk = br.br_id
+        pa.brand_id = br.id
         INNER JOIN 
         phone pn
         ON
-        pa.phone_fk = pn.pn_id
+        pa.phone_id = pn.id
         INNER JOIN
         price pr
         ON
-        pa.price_fk = pr.pr_id
+        pa.price_id = pr.id
         INNER JOIN
         category ct
         ON
-        pa.category_fk = ct.ct_id
+        pa.category_id = ct.id
         INNER JOIN
         product p
         ON
-        pa.product_fk = p.pr_id WHERE br.br_id = ? AND pn.pn_id = ? AND pr.pr_id = ? AND ct.ct_id=? ORDER BY pa_id`;
+        pa.product_id = p.id WHERE br.id = 1 AND pn.id = 1 AND pr.id = 1 AND ct.id= 1 ORDER BY pa.id`;
         let paramr = [brandId, phoneId, priceId, categoryId];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -157,7 +156,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
     }
 
     let qr_getBrand = ({}) => {
-        let sqlQuery = `SELECT br_id, title FROM brand ORDER BY br_id`;
+        let sqlQuery = `SELECT id, title FROM brand ORDER BY id`;
         let paramr = [];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -174,7 +173,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
     }
 
     let qr_getPhone = ({brandId}) => {
-        let sqlQuery = `SELECT pn_id, title FROM phone WHERE br_id = ? ORDER BY br_id`;
+        let sqlQuery = `SELECT id, title FROM phone WHERE brand_id = ? ORDER BY brand_id`;
         let paramr = [brandId];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -191,7 +190,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
     }
 
     let qr_getPrice = ({  }) => {
-        let sqlQuery = `SELECT pr_id, title FROM price ORDER BY pr_id`;
+        let sqlQuery = `SELECT id, title FROM price ORDER BY id`;
         let paramr = [];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -208,7 +207,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
     }
 
     let qr_getCategory = ({  }) => {
-        let sqlQuery = `SELECT ct_id, title FROM category ORDER BY ct_id`;
+        let sqlQuery = `SELECT id, title FROM category ORDER BY id`;
         let paramr = [];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -226,7 +225,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
 
     let qr_insertProduct = ({productDetailObj}) => {
         let sqlQuery = `INSERT INTO product 
-        (product_type, title, subtitle, image, price, discount, shipping_cost, isAvailable, product_count, status, top_status, created_on, updated_on) 
+        (product_type, title, subtitle, image, price, discount, shipping_cost, available, product_count, active_status, trending_status, created_on, updated_on) 
         VALUES
         (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
         let paramr = [
@@ -264,7 +263,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
     let qr_insertProductAttribute = ({productAttributeObj}) => {
 
         let sqlQuery = `INSERT INTO product_attribute 
-        (brand_fk, phone_fk, price_fk, category_fk, product_fk, status, created_on, updated_on) 
+        (brand_id, phone_id, price_id, category_id, product_id, active_status, created_on, updated_on) 
         VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)`;
         let paramr = [
@@ -292,7 +291,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
     }
     let qr_editProductData = ({productId, productAttributeId}) => {
 
-        let sqlQuery = `SELECT * FROM product p INNER JOIN product_attribute pa ON p.pr_id = pa.product_fk WHERE p.pr_id=? AND pa.product_fk = ?  LIMIT 0, 1`;
+        let sqlQuery = `SELECT * FROM product p INNER JOIN product_attribute pa ON p.id = pa.product_id WHERE p.id=1 AND pa.product_id = 1 LIMIT 0, 1`;
         let paramr = [productId, productAttributeId];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr })

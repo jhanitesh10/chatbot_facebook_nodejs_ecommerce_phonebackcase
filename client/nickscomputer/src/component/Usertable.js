@@ -81,8 +81,11 @@ class userTable extends Component{
     render(){
         let userDetail = this.state.userDetail;
         let currentDateTime = Moment().unix();
-        let url = "http://quizplay.esy.es/quiz/images/Logomakr_0ukOms.png";
         let paginationDetail = this.state.paginationDetail;
+        let imageSize = {
+            width: 50,
+            height: 50
+        }
         return (
             <div>
             <div className="card-header">
@@ -120,9 +123,9 @@ class userTable extends Component{
                             <tbody>
 
                                 <tr>
-                                    <td>{data.user_id}</td>
+                                    <td>{data.id}</td>
                                     <td>{data.name}</td>
-                                    <td><img src={url} /></td>
+                                    <td><img style={imageSize} src={data.profile_picture} /></td>
                                     <td>{data.gender}</td>
                                     <td>{data.locale}</td>
                                     <td>{data.timezone}</td>
@@ -149,10 +152,3 @@ class userTable extends Component{
 }
 
 export default userTable;
-// { "data": 
-// { "height": 50, 
-//     "is_silhouette": true, 
-//     "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?psid=1229755263793213&height=50&width=50&ext=1529770326&hash=AeRAQaHa31DqWwhO", 
-//     "width": 50 
-// } 
-// }
