@@ -1,8 +1,8 @@
 
 // // First:
-// // Hey there 👋 thanks for checking out Freak! I’m Mr.Zeyn 😎 I was sent here to help show you around. 
-// // One of the thoghest task is to deside the case which look cool on our phone  but don't worry! I got you coverd with all you need to give new loop for you phone.
-// // Lets get started.What Brand do you have ?
+// Hey there 👋 thanks for checking out Freak! I’m Mr.Zeyn 😎 I was sent here to help show you around. 
+// One of the thoghest task is to deside the case which look cool on our phone  but don't worry! I got you coverd with all you need to give new loop for you phone.
+// Lets get started.What Brand do you have ?
 
 // // brand: 
 // // We can make phone look more classic😜\n - When we put case with Asskicking and Loving lines on it😎\ nChoose which Brand you or your love one own?

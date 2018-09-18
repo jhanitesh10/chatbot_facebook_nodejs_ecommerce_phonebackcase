@@ -23,7 +23,7 @@ class Sortproductattribute extends Component {
         .then((response) => {
             let brand = response.data;
             this.setState({ brand: brand});
-            axios.get(`http://localhost:1234/dashboard/phone?brandId=${brand[0].br_id}`)
+            axios.get(`http://localhost:1234/dashboard/phone?brandId=${brand[0].id}`)
             .then((response) => {
                 let phone = response.data;
                 this.setState({ phone: phone });
@@ -111,7 +111,7 @@ class Sortproductattribute extends Component {
                     <select onChange={(e) => { this.handleBrand(e)}} class="custom-select" id="inputGroupSelect01">
                         {
                             brand.map((data, index, arr) =>
-                            <option  value={data.br_id}>{data.title}</option>
+                            <option  value={data.id}>{data.title}</option>
 
                         )}
                     </select>
@@ -119,7 +119,7 @@ class Sortproductattribute extends Component {
                     <select  onChange={(e) => { this.handlePhone(e)}} class="custom-select" id="inputGroupSelect02">
                         {
                             phone.map((data, index, arr) =>
-                                <option  value={data.pn_id}>{data.title}</option>
+                                <option  value={data.id}>{data.title}</option>
 
                             )}
                     </select>
@@ -127,7 +127,7 @@ class Sortproductattribute extends Component {
                     <select onChange={(e) => { this.handlePrice(e)}} class="custom-select" id="inputGroupSelect03">
                         {
                             price.map((data, index, arr) =>
-                                <option value={data.pr_id}>{data.title}</option>
+                                <option value={data.id}>{data.title}</option>
 
                             )}
                     </select>
@@ -136,7 +136,7 @@ class Sortproductattribute extends Component {
                         {
                             category.map((data, index, arr) =>
                                 
-                                <option value={data.ct_id}>{data.title}</option>
+                                <option value={data.id}>{data.title}</option>
 
                             )}
                     </select>

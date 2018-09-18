@@ -10,33 +10,63 @@ class Editproductattribute extends Component {
             showModal: false,
             brand: [],
             phone: [],
-            price: [],
+            priceArray: [],
             category: [],
-            brandId : 1,
-            phoneId: 1,
-            priceId : 1,
-            categoryId : 1,
-            productType : '',
-            trendingOrBasic : '',
+            id : 0,
+            product_id : 0,
+            brand_id : 0,
+            phone_id : 0,
+            price_id : 0,
+            category_id : 0,
+            product_type : '',
             title : '',
-            subTitle : '',
+            subtitle : '',
             image : '',
-            discount : '',
-            priceValue : '',
-            shippingCost : '',
-            available : '',
-            stock : ''
+            discount : 0,
+            shipping_cost : 0,
+            priceValue: 0,
+            available : 0,
+            product_count : 0,
+            trending_status : 0,
+            active_status : 0,
+            created_on : 0,
+            updated_on : 0
                 }
     }
 
     componentDidMount(){
-        axios.get(`http://localhost:1234/dashboard/product/edit?`)
-       
+        let productAttributeId = this.props.match.params.id;
+        axios.get(`http://localhost:1234/dashboard/product/edit?productAttributeId=${productAttributeId}`).then((response) => {
+            let productAttribute = response.data;
+
+            this.setState({
+                id : productAttribute[0].id,
+                product_id : productAttribute[0].product_id,
+                brand_id : productAttribute[0].brand_id,
+                phone_id : productAttribute[0].phone_id,
+                price_id : productAttribute[0].price_id,
+                category_id : productAttribute[0].category_id,
+                product_type : productAttribute[0].product_type,
+                title : productAttribute[0].title,
+                subtitle : productAttribute[0].subtitle,
+                image : productAttribute[0].image,
+                priceValue: productAttribute[0].price,
+                discount : productAttribute[0].discount,
+                shipping_cost : productAttribute[0].shipping_cost,
+                available : productAttribute[0].available,
+                product_count : productAttribute[0].product_count,
+                trending_status : productAttribute[0].trending_status,
+                active_status : productAttribute[0].active_status,
+                created_on : productAttribute[0].created_on,
+                updated_on : productAttribute[0].updated_on
+            });
+        
+
         axios.get(`http://localhost:1234/dashboard/brand`)
         .then((response) => {
             let brand = response.data;
             this.setState({ brand: brand});
-            axios.get(`http://localhost:1234/dashboard/phone?brandId=${brand[0].br_id}`)
+            axios.get(`http://localhost:1234/dashboard/phone?brandId=${brand[0].id}`)
             .then((response) => {
                 let phone = response.data;
                 this.setState({ phone: phone });
@@ -44,7 +74,7 @@ class Editproductattribute extends Component {
                 axios.get(`http://localhost:1234/dashboard/price`)
                 .then((response) => {
                     let price = response.data;
-                    this.setState({ price: price });
+                    this.setState({ priceArray: price });
                     axios.get(`http://localhost:1234/dashboard/category`)
                     .then((response) => {
                         let category = response.data;
@@ -66,6 +96,9 @@ class Editproductattribute extends Component {
         .catch((e) => {
             console.log("error while sending data to node platform", e);
         });
+        }).catch((error) => {
+            console.log("Error while editing product attribute data", error);
+        });
 
                 
 
@@ -79,6 +112,7 @@ class Editproductattribute extends Component {
         then((response) => {
             let phone = response.data;
              this.setState({phone: phone});
+             this.setState({brand_id: brandId});
         }).catch((error) => {
             console.log("error while getting phone value", error);
         });
@@ -87,17 +121,17 @@ class Editproductattribute extends Component {
 
     handlePhone(e){
         let phoneId = e.target.value;
-        this.setState({phoneId : phoneId});
+        this.setState({phone_id : phoneId});
     }
 
     handlePrice(e){
         let priceId = e.target.value;
-        this.setState({priceId : priceId});
+        this.setState({price_id : priceId});
     }
 
     handleCategory(e){
         let categoryId = e.target.value;
-        this.setState({categoryId: categoryId});
+        this.setState({category_id: categoryId});
     }
 
 
@@ -112,12 +146,14 @@ class Editproductattribute extends Component {
 
     handleFormSubmit(e){
         e.preventDefault();
+        this.props.history.push('/productAttribute');
 
-        axios.post(`http://localhost:1234/dashboard/product/add`,{
+        axios.post(`http://localhost:1234/dashboard/productAttribute/editSucess`,{
             productDetail : this.state
         })
         .then((response) => {
                 let category = response.data;
+
         })
         .catch((e) => {
             console.log("error while sending data to node platform", e);
@@ -128,13 +164,13 @@ class Editproductattribute extends Component {
     handleProductType(e){
         e.preventDefault();
         let value = e.target.value;
-        this.setState({productType : value});
+        this.setState({product_type : value});
         
     }
     handleTrandingOrBasic(e){
         e.preventDefault();
         let value = e.target.value;
-        this.setState({trendingOrBasic: value});
+        this.setState({trending_status: value});
     }
     handleTitle(e){
         e.preventDefault();
@@ -144,7 +180,7 @@ class Editproductattribute extends Component {
     handleSubtitle(e){
         e.preventDefault();
         let value = e.target.value;
-        this.setState({subTitle: value});
+        this.setState({subtitle: value});
 
     }
     handleImage(e){
@@ -168,7 +204,7 @@ class Editproductattribute extends Component {
     handleShippingcost(e){
         e.preventDefault();
         let value = e.target.value;
-        this.setState({shippingCost: value});
+        this.setState({shipping_cost: value});
         
     }
     handleAvailable(e){
@@ -184,70 +220,66 @@ class Editproductattribute extends Component {
         
     }
     render() {
-        let { brand, phone, price, category } = this.state;
-        let productAttributeDetail = this.props.data;
-            
+        let productAttributeDetail = this.state;
+
+        
             let {
-                pa_id,
+                brand, 
+                phone, 
+                priceArray, 
+                category,
+                id,
                 
-                br_id,
-                brandTitle,
-                
+                product_id,
 
-                pn_id,
-                phoneTitle,
-
-                pr_id,
-                priceTitle,
-
-                ct_id,
-                categoryTitle,
-                
-                productId,
+                brand_id,
+                phone_id,
+                price_id,
+                category_id,
+                priceValue,
                 product_type,
-                priceId,
-                discount,
-                image,
-                isAvailable,
                 title,
                 subtitle,
-                product_count,
+                image,
+                discount,
                 shipping_cost,
-                status,
-                top_status,
-
+                available,
+                product_count,
+                trending_status,
+                active_status,
                 created_on,
                 updated_on
-            } =  productAttributeDetail;
+                            } =  this.state;
+                console.log("*******************************888");
+                console.log(
+                    brand,
+                    phone,
+                    priceArray,
+                    category,
+                    id,
+
+                    product_id,
+
+                    brand_id,
+                    phone_id,
+                    price_id,
+                    category_id,
+                    priceValue,
+                    product_type,
+                    title,
+                    subtitle,
+                    image,
+                    discount,
+                    shipping_cost,
+                    available,
+                    product_count,
+                    trending_status,
+                    active_status,
+                    created_on,
+                    updated_on
+                );
         
-            console.log( pa_id,
-                
-                br_id,
-                brandTitle,
-                
-
-                pn_id,
-                phoneTitle,
-
-                pr_id,
-                priceTitle,
-
-                ct_id,
-                categoryTitle,
-                
-                priceId,
-                discount,
-                image,
-                isAvailable,
-                title,
-                subtitle,
-                product_count,
-                shipping_cost,
-                status,
-                top_status,
-
-                created_on,
-                updated_on, productId, product_type);
+        
         return (
             <div>
 
@@ -281,7 +313,7 @@ class Editproductattribute extends Component {
                                             <select onChange={(e) => { this.handleBrand(e) }} class="custom-select" id="inputGroupSelect01">
                                                 {
                                                     brand.map((data, index, arr) =>
-                                                        <option value={data.br_id} selected={br_id === data.br_id} >{data.title}</option>
+                                                        <option value={data.id} selected={brand_id === data.id} >{data.title}</option>
 
                                                     )}
                                             </select>
@@ -294,7 +326,7 @@ class Editproductattribute extends Component {
                                             <select onChange={(e) => { this.handlePhone(e) }} class="custom-select" id="inputGroupSelect02">
                                                 {
                                                     phone.map((data, index, arr) =>
-                                                        <option value={data.pn_id} selected={pn_id === data.pn_id} >{data.title}</option>
+                                                        <option value={data.id} selected={phone_id === data.id} >{data.title}</option>
 
                                                     )}
                                             </select>
@@ -306,8 +338,8 @@ class Editproductattribute extends Component {
                                         <label for="firstName">Price range</label>
                                             <select onChange={(e) => { this.handlePrice(e) }} class="custom-select" id="inputGroupSelect03">
                                                 {
-                                                    price.map((data, index, arr) =>
-                                                        <option value={data.pr_id} selected={pr_id === data.pr_id}>{data.title}</option>
+                                                    priceArray.map((data, index, arr) =>
+                                                        <option value={data.id} selected={id === data.price_id}>{data.title}</option>
 
                                                     )}
                                             </select>
@@ -322,7 +354,7 @@ class Editproductattribute extends Component {
                                                 {
                                                     category.map((data, index, arr) =>
 
-                                                        <option value={data.ct_id} selected={ct_id === data.ct_id}>{data.title}</option>
+                                                        <option value={data.id} selected={category_id === data.id}>{data.title}</option>
 
                                                     )}
                                             </select>
@@ -349,8 +381,8 @@ class Editproductattribute extends Component {
                                         <label for="confirmPassword">Tranding or Basic</label>
                                         <select onChange={(e) => {this.handleTrandingOrBasic(e)}} ref="trendingOrBasic" class="custom-select" id="inputGroupSelect04">
 
-                                            <option value="1">Tranding</option>
-                                            <option value="0">Basic</option>
+                                            <option value="1" selected={trending_status === 1}>Tranding</option>
+                                            <option value="0" selected={trending_status === 0}>Basic</option>
 
                                         </select>
                                     </div>
@@ -382,7 +414,7 @@ class Editproductattribute extends Component {
                                 <div class="col-md-6">
                                     <div class="form-label-group">
                                         <label for="file">Choose image</label>
-                                        <input onChange={(e) => {this.handleImage(e)}} type="file" id="image" class="form-control" placeholder="image" required="required" autofocus="autofocus" />
+                                        <input onChange={(e) => {this.handleImage(e)}} type="file" id="image" class="form-control" placeholder="image"  autofocus="autofocus" />
                                     </div>
                                 </div>
 
@@ -400,7 +432,7 @@ class Editproductattribute extends Component {
                                 <div class="col-md-6">
                                     <div class="form-label-group">
                                         <label for="price">Price</label>
-                                        <input onChange={(e) => {this.handlePrice(e)}} type="number" id="price" class="form-control" value={price} required="required" autofocus="autofocus" />
+                                        <input onChange={(e) => {this.handlePrice(e)}} type="number" id="price" class="form-control" value={priceValue} required="required" autofocus="autofocus" />
                                     </div>
                                 </div>  
 
@@ -418,7 +450,7 @@ class Editproductattribute extends Component {
                                 <div class="col-md-6">
                                     <div class="form-label-group">
                                         <label for="available">Is available</label>
-                                        <input onChange={(e) => {this.handleAvailable(e)}} type="number" id="firstName" class="form-control" placeholder="available" required="required" autofocus="autofocus" />
+                                        <input onChange={(e) => {this.handleAvailable(e)}} type="number" id="firstName" class="form-control" value={available} placeholder="available" required="required" autofocus="autofocus" />
                                     </div>
                                 </div>  
 

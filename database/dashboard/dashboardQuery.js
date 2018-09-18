@@ -78,7 +78,8 @@ let qr_getProductCount = ({}) => {
 }
 
 let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, categoryId}) => {
-    let sqlQuery = `SELECT pa.id,
+    let sqlQuery = `SELECT pa.id as productAttributeId,
+        p.id as productId,
         br.id, br.title as brandTitle, pn.id, pn.title as phoneTitle, pr.id, pr.title as priceTitle, ct.id, ct.title as categoryTitle, p.id as priceId,p.id as productId, p.product_type, p.title, p.subtitle, p.image, p.price, p.discount, p.shipping_cost, p.available,  p.product_count, p.active_status, p.trending_status, p.created_on, p.updated_on 
         FROM product_attribute pa 
         INNER JOIN 
@@ -289,14 +290,93 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
                 console.log("error, while making query for qr_getWhome query function!!!", err);
             });
     }
-    let qr_editProductData = ({productId, productAttributeId}) => {
 
-        let sqlQuery = `SELECT * FROM product p INNER JOIN product_attribute pa ON p.id = pa.product_id WHERE p.id=1 AND pa.product_id = 1 LIMIT 0, 1`;
-        let paramr = [productId, productAttributeId];
+    let qr_editProductSave = ({productDetailObj}) => {
+
+        let sqlQuery = `UPDATE  product SET
+        product_type =? , 
+        title = ?, 
+        subtitle = ?, 
+        image = ?, 
+        price = ?, 
+        discount = ?, 
+        shipping_cost = ?, 
+        available = ?, 
+        product_count = ?, 
+        active_status = ?, 
+        trending_status = ?, 
+        updated_on  = ?
+        WHERE id = ?`;
+        let paramr = [
+            productDetailObj.productType,
+            productDetailObj.title,
+            productDetailObj.subTitle,
+            productDetailObj.image,
+            productDetailObj.priceValue,
+            productDetailObj.discount,
+            productDetailObj.shippingCost,
+            productDetailObj.available,
+            productDetailObj.stock,
+            productDetailObj.status,
+            productDetailObj.trendingOrBasic,
+            productDetailObj.updatedOn,
+            productDetailObj.productId
+        ];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
             .then((row) => {
-                if (row.insertId) {
+                if (row.affectedRows) {
+                    return row;
+                } else {
+                    return 0;
+                }
+            })
+            .catch(err => {
+                console.log("error, while making query for qr_getWhome query function!!!", err);
+            });
+    }
+
+
+
+
+    let qr_editProductData = ({ productAttributeId }) => {
+
+        let sqlQuery = `SELECT * FROM product p INNER JOIN product_attribute pa ON p.id = pa.product_id WHERE pa.id = ? LIMIT 0, 1`;
+        let paramr = [productAttributeId];
+
+        return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+            .then((row) => {
+                if (row.length) {
+                    return row;
+                } else {
+                    return 0;
+                }
+            })
+            .catch(err => {
+                console.log("error, while making query for qr_getWhome query function!!!", err);
+            });
+    }   
+    
+    
+    let qr_editProductAttributeSave = ({productAttributeObj}) => {
+
+        let sqlQuery = `UPDATE product_attribute SET
+        brand_id = ?, phone_id = ?, price_id = ?, category_id = ?, active_status = ?, updated_on = ? 
+        WHERE
+        id = ?`;
+        let paramr = [
+            productAttributeObj.brandId,
+            productAttributeObj.phoneId,
+            productAttributeObj.priceId,
+            productAttributeObj.categoryId,
+            productAttributeObj.status,
+            productAttributeObj.updatedOn,
+            productAttributeObj.id
+        ];
+
+        return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+            .then((row) => {
+                if (row.affectedRows) {
                     return row;
                 } else {
                     return 0;
@@ -320,5 +400,7 @@ module.exports = {
   qr_getCategory : qr_getCategory,
   qr_insertProduct :  qr_insertProduct,
   qr_insertProductAttribute : qr_insertProductAttribute,
-  qr_editProductData :qr_editProductData
+  qr_editProductData :qr_editProductData,
+  qr_editProductSave : qr_editProductSave,
+  qr_editProductAttributeSave : qr_editProductAttributeSave
 };

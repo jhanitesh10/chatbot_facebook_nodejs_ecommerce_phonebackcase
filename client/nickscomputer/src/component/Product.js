@@ -152,7 +152,13 @@ class Product extends Component{
 
                 </div>
             </div>
-            <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)} />
+            {/* <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)} /> */}
+            <Switch>
+                <Route
+                    path='/product'
+                    render={(props) => <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)}  isAuthed={true} />}
+                />
+            </Switch>
             <div className="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 
             </div>

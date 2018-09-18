@@ -46,12 +46,16 @@ let product = require('./routes/dashboard/product.js'),
     getPrice = product.getPrice,
     getCategory = product.getCategory,
     addProduct = product.addProduct,
-    editProduct = product.editProduct;
+    editProduct = product.editProduct,
+    editProductSave = product.editProductSave;
 
 
 app.set("view engine", 'ejs');
 app.set("views", './views');
+
 app.use(express.static(__dirname + '/views'));
+
+app.get('/', (req, res) => {res.send(200);});
 
 app.use(cors());
 
@@ -62,7 +66,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({
   limit : '50mb'
 }));
-
 
 /* facebook endpoint */
 app.get('/webhook', verifyAccessToken);
@@ -103,7 +106,7 @@ app.get('/dashboard/category', getCategory);
 app.post('/dashboard/product/add', addProduct);
 
 app.get('/dashboard/product/edit', editProduct);
-
+app.post("/dashboard/productAttribute/editSucess", editProductSave);
 
 let statusForServer = 0;
 

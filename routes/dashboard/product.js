@@ -12,7 +12,9 @@ let dashboardQuery = require('../../database/dashboard/dashboardQuery.js'),
     qr_getCategory = dashboardQuery.qr_getCategory,
     qr_insertProduct = dashboardQuery.qr_insertProduct,
     qr_insertProductAttribute = dashboardQuery.qr_insertProductAttribute,
-    qr_editProductData = dashboardQuery.qr_editProductData;
+    qr_editProductData = dashboardQuery.qr_editProductData,
+    qr_editProductSave = dashboardQuery.qr_editProductSave,
+    qr_editProductAttributeSave = dashboardQuery.qr_editProductAttributeSave;
 
 
 let getProductCount = (req, res) => {
@@ -101,7 +103,7 @@ let getCategory = (req, res) => {
 let addProduct = (req, res) => {
 
     let body = req.body.productDetail;
-    console.log(body);
+
     let productAttributeObj = {
         brandId : body.brandId,
         phoneId : body.phoneId,
@@ -137,70 +139,59 @@ let addProduct = (req, res) => {
         });
     });
 
-// qr_insertProductAttribute
 
-
-//     { productDetail:
-//    { showModal: false,
-//      brand:
-//       [ [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object] ],
-//      phone:
-//       [ [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object] ],
-//      price: [ [Object], [Object], [Object], [Object], [Object] ],
-//      category:
-//       [ [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object],
-//         [Object] ],
-//      brandId: 1,
-//      phoneId: 1,
-//      priceId: 1,
-//      categoryId: 1,
-//      productType: 'alskd',
-//      trendingOrBasic: '',
-//      title: '1',
-//      subTitle: 'lkdsj',
-//      image: 'C:\\fakepath\\10 Cloverfield Lane 2016 1080p HDRip x264 AAC-JYK.mkv.jpg',
-//      discount: '23',
-//      priceValue: '232',
-//      shippingCost: '23',
-//      available: '1',
-//      stock: '' } }
 
 }
 let editProduct = (req, res) => {
-    let {productId, productAttributeId} = req.query;
-
-    return qr_editProductData({ productId: productId, productAttributeId: productAttributeId}).then( (editDataArray) => {
+    let {productAttributeId} = req.query;
+    console.log(productAttributeId);
+    return qr_editProductData({productAttributeId: productAttributeId}).then( (editDataArray) => {
         res.json(editDataArray);
     });
 }
 
+let editProductSave = (req, res) => {
+
+    let body = req.body.productDetail;
+
+    let productAttributeObj = {
+        brandId: body.brand_id,
+        phoneId: body.phone_id,
+        priceId: body.price_id,
+        categoryId: body.category_id,
+        productId: body.product_id,
+        id : body.id,
+        status: 1,
+        updatedOn: moment().unix()
+    }
+
+    let productDetailObj = {
+        productId: body.product_id,
+        productType: body.product_type,
+        trendingOrBasic: body.trending_status,
+        title: body.title,
+        subTitle: body.subtitle,
+        image: body.image,
+        discount: body.discount,
+        priceValue: body.priceValue,
+        shippingCost: body.shipping_cost,
+        available: body.available,
+        stock: body.product_count,
+        status: 1,
+        updatedOn: moment().unix(),
+    }
+    // console.log(productAttributeObj, productDetailObj);
+    // return 0;
+    return qr_editProductSave({ productDetailObj: productDetailObj }).then((productInsertId) => {
+        console.log(productInsertId, "1**************");
+
+        productAttributeObj.productId = productInsertId.insertId;
+        return qr_editProductAttributeSave({ productAttributeObj: productAttributeObj }).then((attributeInsertData) => {
+            console.log(attributeInsertData, "2***************************");
+        });
+    });
+ 
+}
 module.exports = {
   getProductCount: getProductCount,
   productDetail: productDetail,
@@ -211,5 +202,6 @@ module.exports = {
   getPrice: getPrice,
   getCategory: getCategory,
   addProduct : addProduct,
-  editProduct: editProduct
+  editProduct: editProduct,
+  editProductSave: editProductSave
 };

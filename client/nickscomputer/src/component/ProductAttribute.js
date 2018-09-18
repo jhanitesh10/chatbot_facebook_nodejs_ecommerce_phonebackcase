@@ -34,7 +34,7 @@ class Productattribute extends Component{
             phoneId: 1,
             priceId: 1,
             categoryId: 1,
-            data : {}
+            productAttributeId : ''
         }
     }
 
@@ -123,7 +123,7 @@ class Productattribute extends Component{
     handleModal(e, data){
         e.preventDefault();
         console.log(data);
-        this.setState({data: data});
+        this.setState({productAttributeId: data});
     }
 
     render(){
@@ -131,115 +131,124 @@ class Productattribute extends Component{
         let currentDateTime = Moment().unix();
         let productAttributeDetail = this.state;
         let paginationDetail = this.state.paginationDetail;
-        let data = this.state.data;
-        return (
-            <Router>
-            <div>
-            <div className="card-header">
-                <i className="fas fa-table"></i>
-                    
-                    Total product count: {this.state.totalDataCount}
-                    <div className="float-right">
-                            <Addproduct />
-                            <Editproductattribute data={data} />
-                            
-                    </div>                    
-            </div>
-            <div className="card-body">
-                <Sortproductattribute handleProductAttributeCount={this.handleProductAttributeCount.bind(this)} />
-                
-                <div className="table-responsive">
-
-                    <table className="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Brand</th>
-                                <th>Phone</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>ProductId</th>
-                                <th>Picutre</th>
-                                <th>Title</th>
-                                <th>Subtitle</th>
-                                <th>Price</th>
-                                <th>Discount</th>
-                                <th>Shipping Cost</th>
-                                <th>Stock</th>
-                                <th>Numbser Of product</th>
-                                <th>Normal product</th>
-                                <th>Top product</th>
-                                <th>Last Updat</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Brand</th>
-                                <th>Phone</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>ProductId</th>
-                                <th>Picutre</th>
-                                <th>Title</th>
-                                <th>Subtitle</th>
-                                <th>Price</th>
-                                <th>Discount</th>
-                                <th>Shipping Cost</th>
-                                <th>Stock</th>
-                                <th>Product count</th>
-                                <th>Product Status</th>
-                                <th>Trending or Normal</th>
-                                <th>Last Updat</th>
-                            </tr>
-                        </tfoot>
-                        {productDetail.map((data, index) =>
-
-                            <tbody>
-
-                                <tr>
-                                    <td>{data.id}</td>
-                                    <td>{data.brandTitle}</td>
-                                    <td>{data.phoneTitle}</td>
-                                    <td>{data.priceTitle}</td>
-                                    <td>{data.categoryTitle}</td>
-                                    <td>{data.id}</td>
-                                    <td><img src ={data.image} /></td>
-                                    <td>{data.title}</td>
-                                    <td>{data.subtitle}</td>
-                                    <td>{data.price}</td>
-                                    <td>{data.discount}</td>
-                                    <td>{data.shipping_cost}</td>
-                                    <td>{(data.available)?"In-Stock":"Out of Stock"}</td>
-                                    <td>{data.product_count}</td>
-                                    <td>{(data.active_status)?"Yes":"No"}</td>
-                                    <td>{((data.trending_product)?"Trending Product" : "Basic Product")}</td>
-                                    <td>{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))}Days Ago</td>
-                                    <td>
-                                        <button onClick={(e) => {this.handleModal(e, data)}} type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong1">
-                                            Edit product
-                                     </button>
-
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        )}
-                    </table>
-                            
+        let productAttributeId = this.state.productAttributeId;
+        return <Router>
+            <Switch>
+              <div>
+                <div className="card-header">
+                  <i className="fas fa-table" />
+                  Total product count: {this.state.totalDataCount}
+                  <div className="float-right">
+                    <Route exact path="/productAttribute" component={Addproduct} />
+                  </div>
                 </div>
-            </div>
-            <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)} />
-            <div className="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                <div className="card-body">
+                  {/* <Sortproductattribute handleProductAttributeCount={this.handleProductAttributeCount.bind(this)} /> */}
+                  <Route path="/productAttribute" render={props => <Sortproductattribute handleProductAttributeCount={this.handleProductAttributeCount.bind(this)} isAuthed={true} />} />
+                  <div className="table-responsive">
+                    <table className="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>ProductAttribute Id</th>
+                          <th>product Id</th>
+                          <th>Brand</th>
+                          <th>Phone</th>
+                          <th>Price</th>
+                          <th>Category</th>
+                          <th>ProductId</th>
+                          <th>Picutre</th>
+                          <th>Title</th>
+                          <th>Subtitle</th>
+                          <th>Price</th>
+                          <th>Discount</th>
+                          <th>Shipping Cost</th>
+                          <th>Stock</th>
+                          <th>Numbser Of product</th>
+                          <th>Normal product</th>
+                          <th>Top product</th>
+                          <th>Last Updat</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>ProductAttribute Id</th>
+                          <th>product Id</th>
+                          <th>Brand</th>
+                          <th>Phone</th>
+                          <th>Price</th>
+                          <th>Category</th>
+                          <th>ProductId</th>
+                          <th>Picutre</th>
+                          <th>Title</th>
+                          <th>Subtitle</th>
+                          <th>Price</th>
+                          <th>Discount</th>
+                          <th>Shipping Cost</th>
+                          <th>Stock</th>
+                          <th>Product count</th>
+                          <th>Product Status</th>
+                          <th>Trending or Normal</th>
+                          <th>Last Update</th>
+                        </tr>
+                      </tfoot>
+                      {productDetail.map((data, index) => <tbody>
+                          <tr>
+                            <td>{data.productAttributeId}</td>
+                            <td>{data.productId}</td>
+                            <td>{data.brandTitle}</td>
+                            <td>{data.phoneTitle}</td>
+                            <td>{data.priceTitle}</td>
+                            <td>{data.categoryTitle}</td>
+                            <td>{data.id}</td>
+                            <td>
+                              <img src={data.image} />
+                            </td>
+                            <td>{data.title}</td>
+                            <td>{data.subtitle}</td>
+                            <td>{data.price}</td>
+                            <td>{data.discount}</td>
+                            <td>{data.shipping_cost}</td>
+                            <td>
+                              {data.available
+                                ? "In-Stock"
+                                : "Out of Stock"}
+                            </td>
+                            <td>{data.product_count}</td>
+                            <td>{data.active_status ? "Yes" : "No"}</td>
+                            <td>
+                              {data.trending_product
+                                ? "Trending Product"
+                                : "Basic Product"}
+                            </td>
+                            <td>
+                              {Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))}
+                              Days Ago
+                            </td>
+                            <td>
+                              <Route path="/productAttribute/edit/:id" component={Editproductattribute} />
+                              <button onClick={e => {
+                                  this.handleModal(e, data.productAttributeId);
+                                }} type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong1">
+                                
+                                <Link to={`/productAttribute/edit/${data.productAttributeId}`} >
+                                Click!
+                                </Link>
 
-            </div>
-            </Router>
-            
-                 
-    
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>)}
+                    </table>
+                  </div>
+                </div>
 
-        );
+                <Route path="/productAttribute" render={props => <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)} isAuthed={true} />} />
+                <div className="card-footer small text-muted">
+                  Updated yesterday at 11:59 PM
+                </div>
+              </div>
+            </Switch>
+          </Router>;
     }
 }
 
