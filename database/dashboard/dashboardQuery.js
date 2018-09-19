@@ -387,6 +387,78 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
             });
     }
 
+    
+let qr_getCompletePayment = ({offset, limit }) => {
+
+    let sqlQuery = `SELECT uo.product_id, cp.payment_id, cp.status, cp.shorturl, cp.longurl, cp.purpose, cp.amount, cp.fees, cp.currency, cp.buyer, cp.buyer_name, cp.buyer_phone, cp.payment_request_id, cp.createdat, cp.updatedat FROM complete_payment cp INNER JOIN user_order uo ON cp.payment_request_id = uo.payment_request_id LIMIT ?, ?`;
+    let paramr = [offset, limit];
+
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.length) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}  
+
+let qr_getCompletePaymentCount = ({  }) => {
+
+    let sqlQuery = `SELECT uo.product_id, cp.payment_id FROM complete_payment cp INNER JOIN user_order uo ON cp.payment_request_id = uo.payment_request_id`;
+    let paramr = [];
+
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.length) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}  
+
+
+let qr_getOrder = ({ offset, limit}) => {
+
+    let sqlQuery = `SELECT * from user_order LIMIT ?, ?`;
+    let paramr = [offset, limit];
+
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.length) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}  
+let qr_getOrderCount = ({ }) => {
+
+    let sqlQuery = `SELECT id from user_order`;
+    let paramr = [];
+
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.length) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}  
 module.exports = {
   qr_getFacebookUser: qr_getFacebookUser,
   qr_getFacebookUserCount: qr_getFacebookUserCount,
@@ -402,5 +474,9 @@ module.exports = {
   qr_insertProductAttribute : qr_insertProductAttribute,
   qr_editProductData :qr_editProductData,
   qr_editProductSave : qr_editProductSave,
-  qr_editProductAttributeSave : qr_editProductAttributeSave
+  qr_editProductAttributeSave : qr_editProductAttributeSave,
+  qr_getCompletePayment: qr_getCompletePayment,
+  qr_getCompletePaymentCount: qr_getCompletePaymentCount,
+  qr_getOrder : qr_getOrder,
+  qr_getOrderCount : qr_getOrderCount
 };

@@ -49,6 +49,30 @@ let product = require('./routes/dashboard/product.js'),
     editProduct = product.editProduct,
     editProductSave = product.editProductSave;
 
+  let payment = require('./routes/dashboard/payment.js'),
+      getCompletePayment = payment.getCompletePayment,
+      getCompletePaymentCount = payment.getCompletePaymentCount;
+
+  let completeOrder = require('./routes/dashboard/order.js'),
+      getOrder = completeOrder.getOrder,
+      getOrderCount = completeOrder.getOrderCount;
+
+const {
+  dialogflow,
+  BasicCard,
+  Image,
+  SimpleResponse,
+  Permission,
+  Button,
+  Suggestions,
+  List,
+  Carousel,
+  LinkOutSuggestion,
+  MediaObject,
+  Table
+} = require("actions-on-google");
+let dialogflowApp = dialogflow();      
+
 
 app.set("view engine", 'ejs');
 app.set("views", './views');
@@ -108,6 +132,11 @@ app.post('/dashboard/product/add', addProduct);
 app.get('/dashboard/product/edit', editProduct);
 app.post("/dashboard/productAttribute/editSucess", editProductSave);
 
+app.get("/dashboard/completePayment", getCompletePayment);
+app.get("/dashboard/completePayment/count", getCompletePaymentCount);
+
+app.get("/dashboard/order", getOrder);
+app.get('/dashboard/order/count', getOrderCount);
 let statusForServer = 0;
 
 if (statusForServer) {
