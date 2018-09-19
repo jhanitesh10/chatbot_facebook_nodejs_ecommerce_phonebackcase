@@ -18,6 +18,8 @@ import Pagination from './Pagination.js';
 import Product from "./Product.js";
 import Productattribute from './ProductAttribute.js';
 import Completepayment from "./completePayment/Completepayment";
+import Order from './order/Order.js';
+
 
 class Sidebaar extends Component{
     constructor(){
@@ -49,6 +51,10 @@ class Sidebaar extends Component{
                             <li>
                                 <li className="nav-item"><Link className="nav-link" to={'/completePayment'}>Complete payment</Link></li>
 
+                            </li>
+                            <li>
+                                <li className="nav-item"><Link className="nav-link" to={'/order'}>Order</Link></li>
+                                
                             </li>
                 
                         </ul>
@@ -82,6 +88,7 @@ class Sidebaar extends Component{
                                                             <Route  path='/product' component={Product}></Route>
                                                             <Route path='/productAttribute' component={Productattribute}></Route>
                                                             <Route path='/completePayment' component={Completepayment}></Route>
+                                                            <Route path='/order' component={Order}></Route>
                                                         </Switch>
                                                 </div>
 
