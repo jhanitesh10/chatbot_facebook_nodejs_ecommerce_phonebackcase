@@ -16,6 +16,7 @@ import {
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Pagination from "../Pagination.js";
+import Sortorder from './sortOrder.js';
 
 class Order extends Component {
     constructor(props) {
@@ -24,20 +25,78 @@ class Order extends Component {
             orderDetail: [],
             totalDataCount: 0,
             offset: 0,
-            limit: 2
+            limit: 2,
+            paymentStatus : 1,
+            deliveryStatus : 0,
+            processStatus : 0,
+            orderStatus : 0        
         }
     }
 
     componentDidMount() {
 
-        let offset = this.state.offset,
-            limit = this.state.limit;
+        let {
+            offset, limit, paymentStatus, deliveryStatus, processStatus, orderStatus
+        } = this.state;
 
-        axios.get(`http://localhost:1234/dashboard/order/Count`)
+        axios
+          .get(`http://localhost:1234/dashboard/order/count?paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
+          .then(orderResponse => {
+            let orderCount = orderResponse.data;
+
+            axios
+                .get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}&paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
+              .then(response => {
+                let orderDetailArray = response.data;
+                let totalDataCount = orderCount.length;
+
+                this.setState({
+                  orderDetail: orderDetailArray,
+                  totalDataCount: totalDataCount
+                });
+              })
+              .catch(e => {
+                console.log("error while sending data to node platform", e);
+              });
+          })
+          .catch(e => {
+            console.log("error while getting user count", e);
+          });
+
+
+    }
+
+    hanldePagination(key) {
+        let totalDataCount = this.state.totalDataCount;
+        let limit = this.state.limit;
+        let totalPage = Math.ceil(totalDataCount / limit);
+        let offset = (limit) * (key - 1);
+        let { paymentStatus, deliveryStatus, processStatus, orderStatus } = this.state;
+
+        axios
+            .get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}&paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
+            .then((response) => {
+                let orderDetailArray = response.data;
+                this.setState({ orderDetail: orderDetailArray });
+            })
+            .catch((e) => {
+                console.log("error while sending data to node platform", e);
+            });
+
+
+        // alert(key);
+    }
+
+    handleOrderSort(paymentStatus, deliveryStatus, processStatus, orderStatus){
+        let {
+            offset, limit
+        } = this.state;
+
+        axios.get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}&paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
             .then((orderResponse) => {
                 let orderCount = orderResponse.data;
 
-                axios.get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}`)
+                axios.get(`http://localhost:1234/dashboard/order/count?paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
                     .then((response) => {
                         let orderDetailArray = response.data;
                         let totalDataCount = orderCount.length;
@@ -54,29 +113,14 @@ class Order extends Component {
                 console.log("error while getting user count", e);
             });
 
-
     }
-
-    hanldePagination(key) {
-        let totalDataCount = this.state.totalDataCount;
-        let limit = this.state.limit;
-        let totalPage = Math.ceil(totalDataCount / limit);
-        let offset = (limit) * (key - 1);
-
-
-        axios.get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}`)
-            .then((response) => {
-                let orderDetailArray = response.data;
-                this.setState({ orderDetail: orderDetailArray });
-            })
-            .catch((e) => {
-                console.log("error while sending data to node platform", e);
-            });
-
-
-        // alert(key);
+    handleDownload(e, url){
+        e.preventDefault();
+        // alert(data);
+        axios.get(`http://localhost:1234/dashboard/image/download?url=${url}`).then((res) => {
+            console.log(res);
+        });
     }
-
     render() {
         let orderDetail = this.state.orderDetail;
         let currentDateTime = Moment().unix();
@@ -85,6 +129,12 @@ class Order extends Component {
             width: 50,
             height: 50
         }
+        let detail = {
+            paymentStatus : this.state.paymentStatus,
+            deliveryStatus : this.state.deliveryStatus,
+            processStatus : this.state.processStatus,
+            orderStatus : this.state.orderStatus
+            }
         return (
             <div>
                 <div className="card-header">
@@ -92,6 +142,9 @@ class Order extends Component {
                     Data Table Example
             </div>
                 <div className="card-body">
+                    
+                    <Route path="/order" render={props => <Sortorder details={detail} handleOrderSort={this.handleOrderSort.bind(this)} isAuthed={true} />} />
+
                     <div className="table-responsive">
 
                         <table className="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -120,6 +173,7 @@ class Order extends Component {
                                     <th>Process status</th>
                                     <th>Ordered On</th>
                                     <th>orderd at </th>
+                                    <th>Download</th>
                                 
                                 </tr>
                             </thead>
@@ -148,6 +202,8 @@ class Order extends Component {
                                     <th>Process status</th>
                                     <th>Ordered On</th>
                                     <th>Ordered at</th>
+                                    <th>Download</th>
+
                                     
                                 </tr>
                             </tfoot>
@@ -178,6 +234,7 @@ class Order extends Component {
                                         <td>{(orderData.process_status)?"Processed":"Pending"}</td>
                                         <td>{orderData.updated_on}</td>
                                         <td>{Math.ceil((currentDateTime - orderData.updated_on) / (3600 * 24))}Days Ago</td>
+                                        <td><button value={orderData.image} onClick={(e) => {this.handleDownload(e, orderData.image)}}>Click</button></td>
                                     </tr>
 
                                 </tbody>

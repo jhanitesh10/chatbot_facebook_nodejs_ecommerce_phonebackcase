@@ -425,10 +425,10 @@ let qr_getCompletePaymentCount = ({  }) => {
 }  
 
 
-let qr_getOrder = ({ offset, limit}) => {
-
-    let sqlQuery = `SELECT * from user_order LIMIT ?, ?`;
-    let paramr = [offset, limit];
+let qr_getOrder = ({ offset, limit, paymentStatus, deliveryStatus, processStatus, orderStatus}) => {
+    
+    let sqlQuery = `SELECT * FROM user_order WHERE order_type = ? AND payment_status = ? AND delivery_status = ? AND process_status = ? LIMIT ?, ?`;
+    let paramr = [orderStatus, paymentStatus, deliveryStatus, processStatus, offset, limit];
 
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
         .then((row) => {
@@ -442,10 +442,10 @@ let qr_getOrder = ({ offset, limit}) => {
             console.log("error, while making query for qr_getWhome query function!!!", err);
         });
 }  
-let qr_getOrderCount = ({ }) => {
+let qr_getOrderCount = ({ paymentStatus,deliveryStatus,processStatus,orderStatus}) => {
 
-    let sqlQuery = `SELECT id from user_order`;
-    let paramr = [];
+    let sqlQuery = `SELECT * FROM user_order WHERE order_type =? AND payment_status = ? AND delivery_status = ? AND process_status = ?`;
+    let paramr = [orderStatus, paymentStatus, deliveryStatus, processStatus];
 
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
         .then((row) => {

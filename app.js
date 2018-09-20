@@ -55,7 +55,8 @@ let product = require('./routes/dashboard/product.js'),
 
   let completeOrder = require('./routes/dashboard/order.js'),
       getOrder = completeOrder.getOrder,
-      getOrderCount = completeOrder.getOrderCount;
+      getOrderCount = completeOrder.getOrderCount,
+      downloadImage = completeOrder.downloadImage;
 
 const {
   dialogflow,
@@ -137,6 +138,8 @@ app.get("/dashboard/completePayment/count", getCompletePaymentCount);
 
 app.get("/dashboard/order", getOrder);
 app.get('/dashboard/order/count', getOrderCount);
+
+app.get("/dashboard/image/download", downloadImage);
 let statusForServer = 0;
 
 if (statusForServer) {
