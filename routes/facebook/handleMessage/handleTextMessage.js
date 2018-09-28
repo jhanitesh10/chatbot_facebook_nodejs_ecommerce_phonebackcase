@@ -17,7 +17,13 @@ let responseFunction = require("./responseFunction.js"),
   feedback = responseFunction.feedback,
   frequentlyAskQuestion = responseFunction.frequentlyAskQuestion,
   about = responseFunction.about,
-  howToBuy = responseFunction.howToBuy;
+  howToBuy = responseFunction.howToBuy,
+  brandAvailableIntent = responseFunction.brandAvailableIntent,
+  phoneAvailableIntent = responseFunction.phoneAvailableIntent,
+  brandUnavailableIntent = responseFunction.brandUnavailableIntent,
+  phoneUnavailableIntent = responseFunction.phoneUnavailableIntent,
+  abuseIntent = responseFunction.abuseIntent,
+  contactMe = responseFunction.contactMe;
 
 let errorResponse = require('./errorText.js'),
     errorMessage = errorResponse.errorMessage;
@@ -34,6 +40,9 @@ let shortFunction = require('../../shortFunction/function.js'),
 let query = require('../../../database/facebook/botQuery.js'),
     qr_insertUserText = query.qr_insertUserText;
 
+let dialogflow = require("../../../api/dialogflow.js"),
+    sendToDialoglow = dialogflow.sendToDialoglow;
+
 
 let processingTextMessage = ({senderId, messageText}) => {
 
@@ -41,8 +50,70 @@ let processingTextMessage = ({senderId, messageText}) => {
   let message1;
   let response;
 
-  return qr_insertUserText({senderId : senderId, text: string, createdAt: currentDateTimeUnix, updatedAt: currentDateTimeUnix}).then( () => {
+  
+  return qr_insertUserText({senderId : senderId, text: string, createdAt: currentDateTimeUnix(), updatedAt: currentDateTimeUnix()}).then( () => {
+    
+    return sendToDialoglow({ textMessege: string }).then((result) => {
+      let queryText =  result.result;
+      let response = result.response;
 
+      let intent = result.result.intent.displayName,
+           dialogflowResponse = result.result.fulfillmentText,
+           userText = result.result.queryText,
+           dialogflowParameter = result.result.parameters.fields;
+
+      if (intent === "brand_available"){
+        
+        return brandAvailableIntent({
+          senderId: senderId,
+          dialogflowResponse: dialogflowResponse
+        });
+
+      } else if (intent === "brand_unavailable"){
+      
+        return brandUnavailableIntent({
+          senderId: senderId,
+          dialogflowResponse: dialogflowResponse
+        });
+
+      } else if (intent === "Default Fallback Intent"){
+        
+      } else if (intent === "Default Welcome Intent"){
+        return initialTextReply({ senderId: senderId });
+      } else if (intent === "phone_available"){
+
+        return phoneAvailableIntent({
+          senderId: senderId,
+          dialogflowResponse: dialogflowResponse
+        });
+
+      } else if (intent === "phone_unavailable"){
+       
+        return phoneUnavailableIntent({
+          senderId: senderId,
+          dialogflowResponse: dialogflowResponse
+        });
+
+      } else if (intent === "abusive_word"){
+        return abuseIntent({ senderId: senderId, dialogflowResponse: dialogflowResponse});
+      }else if(intent === "help"){
+        return help({ senderId: senderId });
+      } else if (intent === "contact_me"){
+        return contactMe({senderId: senderId, dialogflowResponse: dialogflowResponse});
+      }else {
+        return help({ senderId: senderId });
+      }
+    
+    console.log(
+      
+        result.result.queryText,
+        result.result.parameters.fields,
+        result.result.allRequiredParamsPresent,
+        result.result.fulfillmentText,
+        result.result.intent.displayName
+
+    );
+    });
 
     if (string.match(/(hey)|(hello)|(hi)|(what's up?)/i)) {
       return initialTextReply({ senderId: senderId });

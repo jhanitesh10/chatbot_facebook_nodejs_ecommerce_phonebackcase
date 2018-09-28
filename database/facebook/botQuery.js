@@ -301,14 +301,14 @@ let qr_insertUserText = ({ senderId, text, createdAt, updatedAt }) => {
     updated_on
   )
   VALUES
-  (?, ?, ?)`;
+  (?, ?, ?, ?)`;
   let paramr = [
     senderId,
     text,
     createdAt,
     updatedAt
   ];
-  console.log(sqlQuery, paramr, "****************************8");
+
   return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
 
     if (row) {

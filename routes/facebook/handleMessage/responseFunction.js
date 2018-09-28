@@ -441,7 +441,7 @@ let initialTextReply = ({
     });
 
     multipleMessageArr.push({
-      text: "One of the thoughest task is to deside the case which look cool on our phone  but don't worry! I got you coverd with all you need to give new loop for you phone."
+      text: "One of the toughest task is to decide the case which look cool on our phone  but don't worry! I got you covered with all you need to give new loop for you phone."
     });
 
 
@@ -481,7 +481,7 @@ let contact = ({ senderId }) => {
       type: "template",
       payload: {
         template_type: "button",
-        text: "Need further assistance? Talk to a representative or send us an emsil.",
+        text: "Need further assistance? Talk to a representative or send us an Email.",
         buttons: [
           {
             type: "phone_number",
@@ -612,7 +612,7 @@ let about = ({ senderId }) => {
   }
 
   let text1 = {
-    "text": "Thanks for giving  you valuable time. you can click on the button and provide a feedback"
+    "text": "Thanks for giving  your valuable time to me. you can click on the button and provide a feedback"
   }
 
     let text2 = {
@@ -687,6 +687,70 @@ let howToBuy = ({ senderId }) => {
 
 }
 
+
+let brandAvailableIntent = ({ senderId, dialogflowResponse}) => {
+  let response = {
+    "text": `${dialogflowResponse}`
+  }
+
+  return arq_sendMessage({senderId: senderId, response:response}).then(() => {
+    return brand({senderId:senderId});
+  });
+
+}
+
+let phoneAvailableIntent = ({ senderId, dialogflowResponse}) => {
+  
+  let response = {
+    "text": `${dialogflowResponse}`
+  }
+
+  return arq_sendMessage({ senderId: senderId, response: response}).then(() => {
+    return brand({ senderId: senderId });
+  });
+
+}
+
+let brandUnavailableIntent = ({senderId, dialogflowResponse}) => {
+
+  let response = {
+    "text": `${dialogflowResponse}`
+  }
+  return arq_sendMessage({ senderId: senderId, response: response}).then((response) => {
+    return help({ senderId: senderId });
+  });
+
+}
+let phoneUnavailableIntent = ({senderId, dialogflowResponse}) => {
+
+  let response = {
+    "text": `${dialogflowResponse}`
+  }
+  return arq_sendMessage({ senderId: senderId, response: response }).then((response) => {
+    return help({ senderId: senderId });
+  });
+
+}
+
+let abuseIntent = ({senderId, dialogflowResponse}) => {
+
+  let response = {
+    "text": `${dialogflowResponse}`
+  }
+  return arq_sendMessage({ senderId: senderId, response: response }).then((response) => {
+    return help({ senderId: senderId });
+  });
+
+}
+
+let contactMe = ({senderId, dialogflowResponse}) => {
+  let response = {
+    "text": `${dialogflowResponse}`
+  }
+  return arq_sendMessage({ senderId: senderId, response: response }).then((response) => {
+    help({senderId : senderId});
+  });
+}
 module.exports = {
   whom: whom,
   brand: brand,
@@ -703,5 +767,11 @@ module.exports = {
   feedback: feedback,
   frequentlyAskQuestion: frequentlyAskQuestion,
   about: about,
-  howToBuy : howToBuy
+  howToBuy : howToBuy,
+  brandAvailableIntent : brandAvailableIntent,
+  phoneAvailableIntent : phoneAvailableIntent,
+  brandUnavailableIntent : brandUnavailableIntent,
+  phoneUnavailableIntent : phoneUnavailableIntent,
+  abuseIntent: abuseIntent,
+  contactMe: contactMe
 };

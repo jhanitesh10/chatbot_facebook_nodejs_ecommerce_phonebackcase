@@ -14,12 +14,7 @@ const request = Promise.promisify(require('request')),
       req = Promise.promisifyAll(request);
 
 const confidential = require('./confidential/data.js'),
-      PORT = confidential.PORT,
-      Dialogflow_private_key = confidential.Dialogflow_private_key,
-      Dialogflow_client_email = confidential.Dialogflow_client_email,
-      Project_Id = confidential.Project_Id,
-      Session_Id = confidential.Session_Id,
-      Language_Code = confidential.Language_Code;
+      PORT = confidential.PORT;
 
 let processEvent = require('./routes/facebook/index.js'),
     processRequestEndpoint = processEvent.processRequestEndpoint,
@@ -68,8 +63,8 @@ let product = require('./routes/dashboard/product.js'),
 app.set("view engine", 'ejs');
 app.set("views", './views');
 
-app.use(express.static(__dirname + '/views'));
-
+app.use(express.static(__dirname + '/views/image'));
+console.log(__dirname + "/views/image");
 app.get('/', (req, res) => {res.send(200);});
 
 app.use(cors());
@@ -132,44 +127,9 @@ app.get('/dashboard/order/count', getOrderCount);
 app.get("/dashboard/image/download", downloadImage);
 
 
-/*Dialogflow integration */
-const dialogflow = require('dialogflow');
-const config = {
-  credentials: {
-    private_key: Dialogflow_private_key,
-    client_email: Dialogflow_client_email
-  }
-};
-const sessionClient = new dialogflow.SessionsClient(config);
-const sessionPath = sessionClient.sessionPath(Project_Id, Session_Id);
-let testMessage = "i want to buy apple";
-
-const requestData = {
-  session: sessionPath,
-  queryInput: {
-    text: {
-      text: testMessage,
-      languageCode: Language_Code
-    }
-  }
-};
-
-sessionClient
-  .detectIntent(requestData)
-  .then(responses => {
-    const result = responses[0].queryResult;
-    console.log(result);
-    return;
-    // return sendTextMessage(userId, result.fulfillmentText);
-  })
-  .catch(err => {
-    console.error("ERROR:", err);
-  });
-  
-
+/* Dialogflow webhook endpoint */
 app.post('/dialogflow', (req, res) => {
   console.log("***********************");
-
   res.status(200);
   return;
 });
@@ -211,49 +171,3 @@ app.listen(PORT, (err) => {
 });
 
 }
-
-
-
-
-
-
-// //
-// [{
-//   platform: 'PLATFORM_UNSPECIFIED',
-//   text: [Object],
-//   message: 'text'
-// }],
-//   outputContexts: [],
-//     queryText: 'hey',
-//       speechRecognitionConfidence: 0,
-//         action: 'input.welcome',
-//           parameters: { fields: { } },
-// allRequiredParamsPresent: true,
-//   fulfillmentText: 'Good day! What can I do for you today?',
-//     webhookSource: '',
-//       webhookPayload: null,
-//         intent:
-// {
-//   inputContextNames: [],
-//     events: [],
-//       trainingPhrases: [],
-//         outputContexts: [],
-//           parameters: [],
-//             messages: [],
-//               defaultResponsePlatforms: [],
-//                 followupIntentInfo: [],
-//                   name:
-//   'projects/nickscomputer-dd4aa/agent/intents/b613ebc7-ccb6-4e77-9b11-ef9cdc1db749',
-//     displayName: 'Default Welcome Intent',
-//       priority: 0,
-//         isFallback: false,
-//           webhookState: 'WEBHOOK_STATE_UNSPECIFIED',
-//             action: '',
-//               resetContexts: false,
-//                 rootFollowupIntentName: '',
-//                   parentFollowupIntentName: '',
-//                     mlDisabled: false
-// },
-// intentDetectionConfidence: 1,
-//   diagnosticInfo: null,
-//     languageCode: 'en-us' }
