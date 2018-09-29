@@ -21,25 +21,25 @@
 <body class="bg-white">
     <div class="container-fluid py-3">
         <div class="row">
+
             <div class="col-12 col-sm-8 col-md-6 col-lg-4 mx-auto">
-                <div id="pay-invoice" class="card">
-
+                <div class="card">
                     <!-- <img class="profile-img" id="avatar" src="https://platform-lookaside.fbsbx.com/platform/profilepic/?psid=1879276758759273&height=50&width=50&ext=1536064533&hash=AeROk3zgpnIgmtbi"alt=""> -->
-
                     <div class="card-body">
+                       
                         <div class="card-title">
                             <h3 class="text-center m-10"> Order </h3>
                         </div>
                         
                         <hr class="bg-info">
+                        
                         <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <h6 data-toggle="collapse" href="#collapseOne">Product detail</h6>
-                                </li>
-
+                            <li class="list-inline-item">
+                                <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                            </li>
+                            <li class="list-inline-item">
+                                <h6 data-toggle="collapse" href="#collapseOne">Product detail</h6>
+                            </li>
                         </ul>
                         
                         <hr class="bg-info">
@@ -51,32 +51,25 @@
                         </h6>
 
                         <div class="row">
-
-                            <section id="left" class="col-6">
-                                <img src="<%= image %>" alt="product" class="img-fluid">
+                            
+                            <section id="left" class="p-2 mt-4 col-6">
+                                <img src="<%= image %>" alt="product" class="img-thumbnail" alt="Cinque Terre"  />                                
                             </section>
 
                             <section id="right" class="col-6">
                                 <div class="row">
                                     <div class="form-group  col-sm-10">
-                                        <label for="cc-exp" class="control-label mb-1">Brand</label>
+                                        <label  class="control-label mb-1">Brand</label>
                                         <select class="selectpicker bg-white form-control" data-live-search="true"  disabled>
                                             <option data-tokens="<%= brandTitle %>"><%= brandTitle %></option>
-                                            <!-- <option data-tokens="B">google</option>
-                                            <option data-tokens="C">oneplusone</option> -->
                                         </select>
-                                        <!-- <span class="invalid-feedback">Enter the expiration date</span> -->
                                     </div>
 
                                     <div class="form-group col-sm-10">
                                         <label for="cc-exp" class="control-label mb-1">Phone</label>
                                         <select class="selectpicker bg-white form-control" data-live-search="true"  disabled>
                                             <option data-tokens="<%= phoneTitle%>"><%= phoneTitle%></option>
-                                            <!-- <option data-tokens="B">B</option>
-                                            <option data-tokens="C">C</option> -->
                                         </select>
-                                        <!-- <span class="invalid-feedback">Enter the expiration date</span> -->
-
                                     </div>
 
 
@@ -92,21 +85,25 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Price
                                 <span class="text-dark">
-                                    <%= price%>
+                                <i class="fa fa-rupee fa-1x "></i>
+                                    <%= price%>.00
                                 </span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Shipping count
+                                Shipping Cost
                                 <span class="text-dark">
-                                    <%= shippingCost%>
+                                <i class="fa fa-rupee fa-1x "></i>
+                                    <%= shippingCost%>.00
                                 </span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Discount
+                                Discount(<%= discount%>%)
                                 <span class="text-dark">
-                                    <%= discount%>
+                                <i class="fa fa-rupee fa-1x "></i>
+                                    <%- ((price*discount)/100) %>.00
+                                    
                                 </span>
                             </li>
 
@@ -115,7 +112,8 @@
                                     <h5>Total</h5>
                                 </span>
                                 <span class="text-primary">
-                                    <%= total%>
+                                <i class="fa fa-rupee fa-1x "></i>
+                                    <%= total%>.00
                                 </span>
                             </li>
 
@@ -129,7 +127,7 @@
 
                         <hr class="bg-info">
 
-                        <h6>Address Detail</h6>
+                        <h6>Address</h6>
                         <hr class="bg-info">
 
                         <form action="/order/payment" method="post" novalidate="novalidate" class="needs-validation">
@@ -167,20 +165,20 @@
 
                                 <div class="form-group">
                                     <label for="cc-payment" class="control-label mb-1">Email</label>
-                                    <input id="cc-payment" name="email" type="email" class="form-control" aria-required="true" aria-invalid="false" >
+                                    <input id="cc-payment" name="email" type="email" class="form-control" aria-required="true" aria-invalid="false" required>
                                     <span class="invalid-feedback">Enter the valid email address</span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="cc-payment" class="control-label mb-1">Contact</label>
-                                    <input id="cc-payment" name="tel" type="contact" class="form-control" aria-required="true" aria-invalid="false" pattern="[0-9]{10}" min=10 max=10 >
+                                    <input id="cc-payment" name="tel" type="contact" class="form-control" aria-required="true" aria-invalid="false" pattern="[0-9]{10}" min=10 max=10 required>
                                     <span class="invalid-feedback">Enter the valid 10 digit number</span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleFormControlTextarea2">address</label>
-                                    <textarea class="form-control rounded-0" name="address" id="exampleFormControlTextarea2" rows="3"></textarea>
-                                    <span class="invalid-feedback">Enter the valid address</span>
+                                    <textarea class="form-control rounded-0" name="address" id="exampleFormControlTextarea2" rows="3" required></textarea>
+                                    <span class="invalid-feedback">Enter the  address</span>
                                 </div>
 
                                 
@@ -189,7 +187,7 @@
                                     <div class="col-6">
                                         <div class="form-group">                                                
                                             <label for="cc-payment" class="control-label mb-1">City</label>
-                                            <input id="cc-payment" name="city" type="text" class="form-control" aria-required="true" aria-invalid="false" >
+                                            <input id="cc-payment" name="city" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
                                             <span class="invalid-feedback">Enter the valid email address</span>
                                         </div>
                                     </div>
@@ -197,8 +195,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label for="cc-exp" class="control-label mb-1">State</label>
-                                            <!-- <input id="cc-exp" name="cc-exp" type="tel" class="form-control cc-exp"  placeholder="MM / YY" autocomplete="cc-exp"> -->
-                                            <select name="state" class="selectpicker form-control" data-live-search="true" >
+                                            <select name="state" class="selectpicker form-control" data-live-search="true" required>
                                                 <option data-tokens="assam">Assam</option>
                                                 <option data-tokens="Andhra Pradesh">Andhra Pradesh</option>
                                                 <option data-tokens="Odisha">Odisha</option>
@@ -217,15 +214,14 @@
                                 <div class="form-group">
                                     <label for="x_zip" class="control-label mb-1">Postal code</label>
                                     <input id="x_zip" name="zip" type="text" class="form-control" value="" data-val="true" data-val-required="Please enter the ZIP/Postal code" pattern="[0-9]{6}"
-                                        autocomplete="postal-code" min='6' max=6>
-                                    <!-- <span class="help-block" data-valmsg-for="x_zip" data-valmsg-replace="true"></span> -->
-                                    <span class="invalid-feedback">Enter the valid 6 digil post code</span>
+                                        autocomplete="postal-code" min='6' max='6' required>
+                                    <span class="invalid-feedback">Enter the valid 6 digit post code</span>
 
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label for="exampleFormControlTextarea2">Descriptio about product</label>
+                                    <label for="exampleFormControlTextarea2">Description(optional)</label>
                                     <textarea name="description" class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"></textarea>
                                 </div>
 
@@ -235,8 +231,7 @@
 
                                     <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
                                         <i class="fa fa-lock fa-lg"></i>&nbsp;
-                                        <span id="payment-button-amount">Pay $<%= total%></span>
-                                        <span id="payment-button-sending" style="display:none;">Sending…</span>
+                                        <span id="payment-button-amount">Pay <i class="fa fa-rupee fa-1x "></i><%= total%></span>
                                     </button>
                                 </div>
                         </form>
@@ -247,11 +242,6 @@
     </div>
 
     <script>
-        $(function () {
-            $('[data-toggle="popover"]').popover()
-        })
-
-
         $("#payment-button").click(function (e) {
 
             // Fetch form to apply Bootstrap validation

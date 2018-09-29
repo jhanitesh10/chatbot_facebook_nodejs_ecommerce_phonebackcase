@@ -2,12 +2,15 @@ let Promise = require('bluebird'),
     request = Promise.promisify(require('request')),
     rq = Promise.promisifyAll(request);
 
+let confidential = require('../confidential/data.js'),
+    X_API_KEY_INSTAMOJO = confidential.X_API_KEY_INSTAMOJO,
+    X_AUTH_TOKEN_INSTAMOJO = confidential.X_AUTH_TOKEN_INSTAMOJO;
 
 let arq_paymentRequest = ({orderDetail}) => {
     const url = `https://test.instamojo.com/api/1.1/payment-requests/`;
     const header = {
-        'X-Api-Key': 'test_6cea3217740b750f3caa259966f',
-        'X-Auth-Token': 'test_d6cc511e2ba011aeb3abdbf6eac',
+        'X-Api-Key': `${X_API_KEY_INSTAMOJO}`,
+        'X-Auth-Token': `${X_AUTH_TOKEN_INSTAMOJO}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     };
@@ -16,9 +19,9 @@ let arq_paymentRequest = ({orderDetail}) => {
         amount: `${orderDetail.amount}`,
         phone: `${orderDetail.phone}`,
         buyer_name: `${orderDetail.name}`,
-        redirect_url: 'https://shopify-webhook.convrg.io/redirect',
+        redirect_url: 'https://c4ed6e0b.ngrok.io/redirect',
         send_email: true,
-        webhook: 'https://shopify-webhook.convrg.io/paymentSuccess',
+        webhook: 'https://c4ed6e0b.ngrok.io/paymentSuccess',
         send_sms: true,
         email: `${orderDetail.email}`,
         allow_repeated_payments: false

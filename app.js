@@ -14,7 +14,8 @@ const request = Promise.promisify(require('request')),
       req = Promise.promisifyAll(request);
 
 const confidential = require('./confidential/data.js'),
-      PORT = confidential.PORT;
+      PORT = confidential.PORT,
+      statusForServer = confidential.statusForServer;
 
 let processEvent = require('./routes/facebook/index.js'),
     processRequestEndpoint = processEvent.processRequestEndpoint,
@@ -63,8 +64,7 @@ let product = require('./routes/dashboard/product.js'),
 app.set("view engine", 'ejs');
 app.set("views", './views');
 
-app.use(express.static(__dirname + '/views/image'));
-console.log(__dirname + "/views/image");
+app.use(express.static(__dirname + '/views/image/'));
 app.get('/', (req, res) => {res.send(200);});
 
 app.use(cors());
@@ -76,6 +76,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({
   limit : '50mb'
 }));
+
+
 
 /* facebook endpoint */
 app.get('/webhook', verifyAccessToken);
@@ -127,11 +129,11 @@ app.get('/dashboard/order/count', getOrderCount);
 app.get("/dashboard/image/download", downloadImage);
 
 
+
+
 /* Dialogflow webhook endpoint */
 app.post('/dialogflow', (req, res) => {
-  console.log("***********************");
   res.status(200);
-  return;
 });
 
 
@@ -139,9 +141,6 @@ app.post('/dialogflow', (req, res) => {
 
 
 
-
-
-let statusForServer = 0;
 
 if (statusForServer) {
 

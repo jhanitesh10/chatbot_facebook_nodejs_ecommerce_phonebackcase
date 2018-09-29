@@ -11,9 +11,6 @@ let processAttachment = ({senderId, messageAttachments}) => {
     let attachementType = messageAttachments[0].type,
         attachementUrl = messageAttachments[0].payload.url;
     
-        // console.log(decodeURI(attachementUrl));
-        // console.log("*******************");
-        // console.log(attachementUrl);
         
     if (attachementType === "image") {
 

@@ -55,7 +55,7 @@ if (attachmentProductStatus.get("attachStatus") === 1) {
                     "subtitle": `Price: ${productData.price} Discount: ${productData.discount}% = Total: ${(productData.price) - (productData.discount)}`,
                     "buttons": [{
                             "type": "web_url",
-                            "url": `https://shopify-webhook.convrg.io/order/attach/${productData.facebookid}/${productData.product_id}?d1=${productData.brand_id}&d2=${productData.phone_id}&d3=${productData.price_id}`,
+                            "url": `https://c4ed6e0b.ngrok.io/order/attach/${productData.facebookid}/${productData.product_id}?d1=${productData.brand_id}&d2=${productData.phone_id}&d3=${productData.price_id}`,
                             "title": "BUY"
                             // ,
                             // "webview_height_ratio": "full",
@@ -67,6 +67,9 @@ if (attachmentProductStatus.get("attachStatus") === 1) {
                             "type": "web_url",
                             "url": `${productData.image}`,
                             "title": "VIEW"
+                            // ,
+                            // "webview_height_ratio": "full",
+                            // "messenger_extensions": "true"
                         }
                     ]
                 });
