@@ -30,9 +30,10 @@ let productListing = ({
         {
           "type": "web_url",
           "url": `https://c4ed6e0b.ngrok.io/order/${senderId}/${productData.id}?d1=${d1}&d2=${d2}&d3=${d3}&d4=${d4}`,
-          "title": "BUY",
-          "webview_height_ratio": "full",
-          "messenger_extensions": "true"
+          "title": "BUY"
+          // ,
+          // "webview_height_ratio": "full",
+          // "messenger_extensions": "true"
         },
         {
           "type": "web_url",
