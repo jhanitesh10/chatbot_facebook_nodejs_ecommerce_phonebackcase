@@ -4,8 +4,8 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Header from './component/header/Header.js';
-// import Sidebaar from "./component/sidebaar/sidebaar.js";
-// import Product from "./component/product/Product.js";
+import Sidebaar from "./component/sidebaar/Sidebaar.js";
+import Product from "./component/product/Product.js";
 
 class App extends Component {
   render() {
@@ -22,7 +22,7 @@ class App extends Component {
         {/* header */}
         <Header />
          {/* side component */}
-         {/* <Sidebaar /> */}
+         <Sidebaar />
           <div class="page-wrapper">
             <div class="page-breadcrumb">
               <div class="row align-items-center">
@@ -32,7 +32,7 @@ class App extends Component {
                     <nav aria-label="breadcrumb">
                       <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Library</li>
+                        <li class="breadcrumb-item active" aria-current="page">User</li>
                       </ol>
                     </nav>
                   </div>
@@ -51,7 +51,7 @@ class App extends Component {
                 <div class="col-12">
 
               {/* card data component */}
-              {/* <Product /> */}
+              <Product />
 
                 </div>
               </div>
