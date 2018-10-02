@@ -9,21 +9,21 @@ class Header extends Component {
 
   render() {
     return (
-      <header class="topbar" data-navbarbg="skin5">
-        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-          <div class="navbar-header" data-logobg="skin5">
-            <a class="navbar-brand" href="index.html">
-              <b class="logo-icon">
-                <img src="./assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                <img src="./assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+      <header className="topbar" data-navbarbg="skin5">
+        <nav className="navbar top-navbar navbar-expand-md navbar-dark">
+          <div className="navbar-header" data-logobg="skin5">
+            <a className="navbar-brand" href="index.html">
+              <b className="logo-icon">
+                <img src="../../assets/images/logo-icon.png" alt="homepage" className="dark-logo" />
+                <img src="../../assets/images/logo-light-icon.png" alt="homepage" className="light-logo" />
               </b>
-              <span class="logo-text">
-                <img src="./assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                <img src="./assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+              <span className="logo-text">
+                <img src="../../assets/images/logo-text.png" alt="homepage" className="dark-logo" />
+                <img src="../../assets/images/logo-light-text.png" className="light-logo" alt="homepage" />
               </span>
             </a>
 
-            <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+            <a className="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i className="ti-menu ti-close"></i></a>
           </div>
 
         </nav>

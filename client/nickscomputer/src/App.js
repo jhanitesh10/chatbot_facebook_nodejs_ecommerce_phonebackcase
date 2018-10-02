@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -10,6 +9,7 @@ import Payment from "./component/payment/Payment.js";
 import Order from './component/order/Order.js';
 import ProductAttribute from "./component/productAttribute/PorductAttribute.js";
 import User from './component/user/User.js';
+import AddProduct from './component/productAttribute/AddProduct.js';
 
 class App extends Component {
   render() {
@@ -62,8 +62,8 @@ class App extends Component {
                     <Route path='/dashboard/productattribute' component={ProductAttribute}></Route>
                     <Route path='/dashboard/order' component={Order}></Route>
                     <Route path='/dashboard/payment' component={Payment}></Route>
+                    <Route path='/dashboard/addproduct' component={AddProduct}></Route>
                   </Switch>
-
                 </div>
               </div>
             </div>

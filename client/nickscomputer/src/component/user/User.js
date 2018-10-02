@@ -8,21 +8,21 @@ class User extends Component {
 
   render() {
     return (
-      <div class="card">
-        <div class="card-body">
+      <div className="card">
+        <div className="card-body">
          Order.
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-md-flex align-items-center">
+          <div className="row">
+            <div className="col-12">
+              <div className="card">
+                <div className="card-body">
+                  <div className="d-md-flex align-items-center">
                     <div>
-                      <h4 class="card-title">List of all Order</h4>
-                      <h5 class="card-subtitle">Overview of Top Selling Items</h5>
+                      <h4 className="card-title">List of all Order</h4>
+                      <h5 className="card-subtitle">Overview of Top Selling Items</h5>
                     </div>
-                    <div class="ml-auto">
-                      <div class="dl">
-                        <select class="custom-select">
+                    <div className="ml-auto">
+                      <div className="dl">
+                        <select className="custom-select">
                           <option value="0" selected>Monthly</option>
                           <option value="1">Daily</option>
                           <option value="2">Weekly</option>
@@ -32,33 +32,33 @@ class User extends Component {
                     </div>
                   </div>
                 </div>
-                <div class="table-responsive m-t-20">
-                  <table class="table table-bordered  v-middle">
+                <div className="table-responsive m-t-20">
+                  <table className="table table-bordered  v-middle">
                     <thead>
-                      <tr class="bg-light">
-                        <th class="border-top-0">Id</th>
-                        <th class="border-top-0">Name</th>
-                        <th class="border-top-0">Picture</th>
-                        <th class="border-top-0">Gender</th>
-                        <th class="border-top-0">Locale</th>
-                        <th class="border-top-0">Timezone</th>
-                        <th class="border-top-0">Last Active</th>
+                      <tr className="bg-light">
+                        <th className="border-top-0">Id</th>
+                        <th className="border-top-0">Name</th>
+                        <th className="border-top-0">Picture</th>
+                        <th className="border-top-0">Gender</th>
+                        <th className="border-top-0">Locale</th>
+                        <th className="border-top-0">Timezone</th>
+                        <th className="border-top-0">Last Active</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>
-                          <div class="d-flex align-items-center">
-                            <div><a class="btn btn-circle btn-info text-white">1</a></div>
+                          <div className="d-flex align-items-center">
+                            <div><a className="btn btn-circle btn-info text-white">1</a></div>
                           </div>
                         </td>
                         <td>
-                          <div class="">
-                            <h4 class="m-b-0 font-16">Name</h4>
+                          <div className="">
+                            <h4 className="m-b-0 font-16">Name</h4>
                           </div>
                         </td>
                         <td width="40px">
-                          <img class="img-thumbnail" src="http://quizplay.esy.es/quiz/images/Logomakr_0ukOms.png" />
+                          <img className="img-thumbnail" src="http://quizplay.esy.es/quiz/images/Logomakr_0ukOms.png" />
                         </td>
                         <td>
                           Angular
@@ -66,7 +66,7 @@ class User extends Component {
                         <td>46</td>
                         <td>356</td>
                         <td>
-                          <label class="label label-primary">20 Days ago</label>
+                          <label className="label label-primary">20 Days ago</label>
                         </td>
                       </tr>
 

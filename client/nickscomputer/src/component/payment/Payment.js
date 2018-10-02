@@ -7,21 +7,21 @@ class Payment extends Component {
   }
 
   render() {
-    return <div class="card">
-        <div class="card-body">
+    return <div className="card">
+        <div className="card-body">
           Payment.
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-md-flex align-items-center">
+          <div className="row">
+            <div className="col-12">
+              <div className="card">
+                <div className="card-body">
+                  <div className="d-md-flex align-items-center">
                     <div>
-                      <h4 class="card-title">List of all Payment</h4>
-                      <h5 class="card-subtitle">Overview of payment</h5>
+                      <h4 className="card-title">List of all Payment</h4>
+                      <h5 className="card-subtitle">Overview of payment</h5>
                     </div>
-                    <div class="ml-auto">
-                      <div class="dl">
-                        <select class="custom-select">
+                    <div className="ml-auto">
+                      <div className="dl">
+                        <select className="custom-select">
                           <option value="0" selected>
                             Monthly
                           </option>
@@ -33,53 +33,82 @@ class Payment extends Component {
                     </div>
                   </div>
                 </div>
-                <div class="table-responsive m-t-20">
-                  <table class="table table-bordered  v-middle">
+                <div className="table-responsive m-t-20">
+                  <table className="table table-bordered  v-middle">
                     <thead>
-                      <tr class="bg-light">
-                        <th class="border-top-0">PaymentId</th>
-                        <th class="border-top-0">ProductId</th>
-                        <th class="border-top-0">Status</th>
-                        <th class="border-top-0">ShortUrl</th>
-                        <th class="border-top-0">LongUrl</th>
-                        <th class="border-top-0">Purpose</th>
-                        <th class="border-top-0">Fee</th>
-                        <th class="border-top-0">Amount</th>
-                        <th class="border-top-0">Currency</th>
-                        <th class="border-top-0">Name</th>
-                        <th class="border-top-0">Contact</th>
-                        <th class="border-top-0">PaymentRequestId</th>
-                        <th class="border-top-0">PaymentInitiatedId</th>
-                        <th class="border-top-0">PaymentCompletedAt</th>
+                      <tr className="bg-light">
+                        <th className="border-top-0">PaymentId</th>
+                        <th className="border-top-0">ProductId</th>
+                        <th className="border-top-0">Status</th>
+                        <th className="border-top-0">ShortUrl</th>
+                        <th className="border-top-0">LongUrl</th>
+                        <th className="border-top-0">Purpose</th>
+                        <th className="border-top-0">Fee</th>
+                        <th className="border-top-0">Amount</th>
+                        <th className="border-top-0">Currency</th>
+                        <th className="border-top-0">Buyer</th>
+                        <th className="border-top-0">Name</th>
+                        <th className="border-top-0">Contact</th>
+                        <th className="border-top-0">PaymentRequestId</th>
+                        <th className="border-top-0">PaymentCompletedAt</th>
+                        <th className="border-top-0">Paymenton</th>
+                      
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>
-                          <div class="d-flex align-items-center">
+                          <div className="d-flex align-items-center">
                             <div>
-                              <a class="btn btn-circle btn-info text-white">
+                              <a className="btn btn-circle btn-info text-white">
                                 1
                               </a>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <div class="">
-                            <h4 class="m-b-0 font-16">Name</h4>
+                          <div className="">
+                            <h4 className="m-b-0 font-16">1234566</h4>
                           </div>
                         </td>
-                        <td width="40px">
-                          <img class="img-thumbnail" src="http://quizplay.esy.es/quiz/images/Logomakr_0ukOms.png" />
-                        </td>
-                        <td>Angular</td>
-                        <td>46</td>
-                        <td>356</td>
                         <td>
-                          <label class="label label-primary">
+                          Credit
+                        </td>
+                        <td>"http://google.com"</td>
+                        <td>"http://google.com"</td>
+                        <td>Freak case</td>
+                        <td>
+                          <div className="">
+                            <h4 className="m-b-0 font-16">4</h4>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="">
+                            <h4 className="m-b-0 font-16">100</h4>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="">
+                            <h4 className="m-b-0 font-16">Rupees</h4>
+                          </div>
+                        </td>
+                        <td>Nitesh</td>
+                        <td>
+                          Nitesh
+                        </td>
+                        <td>
+                          9004250810
+                        </td>
+                        <td>12341kjljk1234</td>
+                         <div className="">
+                            <h4 className="m-b-0 font-16">20January</h4>
+                          </div>
+                        <td>
+                          <label className="label label-primary">
                             20 Days ago
                           </label>
                         </td>
+                        
                       </tr>
                     </tbody>
                   </table>
