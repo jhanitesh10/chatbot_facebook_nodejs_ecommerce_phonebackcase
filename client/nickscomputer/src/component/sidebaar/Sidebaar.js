@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class Sidebaar extends Component {
 
@@ -26,12 +27,12 @@ class Sidebaar extends Component {
                   </div>
                 </div>
               </li>
-              <li class="p-15 m-t-10"><a href="javascript:void(0)" class="btn btn-block create-btn text-white no-block d-flex align-items-center"> <span class="hide-menu m-l-5">DASHBOARD</span> </a></li>
-              <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="index.html" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Profile</span></a></li>
-              <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-profile.html" aria-expanded="false"><i class="mdi mdi-account-network"></i><span class="hide-menu">Product</span></a></li>
-              <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false"><i class="mdi mdi-border-all"></i><span class="hide-menu">Product Attribute</span></a></li>
-              <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="icon-material.html" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">Order</span></a></li>
-              <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="starter-kit.html" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Complete Payment</span></a></li>
+              <li class="p-15 m-t-10"><Link  class="btn btn-block create-btn text-white no-block d-flex align-items-center" to={'/'}> <span class="hide-menu m-l-5">DASHBOARD</span> </Link></li>
+              <li class="sidebar-item"> <Link class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" to={'/'}><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Profile</span></Link></li>
+              <li class="sidebar-item"> <Link class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" to={'/dashboard/product'}><i class="mdi mdi-account-network"></i><span class="hide-menu">Product</span></Link></li>
+              <li class="sidebar-item"> <Link class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" to={'/dashboard/productattribute'}><i class="mdi mdi-border-all"></i><span class="hide-menu">Product Attribute</span></Link></li>
+              <li class="sidebar-item"> <Link class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" to={'/dashboard/order'}><i class="mdi mdi-face"></i><span class="hide-menu">Order</span></Link></li>
+              <li class="sidebar-item"> <Link class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" to={'/dashboard/payment'}><i class="mdi mdi-file"></i><span class="hide-menu">Complete Payment</span></Link></li>
               <li class="text-center p-40 upgrade-btn">
                 <a href="#" class="btn btn-block btn-danger text-white" target="_blank">Logout</a>
               </li>
@@ -40,6 +41,7 @@ class Sidebaar extends Component {
           </nav>
         </div>
       </aside>
+      
     );
   }
 }

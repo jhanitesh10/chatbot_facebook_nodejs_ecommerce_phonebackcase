@@ -6,11 +6,15 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Header from './component/header/Header.js';
 import Sidebaar from "./component/sidebaar/Sidebaar.js";
 import Product from "./component/product/Product.js";
+import Payment from "./component/payment/Payment.js";
+import Order from './component/order/Order.js';
+import ProductAttribute from "./component/productAttribute/PorductAttribute.js";
+import User from './component/user/User.js';
 
 class App extends Component {
   render() {
     return (
-    <React.Fragment >
+    <div >
 
         <div class="preloader">
           <div class="lds-ripple">
@@ -50,15 +54,22 @@ class App extends Component {
               <div class="row">
                 <div class="col-12">
 
-              {/* card data component */}
-              <Product />
+        
+                 
+                  <Switch>
+                    <Route exact path='/' component={User}></Route>
+                    <Route path='/dashboard/product' component={Product}></Route>
+                    <Route path='/dashboard/productattribute' component={ProductAttribute}></Route>
+                    <Route path='/dashboard/order' component={Order}></Route>
+                    <Route path='/dashboard/payment' component={Payment}></Route>
+                  </Switch>
 
                 </div>
               </div>
             </div>
           </div>
         </div>   
-      </React.Fragment>
+      </div>
 
     );
   }
