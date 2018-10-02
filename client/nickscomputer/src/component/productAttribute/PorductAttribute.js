@@ -159,7 +159,7 @@ class ProductAttribute extends Component {
                     <label className="label label-primary">20 Days ago</label>
                   </td>
                   <td>
-                    <Link className="btn btn-info" to="/dashboard/productattribute/addproduct">Edit</Link>
+                    <Link className="btn btn-info" to="/dashboard/editproduct">Edit</Link>
                   </td>
                   <td>
                     <button className="btn btn-danger">Delete</button>

@@ -10,6 +10,7 @@ import Order from './component/order/Order.js';
 import ProductAttribute from "./component/productAttribute/PorductAttribute.js";
 import User from './component/user/User.js';
 import AddProduct from './component/productAttribute/AddProduct.js';
+import EditProduct from './component/productAttribute/EditProduct.js';
 
 class App extends Component {
   render() {
@@ -63,6 +64,7 @@ class App extends Component {
                     <Route path='/dashboard/order' component={Order}></Route>
                     <Route path='/dashboard/payment' component={Payment}></Route>
                     <Route path='/dashboard/addproduct' component={AddProduct}></Route>
+                    <Route path='/dashboard/editproduct' component={EditProduct}></Route>
                   </Switch>
                 </div>
               </div>
