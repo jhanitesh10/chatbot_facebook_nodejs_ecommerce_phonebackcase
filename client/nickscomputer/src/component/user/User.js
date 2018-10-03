@@ -1,12 +1,75 @@
 import React, { Component } from "react";
+import axios from "axios";
+import Moment from "moment";
+import Pagination from "../pagination/Pagination.js";
 
 class User extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      userDetail: [],
+      totalDataCount: 0,
+      offset: 0,
+      limit: 2
+    }
   }
 
+
+  componentDidMount(){
+        
+    let offset = this.state.offset,
+        limit = this.state.limit;
+
+    axios.get(`http://localhost:1234/dashboard/facebookUser/Count`)
+      .then( (userCountResponse) => {
+        let userDetailCount = userCountResponse.data;
+
+        axios.get(`http://localhost:1234/dashboard/facebookUser?offset=${offset}&limit=${limit}`)
+          .then((response) => {
+                let userDetailArray = response.data;
+                let totalDataCount = userDetailCount.length;
+                
+    
+                this.setState({ userDetail: userDetailArray, totalDataCount: totalDataCount });
+          })
+            .catch((e) => {
+                console.log("error while sending data to node platform at Usercomponent inside componentDidMount", e);
+          });
+
+    })
+    .catch((e) => {
+        console.log("error while getting user coun at usercomponent inside componentDidMount", e);
+    });
+
+
+  }
+
+
+  hanldePagination(key) {
+    let totalDataCount = this.state.totalDataCount;
+    let limit = this.state.limit;
+    let totalPage = Math.ceil(totalDataCount / limit);
+    let offset = (limit) * (key - 1);
+
+    axios.get(`http://localhost:1234/dashboard/facebookUser?offset=${offset}&limit=${limit}`)
+      .then((response) => {
+        let userDetailArray = response.data;
+        this.setState({ userDetail: userDetailArray });
+      })
+      .catch((e) => {
+        console.log("error while sending data to node platform at usercomponent inside handlePagination method", e);
+      });
+
+
+  }
+
+
   render() {
+    let userDetail = this.state.userDetail;
+    let currentDateTime = Moment().unix();
+    let paginationDetail = this.state.paginationDetail;
+
     return (
       <div className="card">
         <div className="card-body">
@@ -45,33 +108,45 @@ class User extends Component {
                         <th className="border-top-0">Last Active</th>
                       </tr>
                     </thead>
+
+                    {userDetail.map((data, index) =>
+
                     <tbody>
                       <tr>
                         <td>
                           <div className="d-flex align-items-center">
-                            <div><a className="btn btn-circle btn-info text-white">1</a></div>
+                            <div><a className="btn btn-circle btn-info text-white">{data.id}</a></div>
                           </div>
                         </td>
                         <td>
                           <div className="">
-                            <h4 className="m-b-0 font-16">Name</h4>
+                            <h4 className="m-b-0 font-16">{data.name}</h4>
                           </div>
                         </td>
                         <td width="40px">
-                          <img className="img-thumbnail" src="http://quizplay.esy.es/quiz/images/Logomakr_0ukOms.png" />
+                          <img className="img-thumbnail" src={data.profile_picture} />
                         </td>
                         <td>
-                          Angular
-                                                            </td>
-                        <td>46</td>
-                        <td>356</td>
+                          {data.gender}
+                        </td>
                         <td>
-                          <label className="label label-primary">20 Days ago</label>
+                        {data.locale}
+                        </td>
+                        <td>
+                          {data.timezone}
+                        </td>
+                        <td>
+                          <label className="label label-primary">{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))} Days ago</label>
                         </td>
                       </tr>
 
                     </tbody>
+
+                    )}
                   </table>
+
+                  <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)} />
+
                 </div>
               </div>
             </div>

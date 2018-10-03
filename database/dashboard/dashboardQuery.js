@@ -13,7 +13,7 @@ let qr_getFacebookUser = ({offset, limit }) => {
         if (row.length) {
             return row;
         } else {
-            return 0;
+            return [];
         }
 
     }).catch((err) => {
@@ -33,7 +33,7 @@ let qr_getFacebookUserCount = ({}) => {
         if (row.length) {
             return row;
         } else {
-            return 0;
+            return [];
         }
 
     }).catch((err) => {
@@ -50,7 +50,7 @@ let qr_getProduct = ({offset, limit }) => {
         if (row.length) {
             return row;
         } else {
-            return 0;
+            return [];
         }
 
     }).catch((err) => {
@@ -69,7 +69,7 @@ let qr_getProductCount = ({}) => {
         if (row.length) {
             return row;
         } else {
-            return 0;
+            return [];
         }
 
     }).catch((err) => {
