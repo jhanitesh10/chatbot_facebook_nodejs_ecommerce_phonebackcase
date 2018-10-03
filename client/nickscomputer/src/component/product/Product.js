@@ -12,7 +12,7 @@ class Product extends Component {
       productDetail: [],
       totalDataCount: 0,
       offset: 0,
-      limit: 2
+      limit: 10
     }
   }
 
@@ -70,7 +70,6 @@ class Product extends Component {
 
     return (
 
-    <div>
         <div className="card">
           <div className="card-body">
             <div>
@@ -161,7 +160,6 @@ class Product extends Component {
 
           </div>
         </div>
-      </div>
 
     );
   }

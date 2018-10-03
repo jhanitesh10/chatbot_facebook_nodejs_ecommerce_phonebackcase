@@ -7,7 +7,8 @@ class Payment extends Component {
   }
 
   render() {
-    return <div className="card">
+    return (
+      <div className="card">
         <div className="card-body">
           Payment.
           <div className="row">
@@ -52,7 +53,7 @@ class Payment extends Component {
                         <th className="border-top-0">PaymentRequestId</th>
                         <th className="border-top-0">PaymentCompletedAt</th>
                         <th className="border-top-0">Paymenton</th>
-                      
+
                       </tr>
                     </thead>
                     <tbody>
@@ -100,9 +101,9 @@ class Payment extends Component {
                           9004250810
                         </td>
                         <td>12341kjljk1234</td>
-                         <div className="">
-                            <h4 className="m-b-0 font-16">20January</h4>
-                          </div>
+                        <div className="">
+                          <h4 className="m-b-0 font-16">20January</h4>
+                        </div>
                         <td>
                           <label className="label label-primary">
                             20 Days ago
@@ -117,7 +118,8 @@ class Payment extends Component {
             </div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 

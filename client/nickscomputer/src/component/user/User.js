@@ -11,7 +11,7 @@ class User extends Component {
       userDetail: [],
       totalDataCount: 0,
       offset: 0,
-      limit: 2
+      limit: 10
     }
   }
 

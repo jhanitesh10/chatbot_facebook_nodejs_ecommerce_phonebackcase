@@ -4,6 +4,8 @@ import Moment from "moment";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Pagination from "../pagination/Pagination.js";
+import SortProductAttribute from './SortProductAttribute.js';
+
 
 class ProductAttribute extends Component {
 
@@ -13,7 +15,7 @@ class ProductAttribute extends Component {
       productDetail: [],
       totalDataCount: 0,
       offset: 0,
-      limit: 2,
+      limit: 10,
       brandId: 1,
       phoneId: 1,
       priceId: 1,
@@ -122,65 +124,8 @@ class ProductAttribute extends Component {
               <h4 className="card-title">Total Product count: {this.state.totalDataCount}</h4>
             </div>
             <div className="d-md-flex align-items-center">
-              <div>
-                <form className="form-inline">
-                  <div className="form-inline">
-                    <select className="custom-select">
-                      <option value="0" selected>
-                        Monthly
-                      </option>
-                      <option value="1">Daily</option>
-                      <option value="2">Weekly</option>
-                      <option value="3">Yearly</option>
-                    </select>
-                    <select className="custom-select">
-                      <option value="0" selected>
-                        Monthly
-                      </option>
-                      <option value="1">Daily</option>
-                      <option value="2">Weekly</option>
-                      <option value="3">Yearly</option>
-                    </select>
-                    <select className="custom-select">
-                      <option value="0" selected>
-                        Monthly
-                      </option>
-                      <option value="1">Daily</option>
-                      <option value="2">Weekly</option>
-                      <option value="3">Yearly</option>
-                    </select>
-                    <select className="custom-select">
-                      <option value="0" selected>
-                        Monthly
-                      </option>
-                      <option value="1">Daily</option>
-                      <option value="2">Weekly</option>
-                      <option value="3">Yearly</option>
-                    </select>
-                    <select className="custom-select">
-                      <option value="0" selected>
-                        Monthly
-                      </option>
-                      <option value="1">Daily</option>
-                      <option value="2">Weekly</option>
-                      <option value="3">Yearly</option>
-                    </select>
-                    <select className="custom-select">
-                      <option value="0" selected>
-                        Monthly
-                      </option>
-                      <option value="1">Daily</option>
-                      <option value="2">Weekly</option>
-                      <option value="3">Yearly</option>
-                    </select>
-                    <div className="input-group-prepend">
-                      <button type="submit" className="btn btn-primary">
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+              {/* sort component */}
+              <SortProductAttribute handleProductAttributeCount={this.handleProductAttributeCount.bind(this)}/>
               <div className="ml-auto">
                 <Link className="btn btn-info" to={'/dashboard/addproduct'}>Add Product</Link>
               </div>
