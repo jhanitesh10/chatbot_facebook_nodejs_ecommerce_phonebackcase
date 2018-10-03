@@ -1,23 +1,125 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import axios from "axios";
+import Moment from "moment";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+import Pagination from "../pagination/Pagination.js";
 
 class ProductAttribute extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      productDetail: [],
+      totalDataCount: 0,
+      offset: 0,
+      limit: 2,
+      brandId: 1,
+      phoneId: 1,
+      priceId: 1,
+      categoryId: 1,
+      productAttributeId: ''
+    }
+  }
+
+  componentDidMount() {
+
+    let offset = this.state.offset,
+      limit = this.state.limit,
+      brandId = this.state.brandId,
+      phoneId = this.state.phoneId,
+      priceId = this.state.priceId,
+      categoryId = this.state.categoryId;
+
+    axios.get(`http://localhost:1234/dashboard/productAttributeCount?brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
+      .then((userCountResponse) => {
+        let productAttributeCount = userCountResponse.data;
+
+        axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}&brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
+          .then((response) => {
+            let productDetail = response.data;
+            let totalDataCount = productAttributeCount.length;
+
+            this.setState({ productDetail: productDetail, totalDataCount: totalDataCount });
+          })
+          .catch((e) => {
+            console.log("error while sending data to node platform", e);
+          });
+
+      })
+    .catch((e) => {
+      console.log("error while getting user count", e);
+    });
+
+
+  }
+
+
+
+  hanldePagination(key) {
+
+    let totalDataCount = this.state.totalDataCount;
+    let limit = this.state.limit;
+    let totalPage = Math.ceil(totalDataCount / limit);
+    let offset = (limit) * (key - 1);
+    let brandId = this.state.brandId,
+      phoneId = this.state.phoneId,
+      priceId = this.state.priceId,
+      category = this.state.categoryId;
+
+    axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}&brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${category}`)
+      .then(response => {
+        let productDetail = response.data;
+        this.setState({ productDetail: productDetail });
+      })
+      .catch(e => {
+        console.log("error while sending data to node platform", e);
+      });
+
+
+  }
+
+
+  handleProductAttributeCount(brandId, phoneId, priceId, categoryId) {
+
+    let offset = this.state.offset,
+        limit = this.state.limit;
+    this.setState({ brandId: brandId, phoneId: phoneId, priceId: priceId, categoryId: categoryId });
+
+    axios.get(`http://localhost:1234/dashboard/productAttributeCount?brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
+      .then((userCountResponse) => {
+        let productAttributeCount = userCountResponse.data;
+
+        axios.get(`http://localhost:1234/dashboard/productAttribute?offset=${offset}&limit=${limit}&brandId=${brandId}&phoneId=${phoneId}&priceId=${priceId}&categoryId=${categoryId}`)
+          .then((response) => {
+            let productDetail = response.data;
+            let totalDataCount = productDetail.length;
+            this.setState({ productDetail: productDetail, totalDataCount: totalDataCount });
+          })
+          .catch((e) => {
+            console.log("error while sending data to node platform", e);
+          });
+
+      })
+      .catch((e) => {
+        console.log("error while getting user count", e);
+      });
   }
 
   render() {
-    return <div>
+
+    let productDetail = this.state.productDetail;
+    let currentDateTime = Moment().unix();
+    let productAttributeDetail = this.state;
+    let paginationDetail = this.state.paginationDetail;
+    let productAttributeId = this.state.productAttributeId;
+
+    return (
+      <div>
         <div className="card">
           <div className="card-body">
             <div>
-              <h4 className="card-title">Total Product count: 43</h4>
+              <h4 className="card-title">Total Product count: {this.state.totalDataCount}</h4>
             </div>
             <div className="d-md-flex align-items-center">
               <div>
@@ -109,55 +211,71 @@ class ProductAttribute extends Component {
                   <th className="border-top-0">Delete</th>
                 </tr>
               </thead>
+
+              {productDetail.map((data, index) => 
+
+
               <tbody>
                 <tr>
                   <td>
                     <div className="d-flex align-items-center">
                       <div>
-                        <a className="btn btn-circle btn-info text-white">1</a>
+                        <a className="btn btn-circle btn-info text-white">{data.productAttributeId}</a>
                       </div>
                     </div>
                   </td>
                   <td>
                     <div className="d-flex align-items-center">
                       <div>
-                        <a className="btn btn-circle btn-info text-white">1</a>
+                        <a className="btn btn-circle btn-info text-white">{data.productId}</a>
                       </div>
                     </div>
                   </td>
-                  <td>IPHONE</td>
-                  <td>Iphone-se</td>
-                  <td>₹2800</td>
-                  <td>LGBT</td>
+                  <td>{data.phoneTitle}</td>
+                  <td>{data.brandTitle}</td>
+                  <td>₹{data.priceTitle}</td>
+                  <td>{data.categoryTitle}</td>
                   <td width="40px">
-                    <img className="img-thumbnail" src="http://quizplay.esy.es/quiz/images/Logomakr_0ukOms.png" />
+                      <img className="img-thumbnail" src={data.image} />
                   </td>
-                  <td>This is my first product cool!</td>
-                  <td>Subtitle from different page</td>
-                  <td>₹200</td>
-                  <td>100%</td>
-                  <td>₹30</td>
+                  <td>{data.title}</td>
+                  <td>{data.subtitle}</td>
+                  <td>₹{data.price}</td>
+                  <td>{data.discount}%</td>
+                  <td>₹{data.shipping_cost}</td>
                   <td>
                     <div className="">
-                      <h4 className="m-b-0 font-16">30</h4>
+                      <h4 className="m-b-0 font-16">{data.product_count}</h4>
                     </div>
                   </td>
-                  <td>
-                    <label className="label label-danger">Out stock</label>
-                    <label className="label label-info">In stock</label>
-                  </td>
-                  <td>
-                    <label className="label label-danger">Active</label>
-                    <label className="label label-info">In Active</label>
-                  </td>
-                  <td>
-                    <label className="label label-danger">Trending</label>
-                    <label className="label label-info">Basic</label>
-                  </td>
+                    <td>
 
-                  <td>
-                    <label className="label label-primary">20 Days ago</label>
-                  </td>
+                      {
+                        (data.available) ?
+                          (<label className="label label-info">In Stock</label>) : (<label className="label label-danger">Out Stock</label>)
+                      }
+
+                    </td>
+                    <td>
+
+                      {
+                        (data.active_status) ?
+                          (<label className="label label-info">Active</label>) : (<label className="label label-danger">Un-Active</label>)
+                      }
+
+                    </td>
+                    <td>
+
+                      {
+                        (data.trending_status) ?
+                          (<label className="label label-info">Trending</label>) : (<label className="label label-danger">Basic</label>)
+                      }
+
+                    </td>
+
+                    <td>
+                      <label className="label label-primary">{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))} Days ago</label>
+                    </td>
                   <td>
                     <Link className="btn btn-info" to="/dashboard/editproduct">Edit</Link>
                   </td>
@@ -166,10 +284,15 @@ class ProductAttribute extends Component {
                   </td>
                 </tr>
               </tbody>
+
+              )}
+
             </table>
+            <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)}/>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 

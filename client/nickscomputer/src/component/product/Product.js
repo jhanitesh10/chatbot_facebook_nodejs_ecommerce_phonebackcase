@@ -74,7 +74,7 @@ class Product extends Component {
         <div className="card">
           <div className="card-body">
             <div>
-              <h4 className="card-title">Total Product count: 43</h4>
+              <h4 className="card-title">Total Product count: {this.state.totalDataCount}</h4>
               <h5 className="card-subtitle">Overview of Top Selling Items</h5>
             </div>
             <div className="d-md-flex align-items-center" />
@@ -148,7 +148,7 @@ class Product extends Component {
                   </td>
 
                   <td>
-                    <label className="label label-primary">20 Days ago</label>
+                    <label className="label label-primary">{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))} Days ago</label>
                   </td>
                 </tr>
               </tbody>
