@@ -11,6 +11,8 @@ import ProductAttribute from "./component/productAttribute/PorductAttribute.js";
 import User from './component/user/User.js';
 import AddProduct from './component/productAttribute/AddProduct.js';
 import EditProduct from './component/productAttribute/EditProduct.js';
+import Login from './component/login/Login.js';
+
 
 class App extends Component {
   render() {
@@ -55,7 +57,7 @@ class App extends Component {
               <div class="row">
                 <div class="col-12">
 
-        
+                  <Login />
                  
                   <Switch>
                     <Route exact path='/' component={User}></Route>

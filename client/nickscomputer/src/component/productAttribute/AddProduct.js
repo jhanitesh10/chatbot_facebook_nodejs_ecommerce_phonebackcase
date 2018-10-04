@@ -99,8 +99,10 @@ class AddProduct extends Component {
   }
   handleFormSubmit(e) {
     e.preventDefault();
+
+    alert(`The product inserted sucessfully!`);
     this.props.history.push('/dashboard/productattribute');
-    alert("producg inserted sucessfully");
+
     axios.post(`http://localhost:1234/dashboard/product/add`, {
       productDetail: this.state
     })

@@ -14,7 +14,9 @@ let dashboardQuery = require('../../database/dashboard/dashboardQuery.js'),
     qr_insertProductAttribute = dashboardQuery.qr_insertProductAttribute,
     qr_editProductData = dashboardQuery.qr_editProductData,
     qr_editProductSave = dashboardQuery.qr_editProductSave,
-    qr_editProductAttributeSave = dashboardQuery.qr_editProductAttributeSave;
+    qr_editProductAttributeSave = dashboardQuery.qr_editProductAttributeSave,
+    qr_deleteProductAttribute = dashboardQuery.qr_deleteProductAttribute,
+    qr_handleProductAvailibility = dashboardQuery.qr_handleProductAvailibility;
 
 
 let getProductCount = (req, res) => {
@@ -181,9 +183,7 @@ let editProductSave = (req, res) => {
         updatedOn: moment().unix(),
     }
     // console.log(productAttributeObj, productDetailObj);
-    // return 0;
     return qr_editProductSave({ productDetailObj: productDetailObj }).then((productInsertId) => {
-        console.log(productInsertId, "1**************");
 
         productAttributeObj.productId = productInsertId.insertId;
         return qr_editProductAttributeSave({ productAttributeObj: productAttributeObj }).then((attributeInsertData) => {
@@ -192,6 +192,25 @@ let editProductSave = (req, res) => {
     });
  
 }
+
+let deleteProductAttribute = (req, res) => {
+    let productAttributeId = req.query.productAttributeId,
+        activeStatus = 0;
+
+    return qr_deleteProductAttribute({ productAttributeId: productAttributeId, activeStatus: activeStatus}).then((deleteData) => {
+        console.log(deleteData)
+    });
+}
+
+let handleAvailibility = (req, res) => {
+    let productId = req.query.productId,
+        available = +(!(+(req.query.available)));
+        
+    return qr_handleProductAvailibility({ productId: productId, available: available}).then((data) => {
+        console.log(data);
+    });
+}
+
 module.exports = {
   getProductCount: getProductCount,
   productDetail: productDetail,
@@ -203,5 +222,7 @@ module.exports = {
   getCategory: getCategory,
   addProduct : addProduct,
   editProduct: editProduct,
-  editProductSave: editProductSave
+  editProductSave: editProductSave,
+  deleteProductAttribute: deleteProductAttribute,
+  handleAvailibility: handleAvailibility
 };

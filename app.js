@@ -48,7 +48,9 @@ let product = require('./routes/dashboard/product.js'),
     getCategory = product.getCategory,
     addProduct = product.addProduct,
     editProduct = product.editProduct,
-    editProductSave = product.editProductSave;
+    editProductSave = product.editProductSave,
+    deleteProductAttribute = product.deleteProductAttribute,
+    handleAvailibility = product.handleAvailibility;
 
   let payment = require('./routes/dashboard/payment.js'),
       getCompletePayment = payment.getCompletePayment,
@@ -128,7 +130,8 @@ app.get('/dashboard/order/count', getOrderCount);
 
 app.get("/dashboard/image/download", downloadImage);
 
-
+app.get("/dashboard/productAttribute/delete", deleteProductAttribute);
+app.get("/dashboard/productAttribute/availibility", handleAvailibility);
 
 
 /* Dialogflow webhook endpoint */

@@ -101,7 +101,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
         INNER JOIN
         product p
         ON
-        pa.product_id = p.id WHERE br.id = ? AND pn.id = ? AND pr.id = ? AND ct.id= ? ORDER BY pa.id LIMIT ?, ?`;
+        pa.product_id = p.id WHERE br.id = ? AND pn.id = ? AND pr.id = ? AND ct.id= ? AND p.active_status = 1 AND pa.active_status = 1 ORDER BY pa.id LIMIT ?, ?`;
     let paramr = [brandId, phoneId, priceId, categoryId, offset, limit];
 
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -140,7 +140,7 @@ let qr_getProductAttribute = ({ offset, limit, brandId, phoneId, priceId, catego
         INNER JOIN
         product p
         ON
-        pa.product_id = p.id WHERE br.id = 1 AND pn.id = 1 AND pr.id = 1 AND ct.id= 1 ORDER BY pa.id`;
+        pa.product_id = p.id WHERE br.id = ? AND pn.id = ? AND pr.id = ? AND ct.id= ? AND p.active_status = 1 AND pa.active_status = 1 ORDER BY pa.id`;
         let paramr = [brandId, phoneId, priceId, categoryId];
 
         return getQuery({ sqlQuery: sqlQuery, paramr: paramr }).then((row) => {
@@ -429,7 +429,6 @@ let qr_getOrder = ({ offset, limit, paymentStatus, deliveryStatus, processStatus
     
     let sqlQuery = `SELECT * FROM user_order WHERE order_type = ? AND payment_status = ? AND delivery_status = ? AND process_status = ? LIMIT ?, ?`;
     let paramr = [orderStatus, paymentStatus, deliveryStatus, processStatus, offset, limit];
-    console.log(sqlQuery, paramr, "****");
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
         .then((row) => {
             if (row.length) {
@@ -446,7 +445,6 @@ let qr_getOrderCount = ({ paymentStatus,deliveryStatus,processStatus,orderStatus
 
     let sqlQuery = `SELECT * FROM user_order WHERE order_type =? AND payment_status = ? AND delivery_status = ? AND process_status = ?`;
     let paramr = [orderStatus, paymentStatus, deliveryStatus, processStatus];
-    console.log(sqlQuery, paramr, "******************");
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
         .then((row) => {
             if (row.length) {
@@ -459,6 +457,52 @@ let qr_getOrderCount = ({ paymentStatus,deliveryStatus,processStatus,orderStatus
             console.log("error, while making query for qr_getWhome query function!!!", err);
         });
 }  
+
+let qr_deleteProductAttribute = ({productAttributeId, activeStatus}) => {
+    let sqlQuery = `UPDATE product_attribute SET
+        active_status = ? 
+        WHERE
+        id = ?`;
+    let paramr = [
+        activeStatus,
+        productAttributeId
+    ];
+
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.affectedRows) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}
+
+let qr_handleProductAvailibility = ({ productId, available}) => {
+    let sqlQuery = `UPDATE product SET
+        available = ? 
+        WHERE
+        id = ?`;
+    let paramr = [
+        available,
+        productId
+    ];
+    
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.affectedRows) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}
 module.exports = {
   qr_getFacebookUser: qr_getFacebookUser,
   qr_getFacebookUserCount: qr_getFacebookUserCount,
@@ -478,5 +522,7 @@ module.exports = {
   qr_getCompletePayment: qr_getCompletePayment,
   qr_getCompletePaymentCount: qr_getCompletePaymentCount,
   qr_getOrder : qr_getOrder,
-  qr_getOrderCount : qr_getOrderCount
+  qr_getOrderCount : qr_getOrderCount,
+  qr_deleteProductAttribute: qr_deleteProductAttribute,
+  qr_handleProductAvailibility : qr_handleProductAvailibility
 };

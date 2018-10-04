@@ -147,7 +147,14 @@ class EditProduct extends Component {
   handleFormSubmit(e) {
     e.preventDefault();
     this.props.history.push('/dashboard/productattribute');
-    alert("producg inserted sucessfully");
+    let productAttributeId = this.props.match.params.id;
+    alert(`The product with id ${productAttributeId} edited sucessfully!`);
+    this.props.history.push({
+      pathname: '/dashboard/productattribute',
+      state: { message: `Product with product id ${productAttributeId} etited sucssfully` }
+    });
+    
+
     
     axios.post(`http://localhost:1234/dashboard/productAttribute/editSucess`, {
       productDetail: this.state

@@ -62,6 +62,21 @@ class Product extends Component {
     });
 
   }
+
+  handleAvailability(e, productId, available) {
+    e.preventDefault();
+    alert("hey");
+    axios
+      .get(`http://localhost:1234/dashboard/productAttribute/availibility?productId=${productId}&available=${available}`)
+      .then((response) => {
+        let orderDetailArray = response.data;
+
+      })
+      .catch((e) => {
+        console.log("error while sending data to node platform", e);
+      });
+
+  }
   render() {
 
     let productDetail = this.state.productDetail;
@@ -114,6 +129,7 @@ class Product extends Component {
                     <th className="border-top-0">ActiveStatus</th>
                     <th className="border-top-0">Trending</th>
                     <th className="border-top-0">Last Updated</th>
+                    <th className="border-top-0">Availibility</th>
                   </tr>
                 </thead>
 
@@ -168,6 +184,9 @@ class Product extends Component {
 
                     <td>
                       <label className="label label-primary">{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))} Days ago</label>
+                    </td>
+                    <td>
+                     <button onClick={(e) => { this.handleAvailability(e, `${data.id}`, `${data.available}`) }} className="btn btn-danger">Toggle</button>
                     </td>
                   </tr>
                 </tbody>

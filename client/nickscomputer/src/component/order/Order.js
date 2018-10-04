@@ -99,7 +99,19 @@ class Order extends Component {
       });
 
   }
+  handleDowonload(e, url){
+    e.preventDefault();
+    alert("hey");
+    axios
+      .get(`http://localhost:1234/dashboard/image/download?url=${url}`)
+      .then((response) => {
+        let orderDetailArray = response.data;
 
+      })
+      .catch((e) => {
+        console.log("error while sending data to node platform", e);
+      });
+  }
   render() {
     let orderDetail = this.state.orderDetail;
     let currentDateTime = Moment().unix();
@@ -244,7 +256,7 @@ class Order extends Component {
                         </td>
 
                       <td>
-                        <button className="btn btn-danger">Download</button>
+                        <button onClick={(e) => { this.handleDowonload(e, `${orderData.image}`) }}  value={orderData.image} className="btn btn-danger">Download</button>
                       </td>
                       <td>
                         <button className="btn btn-danger">Done</button>

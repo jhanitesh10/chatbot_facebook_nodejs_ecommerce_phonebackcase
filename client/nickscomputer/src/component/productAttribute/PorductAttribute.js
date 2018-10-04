@@ -108,6 +108,33 @@ class ProductAttribute extends Component {
       });
   }
 
+  handleDelete(e, productAttributeId){
+    e.preventDefault();
+    this.props.history.push('/dashboard/productattribute');    
+    axios
+      .get(`http://localhost:1234/dashboard/productAttribute/delete?productAttributeId=${productAttributeId}`)
+      .then((response) => {
+        let orderDetailArray = response.data;
+        
+      })
+      .catch((e) => {
+        console.log("error while sending data to node platform", e);
+      });
+  }
+
+  handleAvailability(e, productId, available){
+    e.preventDefault();
+    axios
+      .get(`http://localhost:1234/dashboard/productAttribute/availibility?productId=${productId}&available=${available}`)
+      .then((response) => {
+        let orderDetailArray = response.data;
+        
+      })
+      .catch((e) => {
+        console.log("error while sending data to node platform", e);
+      });
+
+  }
   render() {
 
     let productDetail = this.state.productDetail;
@@ -115,7 +142,8 @@ class ProductAttribute extends Component {
     let productAttributeDetail = this.state;
     let paginationDetail = this.state.paginationDetail;
     let productAttributeId = this.state.productAttributeId;
-
+    // let message = this.props.location.state.message;
+   
     return (
       <div>
         <div className="card">
@@ -154,6 +182,7 @@ class ProductAttribute extends Component {
                   <th className="border-top-0">Trending</th>
                   <th className="border-top-0">Last Updated</th>
                   <th className="border-top-0">Edit</th>
+                  <th className="border-top-0">Availibility</th>
                   <th className="border-top-0">Delete</th>
                 </tr>
               </thead>
@@ -226,7 +255,10 @@ class ProductAttribute extends Component {
                     <Link className="btn btn-info" to={`/dashboard/editproduct/${data.productAttributeId}`}>Edit</Link>                      
                   </td>
                   <td>
-                    <button className="btn btn-danger">Delete</button>
+                    <button onClick={(e) => { this.handleAvailability(e, `${data.productId}`, `${data.available}`) }} className="btn btn-danger">Toggle</button>
+                  </td>
+                  <td>
+                    <button onClick={(e) => { this.handleDelete(e, `${data.productAttributeId}`) }} className="btn btn-danger">Delete</button>
                   </td>
                 </tr>
               </tbody>

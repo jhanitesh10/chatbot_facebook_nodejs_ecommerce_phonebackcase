@@ -1,7 +1,9 @@
 const Promise = require('bluebird'),
       moment = require('moment');
 const request = (require('request')),
-      fs = require('fs');
+      fs = require('fs'),
+      Stream = require('stream');
+
 let dashboardQuery = require('../../database/dashboard/dashboardQuery.js'),
     qr_getOrder = dashboardQuery.qr_getOrder,
     qr_getOrderCount = dashboardQuery.qr_getOrderCount;
@@ -39,13 +41,8 @@ let getOrderCount = (req, res) => {
 let downloadImage = (req, res) => {
     let url = req.query.url;
     console.log(req.query.url);
-    request(url, function (error, response, body) {
-        console.log(__dirname);
-        response.pipe(fs.createWriteStream(__dirname+'/'));
-        console.log('error:', error); // Print the error if one occurred
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-        console.log('body:', body); // Print the HTML for the Google homepage.
-    });
+    console.log(__dirname);
+return;
    
 }
 
