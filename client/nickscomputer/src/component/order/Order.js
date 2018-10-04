@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Moment from "moment";
 import Pagination from "../pagination/Pagination.js";
+import SortOrder from './SortOrder.js';
 
 class Order extends Component {
 
@@ -12,7 +13,7 @@ class Order extends Component {
       totalDataCount: 0,
       offset: 0,
       limit: 2,
-      paymentStatus: 1,
+      paymentStatus: 0,
       deliveryStatus: 0,
       processStatus: 0,
       orderStatus: 0
@@ -34,7 +35,7 @@ class Order extends Component {
           .get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}&paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
           .then(response => {
             let orderDetailArray = response.data;
-            let totalDataCount = orderCount.length;
+            let totalDataCount = orderDetailArray.length;
 
             this.setState({
               orderDetail: orderDetailArray,
@@ -57,11 +58,11 @@ class Order extends Component {
       offset, limit
     } = this.state;
 
-    axios.get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}&paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
-      .then((orderResponse) => {
-        let orderCount = orderResponse.data;
-
-        axios.get(`http://localhost:1234/dashboard/order/count?paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
+    axios.get(`http://localhost:1234/dashboard/order/count?paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
+    .then((orderResponse) => {
+      let orderCount = orderResponse.data;
+      
+      axios.get(`http://localhost:1234/dashboard/order?offset=${offset}&limit=${limit}&paymentStatus=${paymentStatus}&deliveryStatus=${deliveryStatus}&processStatus=${processStatus}&orderStatus=${orderStatus}`)
           .then((response) => {
             let orderDetailArray = response.data;
             let totalDataCount = orderCount.length;
@@ -127,14 +128,7 @@ class Order extends Component {
                     </div>
                     <div className="ml-auto">
                       <div className="dl">
-                        <select className="custom-select">
-                          <option value="0" selected>
-                            Monthly
-                          </option>
-                          <option value="1">Daily</option>
-                          <option value="2">Weekly</option>
-                          <option value="3">Yearly</option>
-                        </select>
+                      <SortOrder details={detail} handleOrderSort={this.handleOrderSort.bind(this)} />
                       </div>
                     </div>
                   </div>
@@ -207,46 +201,46 @@ class Order extends Component {
                         </td>
                         <td>
                           <div className="">
-                            <h4 className="m-b-0 font-16">1000</h4>
+                            <h4 className="m-b-0 font-16">{orderData.total}</h4>
                           </div>
                         </td>
                         <td width="40px">
-                          <img className="img-thumbnail" src="http://quizplay.esy.es/quiz/images/Logomakr_0ukOms.png" />
+                          <img className="img-thumbnail" src={orderData.image} />
                         </td>
-                        <td> I want my case to be delivered ASAP </td>
+                        <td> {orderData.description} </td>
                         <td> 
                           <div className="">
-                            <h4 className="m-b-0 font-16">20January</h4>
+                            <h4 className="m-b-0 font-16">{orderData.payment_created_at}</h4>
                           </div>
                         </td>
                         <td> 
                           <div className="">
-                            <h4 className="m-b-0 font-16">20January</h4>
+                            <h4 className="m-b-0 font-16">{orderData.updated_on}</h4>
                           </div>
                         </td>
                         <td>
-                          <label className="label label-primary">
-                            DONE
-                          </label>
-                          <label className="label label-primary">
-                            PENDING 
-                          </label>
+                          
+                          {
+                            (orderData.payment_status) ?
+                              (<label className="label label-info">Trending</label>) : (<label className="label label-danger">Basic</label>)
+                          }
+
                         </td>
                         <td>
-                          <label className="label label-primary">
-                            DONE
-                          </label>
-                          <label className="label label-primary">
-                            PENDING 
-                          </label>
+
+                          {
+                            (orderData.delivery_status) ?
+                              (<label className="label label-info">Trending</label>) : (<label className="label label-danger">Basic</label>)
+                          }
+
                         </td>
                         <td>
-                          <label className="label label-primary">
-                            DONE
-                          </label>
-                          <label className="label label-primary">
-                            PENDING 
-                          </label>
+
+                          {
+                            (orderData.process_status) ?
+                              (<label className="label label-info">Trending</label>) : (<label className="label label-danger">Basic</label>)
+                          }
+
                         </td>
 
                       <td>
@@ -261,6 +255,9 @@ class Order extends Component {
                     )}
 
                   </table>
+                  
+                  <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)}/>
+
                 </div>
               </div>
             </div>

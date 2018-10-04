@@ -429,7 +429,7 @@ let qr_getOrder = ({ offset, limit, paymentStatus, deliveryStatus, processStatus
     
     let sqlQuery = `SELECT * FROM user_order WHERE order_type = ? AND payment_status = ? AND delivery_status = ? AND process_status = ? LIMIT ?, ?`;
     let paramr = [orderStatus, paymentStatus, deliveryStatus, processStatus, offset, limit];
-
+    console.log(sqlQuery, paramr, "****");
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
         .then((row) => {
             if (row.length) {
@@ -446,7 +446,7 @@ let qr_getOrderCount = ({ paymentStatus,deliveryStatus,processStatus,orderStatus
 
     let sqlQuery = `SELECT * FROM user_order WHERE order_type =? AND payment_status = ? AND delivery_status = ? AND process_status = ?`;
     let paramr = [orderStatus, paymentStatus, deliveryStatus, processStatus];
-
+    console.log(sqlQuery, paramr, "******************");
     return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
         .then((row) => {
             if (row.length) {
