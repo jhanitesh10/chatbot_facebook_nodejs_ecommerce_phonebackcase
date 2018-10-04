@@ -1,12 +1,73 @@
 import React, { Component } from "react";
+import axios from "axios";
+import Moment from "moment";
+import Pagination from "../pagination/Pagination.js";
 
 class Payment extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      paymentDetail: [],
+      totalDataCount: 0,
+      offset: 0,
+      limit: 2
+    }
   }
 
+  componentDidMount() {
+
+    let offset = this.state.offset,
+      limit = this.state.limit;
+
+    axios.get(`http://localhost:1234/dashboard/completePayment/count`)
+      .then((pymentResponse) => {
+        let payemntCount = pymentResponse.data;
+
+        axios.get(`http://localhost:1234/dashboard/completePayment?offset=${offset}&limit=${limit}`)
+          .then((response) => {
+            let paymentDetailArray = response.data;
+            let totalDataCount = payemntCount.length;
+
+
+            this.setState({ paymentDetail: paymentDetailArray, totalDataCount: totalDataCount });
+          })
+          .catch((e) => {
+            console.log("error while sending data to node platform", e);
+          });
+
+      })
+      .catch((e) => {
+        console.log("error while getting user count", e);
+      });
+
+
+  }
+
+  hanldePagination(key) {
+    let totalDataCount = this.state.totalDataCount;
+    let limit = this.state.limit;
+    let totalPage = Math.ceil(totalDataCount / limit);
+    let offset = (limit) * (key - 1);
+
+
+    axios.get(`http://localhost:1234/dashboard/completePayment?offset=${offset}&limit=${limit}`)
+      .then((completePayment) => {
+        let userDetailArray = completePayment.data;
+        this.setState({ paymentDetail: userDetailArray });
+      })
+      .catch((e) => {
+        console.log("error while sending data to node platform", e);
+      });
+
+  }
+
+
   render() {
+    let paymentDetail = this.state.paymentDetail;
+    let currentDateTime = Moment().unix();
+    let paginationDetail = this.state.paginationDetail;
+
     return (
       <div className="card">
         <div className="card-body">
@@ -47,72 +108,77 @@ class Payment extends Component {
                         <th className="border-top-0">Fee</th>
                         <th className="border-top-0">Amount</th>
                         <th className="border-top-0">Currency</th>
-                        <th className="border-top-0">Buyer</th>
+                        <th className="border-top-0">EmailId</th>
                         <th className="border-top-0">Name</th>
                         <th className="border-top-0">Contact</th>
-                        <th className="border-top-0">PaymentRequestId</th>
                         <th className="border-top-0">PaymentCompletedAt</th>
                         <th className="border-top-0">Paymenton</th>
 
                       </tr>
                     </thead>
+
+                    {paymentDetail.map((paymentDetail, index) =>
+
                     <tbody>
                       <tr>
                         <td>
                           <div className="d-flex align-items-center">
                             <div>
                               <a className="btn btn-circle btn-info text-white">
-                                1
+                                {paymentDetail.payment_id}
                               </a>
                             </div>
                           </div>
                         </td>
                         <td>
                           <div className="">
-                            <h4 className="m-b-0 font-16">1234566</h4>
+                            <h4 className="m-b-0 font-16">{paymentDetail.product_id}</h4>
                           </div>
                         </td>
                         <td>
-                          Credit
+                          {paymentDetail.status}
                         </td>
-                        <td>"http://google.com"</td>
-                        <td>"http://google.com"</td>
-                        <td>Freak case</td>
+                        <td>{paymentDetail.shorturl}</td>
+                        <td>{paymentDetail.longurl}</td>
+                        <td>{paymentDetail.purpose}</td>
                         <td>
                           <div className="">
-                            <h4 className="m-b-0 font-16">4</h4>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="">
-                            <h4 className="m-b-0 font-16">100</h4>
+                            <h4 className="m-b-0 font-16">{paymentDetail.fees}</h4>
                           </div>
                         </td>
                         <td>
                           <div className="">
-                            <h4 className="m-b-0 font-16">Rupees</h4>
+                            <h4 className="m-b-0 font-16">{paymentDetail.amount}</h4>
                           </div>
                         </td>
-                        <td>Nitesh</td>
                         <td>
-                          Nitesh
+                          <div className="">
+                            <h4 className="m-b-0 font-16">{paymentDetail.currency}</h4>
+                          </div>
+                        </td>
+                        <td>{paymentDetail.buyer}</td>
+                        <td>
+                          {paymentDetail.buyer_name}
                         </td>
                         <td>
-                          9004250810
+                          {paymentDetail.buyer_phone}
                         </td>
-                        <td>12341kjljk1234</td>
                         <div className="">
-                          <h4 className="m-b-0 font-16">20January</h4>
+                          <h4 className="m-b-0 font-16">{paymentDetail.createdat}</h4>
                         </div>
                         <td>
                           <label className="label label-primary">
-                            20 Days ago
+                            {Math.ceil((currentDateTime - paymentDetail.updatedat) / (3600 * 24))}Days Ago
                           </label>
                         </td>
-                        
+
                       </tr>
                     </tbody>
+
+                    )}
+
                   </table>
+                  <Pagination data={this.state} handlePagination={this.hanldePagination.bind(this)} />
                 </div>
               </div>
             </div>

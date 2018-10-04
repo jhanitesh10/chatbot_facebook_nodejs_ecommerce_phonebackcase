@@ -435,7 +435,7 @@ let qr_getOrder = ({ offset, limit, paymentStatus, deliveryStatus, processStatus
             if (row.length) {
                 return row;
             } else {
-                return 0;
+                return [];
             }
         })
         .catch(err => {
@@ -452,7 +452,7 @@ let qr_getOrderCount = ({ paymentStatus,deliveryStatus,processStatus,orderStatus
             if (row.length) {
                 return row;
             } else {
-                return 0;
+                return [];
             }
         })
         .catch(err => {
