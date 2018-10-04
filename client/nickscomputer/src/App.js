@@ -64,7 +64,7 @@ class App extends Component {
                     <Route path='/dashboard/order' component={Order}></Route>
                     <Route path='/dashboard/payment' component={Payment}></Route>
                     <Route path='/dashboard/addproduct' component={AddProduct}></Route>
-                    <Route path='/dashboard/editproduct' component={EditProduct}></Route>
+                    <Route path='/dashboard/editproduct/:id' component={EditProduct}></Route>
                   </Switch>
                 </div>
               </div>

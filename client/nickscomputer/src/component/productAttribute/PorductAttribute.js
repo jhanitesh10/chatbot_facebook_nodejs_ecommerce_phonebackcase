@@ -131,6 +131,7 @@ class ProductAttribute extends Component {
               </div>
             </div>
           </div>
+
           <div className="table-responsive m-t-20">
             <table className="table table-bordered  v-middle">
               <thead>
@@ -222,7 +223,7 @@ class ProductAttribute extends Component {
                       <label className="label label-primary">{Math.ceil((currentDateTime - data.updated_on) / (3600 * 24))} Days ago</label>
                     </td>
                   <td>
-                    <Link className="btn btn-info" to="/dashboard/editproduct">Edit</Link>
+                    <Link className="btn btn-info" to={`/dashboard/editproduct/${data.productAttributeId}`}>Edit</Link>                      
                   </td>
                   <td>
                     <button className="btn btn-danger">Delete</button>

@@ -35,6 +35,7 @@ class Order extends Component {
                     </div>
                   </div>
                 </div>
+                
                 <div className="table-responsive m-t-20">
                   <table className="table table-bordered  v-middle">
                     <thead>
@@ -155,7 +156,7 @@ class Order extends Component {
             </div>
           </div>
         </div>
-      </div>;
+      </div>
   }
 }
 
