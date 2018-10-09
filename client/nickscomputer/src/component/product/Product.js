@@ -77,6 +77,20 @@ class Product extends Component {
       });
 
   }
+
+  handleProductDelete(e, productId) {
+    e.preventDefault();
+    this.props.history.push('/dashboard/productattribute');
+    axios
+      .get(`http://localhost:1234/dashboard/product/delete?productId=${productId}`)
+      .then((response) => {
+        let orderDetailArray = response.data;
+
+      })
+      .catch((e) => {
+        console.log("error while sending data to node platform", e);
+      });
+  }
   render() {
 
     let productDetail = this.state.productDetail;
@@ -130,6 +144,7 @@ class Product extends Component {
                     <th className="border-top-0">Trending</th>
                     <th className="border-top-0">Last Updated</th>
                     <th className="border-top-0">Availibility</th>
+                    <th className="border-top-0">Delete</th>
                   </tr>
                 </thead>
 
@@ -187,6 +202,9 @@ class Product extends Component {
                     </td>
                     <td>
                      <button onClick={(e) => { this.handleAvailability(e, `${data.id}`, `${data.available}`) }} className="btn btn-danger">Toggle</button>
+                    </td>
+                    <td>
+                      <button onClick={(e) => { this.handleProductDelete(e, `${data.id}`) }} className="btn btn-danger">Delete</button>
                     </td>
                   </tr>
                 </tbody>

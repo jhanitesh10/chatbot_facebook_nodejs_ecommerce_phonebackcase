@@ -101,7 +101,6 @@ class Order extends Component {
   }
   handleDowonload(e, url){
     e.preventDefault();
-    alert("hey");
     axios
       .get(`http://localhost:1234/dashboard/image/download?url=${url}`)
       .then((response) => {

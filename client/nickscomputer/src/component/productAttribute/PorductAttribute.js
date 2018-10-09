@@ -124,6 +124,8 @@ class ProductAttribute extends Component {
 
   handleAvailability(e, productId, available){
     e.preventDefault();
+    this.props.history.push('/dashboard/productattribute');
+
     axios
       .get(`http://localhost:1234/dashboard/productAttribute/availibility?productId=${productId}&available=${available}`)
       .then((response) => {

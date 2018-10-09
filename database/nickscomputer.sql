@@ -2025,3 +2025,12 @@
 -- ALTER TABLE `user_order`
 -- ADD COLUMN order_type INT
 -- (2) NOT NULL AFTER description;
+
+-- create TABLE admin(
+-- id INT(4) AUTO_INCREMENT NOT NULL,
+-- email varchar(40) NOT NULL UNIQUE,
+-- PASSWORD VARCHAR(150),
+-- active_status INT(2),
+-- created_on INT(11),
+-- updated_on INT(11),
+-- PRIMARY KEY(id));

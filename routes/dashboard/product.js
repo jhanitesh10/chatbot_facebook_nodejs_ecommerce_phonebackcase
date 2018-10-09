@@ -16,7 +16,8 @@ let dashboardQuery = require('../../database/dashboard/dashboardQuery.js'),
     qr_editProductSave = dashboardQuery.qr_editProductSave,
     qr_editProductAttributeSave = dashboardQuery.qr_editProductAttributeSave,
     qr_deleteProductAttribute = dashboardQuery.qr_deleteProductAttribute,
-    qr_handleProductAvailibility = dashboardQuery.qr_handleProductAvailibility;
+    qr_handleProductAvailibility = dashboardQuery.qr_handleProductAvailibility,
+    qr_deleteProduct = dashboardQuery.qr_deleteProduct;
 
 
 let getProductCount = (req, res) => {
@@ -211,6 +212,15 @@ let handleAvailibility = (req, res) => {
     });
 }
 
+let deleteProduct = (req, res) => {
+    let productId = req.query.productId,
+        activeStatus = 0;
+
+    return qr_deleteProduct({ productId: productId, activeStatus: activeStatus }).then((deleteData) => {
+        console.log(deleteData)
+    });
+}
+
 module.exports = {
   getProductCount: getProductCount,
   productDetail: productDetail,
@@ -224,5 +234,6 @@ module.exports = {
   editProduct: editProduct,
   editProductSave: editProductSave,
   deleteProductAttribute: deleteProductAttribute,
-  handleAvailibility: handleAvailibility
+  handleAvailibility: handleAvailibility,
+  deleteProduct : deleteProduct
 };

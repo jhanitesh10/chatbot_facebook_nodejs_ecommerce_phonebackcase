@@ -503,6 +503,47 @@ let qr_handleProductAvailibility = ({ productId, available}) => {
             console.log("error, while making query for qr_getWhome query function!!!", err);
         });
 }
+
+let qr_deleteProduct = ({ productId, activeStatus }) => {
+    let sqlQuery = `UPDATE product SET
+        active_status = ? 
+        WHERE
+        id = ?`;
+    let paramr = [
+        activeStatus,
+        productId
+    ];
+
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.affectedRows) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}
+
+let qr_getLoginData = ({email, password}) => {
+
+    let sqlQuery = `SELECT email, password from admin WHERE email = ? AND password = ? AND active_status = 1`;
+    let paramr = [email, password];
+    return getQuery({ sqlQuery: sqlQuery, paramr: paramr })
+        .then((row) => {
+            if (row.length) {
+                return row;
+            } else {
+                return 0;
+            }
+        })
+        .catch(err => {
+            console.log("error, while making query for qr_getWhome query function!!!", err);
+        });
+}  
+
 module.exports = {
   qr_getFacebookUser: qr_getFacebookUser,
   qr_getFacebookUserCount: qr_getFacebookUserCount,
@@ -524,5 +565,7 @@ module.exports = {
   qr_getOrder : qr_getOrder,
   qr_getOrderCount : qr_getOrderCount,
   qr_deleteProductAttribute: qr_deleteProductAttribute,
-  qr_handleProductAvailibility : qr_handleProductAvailibility
+  qr_handleProductAvailibility : qr_handleProductAvailibility,
+  qr_deleteProduct: qr_deleteProduct,
+  qr_getLoginData: qr_getLoginData
 };

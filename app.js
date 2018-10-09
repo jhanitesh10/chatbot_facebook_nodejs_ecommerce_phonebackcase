@@ -50,7 +50,8 @@ let product = require('./routes/dashboard/product.js'),
     editProduct = product.editProduct,
     editProductSave = product.editProductSave,
     deleteProductAttribute = product.deleteProductAttribute,
-    handleAvailibility = product.handleAvailibility;
+    handleAvailibility = product.handleAvailibility,
+    deleteProduct = product.deleteProduct;
 
   let payment = require('./routes/dashboard/payment.js'),
       getCompletePayment = payment.getCompletePayment,
@@ -61,7 +62,8 @@ let product = require('./routes/dashboard/product.js'),
       getOrderCount = completeOrder.getOrderCount,
       downloadImage = completeOrder.downloadImage;
 
-
+let login = require('./routes/dashboard/login.js'),
+    checkUserLogin = login.checkUserLogin;
       
 app.set("view engine", 'ejs');
 app.set("views", './views');
@@ -132,7 +134,9 @@ app.get("/dashboard/image/download", downloadImage);
 
 app.get("/dashboard/productAttribute/delete", deleteProductAttribute);
 app.get("/dashboard/productAttribute/availibility", handleAvailibility);
+app.get("/dashboard/product/delete", deleteProduct);
 
+app.post('/login', checkUserLogin);
 
 /* Dialogflow webhook endpoint */
 app.post('/dialogflow', (req, res) => {
